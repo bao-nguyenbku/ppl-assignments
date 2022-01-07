@@ -100,7 +100,7 @@ EXP0:
     | EXP1 GT EXP1
     | EXP1 GTE EXP1
     | EXP1; //< > <= >= none
-EXP1: EXP2 EQUAL EXP2 | EXP2 NOTEQUAL EXP2 | EXP2; // == !=  
+EXP1: EQUAL EXP2 | NOTEQUAL EXP2 | EXP2; // == !=  
 EXP2: EXP3 | AND EXP3 | OR EXP3; // && ||  
 EXP3: ADD EXP4 | SUB EXP4 | EXP4; // + - 
 EXP4: MUL EXP5 | DIV EXP5 | MOD EXP5 | EXP5; // * / %
@@ -112,7 +112,7 @@ EXP8: DOT ID (LP LIST_EXP? RP)? | EXP9; // . left   (exp.(id|method))| ID.ID(,)
 EXP9: NEW EXP9 LP LIST_EXP? RP | EXP10; //  new    right       new int
 EXP10: LITERAL | ID | SELF | EXP11;
 EXP11: LP EXP0 RP; // (    )
-LIST_EXP: EXP0 | EXP0 COMMA LIST_EXP;
+LIST_EXP: EXP0 (COMMA EXP0)*;
 // ids_list: ID (COMMA ID)*; ------------------VARIABLES DECLARATION--------------------
 // Lexer component
 

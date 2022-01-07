@@ -41,10 +41,13 @@ class LexerSuite(unittest.TestCase):
     # def test_string(self):
     #     self.assertTrue(TestLexer.test("\"He asked me: '\"Where \t is John?'\"\"", "", 105))
 
-    # def test_expression(self):
-    #     self.assertTrue(TestLexer.test("(23 >= 5 && a != 9) || 7 + 9", "", 105))
-    
     def test_expression(self):
-        self.assertTrue(TestLexer.test("", "", 105))
+        self.assertTrue(TestLexer.test("(23 >= 5 && a != 9) || 7 + 9", "", 105))
+    
+    # def test_expression(self):
+    #     self.assertTrue(TestLexer.test("a = b.get();", "", 105))
+
+    # def test_expression(self):
+    #     self.assertTrue(TestLexer.test("a + b", "", 105))
 
     
