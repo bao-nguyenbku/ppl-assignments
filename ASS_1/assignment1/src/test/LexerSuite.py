@@ -23,5 +23,28 @@ class LexerSuite(unittest.TestCase):
     # def test_identifier_4(self):
     #     self.assertTrue(TestLexer.test("123a123", "123,a123,<EOF>", 104))
 
-    def test_identifier_5(self):
-        self.assertTrue(TestLexer.test("##fdsjfsfhs##", "", 105))
+    # def test_var_declare(self):
+    #     self.assertTrue(TestLexer.test("var $dec, num: Int = 0b0101110, 0xaff", "", 105))
+    
+    # def test_float_number(self):
+    #     self.assertTrue(TestLexer.test("12.345e-6235", "", 105))
+
+    # def test_string(self):
+    #     self.assertTrue(TestLexer.test("\"abcdj\elhadef\"", "", 105)) 
+
+    # def test_string(self):
+    #     self.assertTrue(TestLexer.test("\"abcdj\tlhadef\"", "", 105))  
+
+    # def test_string(self):
+    #     self.assertTrue(TestLexer.test("\"abcdj\elhadef", "", 105))  
+
+    # def test_string(self):
+    #     self.assertTrue(TestLexer.test("\"He asked me: '\"Where \t is John?'\"\"", "", 105))
+
+    # def test_expression(self):
+    #     self.assertTrue(TestLexer.test("(23 >= 5 && a != 9) || 7 + 9", "", 105))
+    
+    def test_expression(self):
+        self.assertTrue(TestLexer.test("", "", 105))
+
+    

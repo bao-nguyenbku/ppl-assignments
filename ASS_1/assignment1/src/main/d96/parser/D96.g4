@@ -8,10 +8,18 @@ def emit(self):
     tk = self.type
     result = super().emit() # result mean for input
     # delete later
-    print(result.text + ' is: ' + self.symbolicNames[tk-1])
+    print('--------------------------------------------------------------------------------')
+    
+    print ("{:<30} {:<30} {:<50}".format(result.text, '|', self.symbolicNames[tk-1]))
+    print('--------------------------------------------------------------------------------')
     if tk == self.LITERAL:
+        # string type
+        if (result.text[0] == result.text[-1] and result.text[-1] == '"'):
+            if result.text.find('\'"') >= 0:
+                result.text = result.text.replace('\'"', '"')
+            return result
         result.text = result.text.replace('_', '')
-    return result;
+    return result
 }
 options {
 	language = Python3;
@@ -29,26 +37,29 @@ funcall: ID LP exp? RP;
 CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
 
 MEMBER: VAR_DECLARE | METHODS;
-METHODS: ID LP (LIST_PARAM) RP; // function
+METHODS: ID LP LIST_PARAM? RP BLOCK_STATEMENT; // function
+BLOCK_STATEMENT: LCB VAR_DECLARE RCB;
 LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
 LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD;
 VAR_DECLARE: (VAR | VAL) 
              ID_LIST COLON PRIMITIVE_TYPE 
-             ((ASSIGN PRIMITIVE_TYPE | COMMA PRIMITIVE_TYPE)
-             | (EXPFULL | COMMA EXPFULL))?
+             (
+                (ASSIGN LITERAL (COMMA LITERAL)*)
+                | (ASSIGN EXP0 (COMMA EXP0)*)
+                | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
+             )?
              SEMI;
 
 // LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
-EXPFULL: ASSIGN EXP0 | ARRAY_LIST;
 INT_TYPE: 'Int';
 FLOAT_TYPE: 'Float';
 STRING: 'string';
 BOOL_TYPE: TRUE | FALSE;
-ID_LIST: ID (COMMA ID)*;
+
 // -----------------------DATA TYPE--------------------------
 VOID_TYPE: 'Void';
-ARRAY_TYPE: 'Array' LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
-ARRAY_LIST: 'Array' LP ( LITERAL (COMMA LITERAL)?) RP;
+ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
+ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
 PRIMITIVE_TYPE:
     BOOL_TYPE
     | INT_TYPE
@@ -56,7 +67,6 @@ PRIMITIVE_TYPE:
     | STRING
     | ARRAY_TYPE
     | CLASS;
-// ID: [a-zA-Z]+;
 
 LITERAL:
     INTEGER_LITERAL
@@ -66,18 +76,23 @@ LITERAL:
 
 INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
 
-STRING_LITERAL: '"' STR_CHAR* '"' {
-        y = str(self.text)
-        self.text = y[1:-1]
-	};
+STRING_LITERAL: '"' STR1* '"';
+// {
+//         y = str(self.text)
+//         self.text = y[1:-1]
+// };
 
-REAL_LITERAL: DIGIT+ DOT (DIGIT | EXPONENT)* // 1 | 1.5 | 1.e-4
-| DIGIT* DOT DIGIT+ EXPONENT? // (1).5(e-4)
-| DIGIT+ EXPONENT; // 12e-5
+REAL_LITERAL: DEC_TYPE DOT (DEC_TYPE | EXPONENT)*; // 1 | 1.5 | 1.e-4
+            //   | DIGIT* DOT DEC_TYPE EXPONENT? // (1).5(e-4)
+            //   | DIGIT+ EXPONENT; // 12e-5
 HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
 OCT_TYPE: '0' [0-9]+;
 BIN_TYPE: ('0b' | '0B') [01]+;
 DEC_TYPE: [0-9]|[1-9][0-9_]*;
+ARRAY: 'Array';
+VAL: 'val';
+VAR: 'var';
+CLASS: 'class';
 // EXPRESSION-------------------------------------------------
 EXP0:
     EXP1 LT EXP1
@@ -99,12 +114,8 @@ EXP10: LITERAL | ID | SELF | EXP11;
 EXP11: LP EXP0 RP; // (    )
 LIST_EXP: EXP0 | EXP0 COMMA LIST_EXP;
 // ids_list: ID (COMMA ID)*; ------------------VARIABLES DECLARATION--------------------
+// Lexer component
 
-// Lexer component INTLIT: [0-9]+;
-ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR ID;
-VAL: 'val';
-VAR: 'var';
-CLASS: 'class';
 DOLLAR: '$';
 LP: '('; // Left Parenthesis
 RP: ')'; // Right Parenthesis
@@ -118,7 +129,7 @@ COMMA: ','; // Comma
 COLON: ':'; // Colon
 DOTDOT: '..'; // Dot Dot should be before Dot
 fragment DOT: '.';
-fragment EXPONENT: [eE] SUB? DIGIT+;
+fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
 fragment SIGN: [+-];
 BREAK: 'Break';
@@ -154,31 +165,36 @@ LTE: '<=';
 LT: '<';
 GTE: '>=';
 ASSIGN: '=';
+// Identifier-----------------------------------------
+ID_LIST: ID (COMMA ID)*;
+ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR ID;
 // ----------------------------
+fragment STR1: '\\' [bfnrt"\\] | ~[\\"\n\r] | '\'"';
+// fragment STR1: '\\' [bfnrt"\\] | ~[\\"\n\r];
+
 WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
 BLOCK_COMMENT: ('##' .*? '##') -> skip;
-fragment STR_CHAR: ~[\b\t\n\f\r"'\\] | ESC_SEQ;
-
-fragment ESC_SEQ: '\\' [btnfr"'\\];
-
-fragment ESC_ILLEGAL: '\\' ~[btnfr"'\\] | ~'\\';
 // ERROR_CHAR: .; UNCLOSE_STRING: .; ILLEGAL_ESCAPE: .;
-UNCLOSE_STRING: '"' STR_CHAR* ([\b\t\n\f\r"'\\] | EOF) 
+UNCLOSE_STRING: '"' STR1* EOF
 {
-    y = str(self.text)
-    possible = ['\b', '\t', '\n', '\f', '\r', '"', "'", '\\']
-    if y[-1] in possible:
-        raise UncloseString(y[1:-1])
-    else:
-        raise UncloseString(y[1:])
-};
+    x = str(self.text)
+    raise UncloseString(x[1:])
+}
+;
 
-ILLEGAL_ESCAPE: '"' STR_CHAR* ESC_ILLEGAL 
+
+    // y = str(self.text)
+    // possible = ['\b', '\t', '\n', '\f', '\r', '"', "'", '\\']
+    // if y[-1] in possible:
+    //     raise UncloseString(y[1:-1])
+    // else:
+    //     raise UncloseString(y[1:])
+
+ILLEGAL_ESCAPE: '"' STR1* '\\' ~[bfnrt"\\] 
 {
     y = str(self.text)
     raise IllegalEscape(y[1:])
 };
-
 ERROR_CHAR:. 
 {
     raise ErrorToken(self.text)
