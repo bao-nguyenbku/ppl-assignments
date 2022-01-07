@@ -1,1 +1,1 @@
-##,dsadada,var,a,:,int,;,<EOF>
+123,gfdgdsds,<EOF>

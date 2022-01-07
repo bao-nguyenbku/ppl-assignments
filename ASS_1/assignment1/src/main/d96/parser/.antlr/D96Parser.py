@@ -1,4 +1,4 @@
-# Generated from e:\HCMUT\PRINCIPLES_OF_PROGRAMMING_LANGUAGE\ASSIGNMENT\ASS_1\assignment1\src\main\d96\parser\D96.g4 by ANTLR 4.8
+# Generated from e:\HCMUT\PRINCIPLES_OF_PROGRAMMING_LANGUAGE\ppl-assignments\ASS_1\assignment1\src\main\d96\parser\D96.g4 by ANTLR 4.8
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -11,20 +11,22 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3F")
-        buf.write("(\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2")
-        buf.write("\3\2\3\2\3\2\5\2\23\n\2\3\2\3\2\3\2\3\3\3\3\3\4\3\4\3")
-        buf.write("\4\3\5\3\5\5\5\37\n\5\3\6\3\6\3\6\5\6$\n\6\3\6\3\6\3\6")
-        buf.write("\2\2\7\2\4\6\b\n\2\3\4\2\n\n\f\f\2%\2\f\3\2\2\2\4\27\3")
-        buf.write("\2\2\2\6\31\3\2\2\2\b\36\3\2\2\2\n \3\2\2\2\f\r\5\4\3")
-        buf.write("\2\r\16\7\3\2\2\16\17\7\26\2\2\17\20\7\27\2\2\20\22\7")
-        buf.write("\30\2\2\21\23\5\6\4\2\22\21\3\2\2\2\22\23\3\2\2\2\23\24")
-        buf.write("\3\2\2\2\24\25\7\31\2\2\25\26\7\2\2\3\26\3\3\2\2\2\27")
-        buf.write("\30\t\2\2\2\30\5\3\2\2\2\31\32\5\n\6\2\32\33\7\34\2\2")
-        buf.write("\33\7\3\2\2\2\34\37\5\n\6\2\35\37\7\20\2\2\36\34\3\2\2")
-        buf.write("\2\36\35\3\2\2\2\37\t\3\2\2\2 !\7\21\2\2!#\7\26\2\2\"")
-        buf.write("$\5\b\5\2#\"\3\2\2\2#$\3\2\2\2$%\3\2\2\2%&\7\27\2\2&\13")
-        buf.write("\3\2\2\2\5\22\36#")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3[")
+        buf.write("/\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2")
+        buf.write("\3\2\3\2\3\2\5\2\23\n\2\3\2\3\2\3\2\6\2\30\n\2\r\2\16")
+        buf.write("\2\31\3\2\5\2\35\n\2\3\3\3\3\3\4\3\4\3\4\3\5\3\5\5\5&")
+        buf.write("\n\5\3\6\3\6\3\6\5\6+\n\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n")
+        buf.write("\2\3\4\2\13\13\r\r\2.\2\34\3\2\2\2\4\36\3\2\2\2\6 \3\2")
+        buf.write("\2\2\b%\3\2\2\2\n\'\3\2\2\2\f\r\5\4\3\2\r\16\7\3\2\2\16")
+        buf.write("\17\7$\2\2\17\20\7%\2\2\20\22\7&\2\2\21\23\5\6\4\2\22")
+        buf.write("\21\3\2\2\2\22\23\3\2\2\2\23\24\3\2\2\2\24\25\7\'\2\2")
+        buf.write("\25\35\3\2\2\2\26\30\7\4\2\2\27\26\3\2\2\2\30\31\3\2\2")
+        buf.write("\2\31\27\3\2\2\2\31\32\3\2\2\2\32\33\3\2\2\2\33\35\7\2")
+        buf.write("\2\3\34\f\3\2\2\2\34\27\3\2\2\2\35\3\3\2\2\2\36\37\t\2")
+        buf.write("\2\2\37\5\3\2\2\2 !\5\n\6\2!\"\7*\2\2\"\7\3\2\2\2#&\5")
+        buf.write("\n\6\2$&\7B\2\2%#\3\2\2\2%$\3\2\2\2&\t\3\2\2\2\'(\7\37")
+        buf.write("\2\2(*\7$\2\2)+\5\b\5\2*)\3\2\2\2*+\3\2\2\2+,\3\2\2\2")
+        buf.write(",-\7%\2\2-\13\3\2\2\2\7\22\31\34%*")
         return buf.getvalue()
 
 
@@ -39,29 +41,38 @@ class D96Parser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'main'", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "<INVALID>", "'Int'", "<INVALID>", 
-                     "'Void'", "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "'val'", "'var'", "'class'", "'$'", "'('", 
-                     "')'", "'{'", "'}'", "'['", "']'", "';'", "','", "':'", 
-                     "'..'", "'Break'", "'Foreach'", "'Boolean'", "'Null'", 
-                     "'Continue'", "'True'", "'False'", "'string'", "'if'", 
-                     "'elseif'", "'Array Int'", "'Else'", "<INVALID>", "'return'", 
-                     "<INVALID>", "<INVALID>", "<INVALID>", "'+'", "'+.'", 
-                     "'-'", "'*'", "'/'", "'%'", "'!'", "'!='", "'=='", 
-                     "'==.'", "'&&'", "'>'", "'||'", "'<='", "'='", "'>='" ]
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "'Int'", "<INVALID>", "'Void'", "<INVALID>", "<INVALID>", 
+                     "'Float'", "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "'val'", "'var'", 
+                     "'class'", "'$'", "'('", "')'", "'{'", "'}'", "'['", 
+                     "']'", "';'", "','", "':'", "'..'", "'Break'", "'Foreach'", 
+                     "'Boolean'", "'Null'", "'Continue'", "'True'", "'False'", 
+                     "'string'", "'if'", "'elseif'", "'Array Int'", "'Else'", 
+                     "'self'", "'return'", "'new'", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "'+'", "'+.'", "'-'", "'*'", 
+                     "'/'", "'%'", "'!'", "'!='", "'=='", "'==.'", "'&&'", 
+                     "'||'", "'>'", "'<='", "'<'", "'>='", "'='" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "CLASS_DECLARE", "VAR_DECLARE", 
-                      "MEMBER", "LIST_DATA", "ID_LIST", "METHODS", "INT_TYPE", 
-                      "BOOL_TYPE", "VOID_TYPE", "ARRAY_TYPE", "FLOAT_TYPE", 
-                      "PRIMITIVE_TYPE", "INTLIT", "ID", "VAL", "VAR", "CLASS", 
-                      "DOLLAR", "LP", "RP", "LCB", "RCB", "LSB", "RSB", 
-                      "SEMI", "COMMA", "COLON", "DOTDOT", "BREAK", "FOREACH", 
-                      "BOOLEAN", "NULL", "CONTINUE", "TRUE", "FALSE", "STRING", 
-                      "IF", "ELSEIF", "ARRAYINT", "ELSE", "FLOAT", "RETURN", 
-                      "INTEGER_LITERAL", "STRING_LITERAL", "REAL_LITERAL", 
-                      "ADD", "ADD_STR", "SUB", "MUL", "DIV", "MOD", "NOT", 
-                      "NOTEQUAL", "EQUAL", "EQUAL_STR", "AND", "GT", "OR", 
-                      "LTE", "ASSIGN", "GTE", "WS", "BLOCK_COMMENT", "UNCLOSE_STRING", 
+                      "MEMBER", "LIST_DATA", "EXPFULL", "ID_LIST", "METHODS", 
+                      "INT_TYPE", "BOOL_TYPE", "VOID_TYPE", "ARRAY_TYPE", 
+                      "ARRAY_LIST", "FLOAT_TYPE", "PRIMITIVE_TYPE", "EXP0", 
+                      "EXP1", "EXP2", "EXP3", "EXP4", "EXP5", "EXP6", "EXP7", 
+                      "EXP8", "EXP9", "EXP10", "EXP11", "LIST_EXP", "ID", 
+                      "VAL", "VAR", "CLASS", "DOLLAR", "LP", "RP", "LCB", 
+                      "RCB", "LSB", "RSB", "SEMI", "COMMA", "COLON", "DOTDOT", 
+                      "BREAK", "FOREACH", "BOOLEAN", "NULL", "CONTINUE", 
+                      "TRUE", "FALSE", "STRING", "IF", "ELSEIF", "ARRAYINT", 
+                      "ELSE", "SELF", "RETURN", "NEW", "LITERAL", "HEX_TYPE", 
+                      "OCT_TYPE", "BIN_TYPE", "DEC_TYPE", "INTEGER_LITERAL", 
+                      "STRING_LITERAL", "REAL_LITERAL", "ADD", "ADD_STR", 
+                      "SUB", "MUL", "DIV", "MOD", "NOT", "NOTEQUAL", "EQUAL", 
+                      "EQUAL_STR", "AND", "OR", "GT", "LTE", "LT", "GTE", 
+                      "ASSIGN", "WS", "BLOCK_COMMENT", "UNCLOSE_STRING", 
                       "ILLEGAL_ESCAPE", "ERROR_CHAR", "UNTERMINATED_COMMENT" ]
 
     RULE_program = 0
@@ -78,69 +89,90 @@ class D96Parser ( Parser ):
     VAR_DECLARE=3
     MEMBER=4
     LIST_DATA=5
-    ID_LIST=6
-    METHODS=7
-    INT_TYPE=8
-    BOOL_TYPE=9
-    VOID_TYPE=10
-    ARRAY_TYPE=11
-    FLOAT_TYPE=12
-    PRIMITIVE_TYPE=13
-    INTLIT=14
-    ID=15
-    VAL=16
-    VAR=17
-    CLASS=18
-    DOLLAR=19
-    LP=20
-    RP=21
-    LCB=22
-    RCB=23
-    LSB=24
-    RSB=25
-    SEMI=26
-    COMMA=27
-    COLON=28
-    DOTDOT=29
-    BREAK=30
-    FOREACH=31
-    BOOLEAN=32
-    NULL=33
-    CONTINUE=34
-    TRUE=35
-    FALSE=36
-    STRING=37
-    IF=38
-    ELSEIF=39
-    ARRAYINT=40
-    ELSE=41
-    FLOAT=42
-    RETURN=43
-    INTEGER_LITERAL=44
-    STRING_LITERAL=45
-    REAL_LITERAL=46
-    ADD=47
-    ADD_STR=48
-    SUB=49
-    MUL=50
-    DIV=51
-    MOD=52
-    NOT=53
-    NOTEQUAL=54
-    EQUAL=55
-    EQUAL_STR=56
-    AND=57
-    GT=58
-    OR=59
-    LTE=60
-    ASSIGN=61
-    GTE=62
-    WS=63
-    BLOCK_COMMENT=64
-    UNCLOSE_STRING=65
-    ILLEGAL_ESCAPE=66
-    ERROR_CHAR=67
-    UNTERMINATED_COMMENT=68
+    EXPFULL=6
+    ID_LIST=7
+    METHODS=8
+    INT_TYPE=9
+    BOOL_TYPE=10
+    VOID_TYPE=11
+    ARRAY_TYPE=12
+    ARRAY_LIST=13
+    FLOAT_TYPE=14
+    PRIMITIVE_TYPE=15
+    EXP0=16
+    EXP1=17
+    EXP2=18
+    EXP3=19
+    EXP4=20
+    EXP5=21
+    EXP6=22
+    EXP7=23
+    EXP8=24
+    EXP9=25
+    EXP10=26
+    EXP11=27
+    LIST_EXP=28
+    ID=29
+    VAL=30
+    VAR=31
+    CLASS=32
+    DOLLAR=33
+    LP=34
+    RP=35
+    LCB=36
+    RCB=37
+    LSB=38
+    RSB=39
+    SEMI=40
+    COMMA=41
+    COLON=42
+    DOTDOT=43
+    BREAK=44
+    FOREACH=45
+    BOOLEAN=46
+    NULL=47
+    CONTINUE=48
+    TRUE=49
+    FALSE=50
+    STRING=51
+    IF=52
+    ELSEIF=53
+    ARRAYINT=54
+    ELSE=55
+    SELF=56
+    RETURN=57
+    NEW=58
+    LITERAL=59
+    HEX_TYPE=60
+    OCT_TYPE=61
+    BIN_TYPE=62
+    DEC_TYPE=63
+    INTEGER_LITERAL=64
+    STRING_LITERAL=65
+    REAL_LITERAL=66
+    ADD=67
+    ADD_STR=68
+    SUB=69
+    MUL=70
+    DIV=71
+    MOD=72
+    NOT=73
+    NOTEQUAL=74
+    EQUAL=75
+    EQUAL_STR=76
+    AND=77
+    OR=78
+    GT=79
+    LTE=80
+    LT=81
+    GTE=82
+    ASSIGN=83
+    WS=84
+    BLOCK_COMMENT=85
+    UNCLOSE_STRING=86
+    ILLEGAL_ESCAPE=87
+    ERROR_CHAR=88
+    UNTERMINATED_COMMENT=89
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -173,12 +205,18 @@ class D96Parser ( Parser ):
         def RCB(self):
             return self.getToken(D96Parser.RCB, 0)
 
-        def EOF(self):
-            return self.getToken(D96Parser.EOF, 0)
-
         def body(self):
             return self.getTypedRuleContext(D96Parser.BodyContext,0)
 
+
+        def EOF(self):
+            return self.getToken(D96Parser.EOF, 0)
+
+        def CLASS_DECLARE(self, i:int=None):
+            if i is None:
+                return self.getTokens(D96Parser.CLASS_DECLARE)
+            else:
+                return self.getToken(D96Parser.CLASS_DECLARE, i)
 
         def getRuleIndex(self):
             return D96Parser.RULE_program
@@ -192,29 +230,52 @@ class D96Parser ( Parser ):
         self.enterRule(localctx, 0, self.RULE_program)
         self._la = 0 # Token type
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 10
-            self.mptype()
-            self.state = 11
-            self.match(D96Parser.T__0)
-            self.state = 12
-            self.match(D96Parser.LP)
-            self.state = 13
-            self.match(D96Parser.RP)
-            self.state = 14
-            self.match(D96Parser.LCB)
-            self.state = 16
+            self.state = 26
             self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            if _la==D96Parser.ID:
-                self.state = 15
-                self.body()
+            token = self._input.LA(1)
+            if token in [D96Parser.INT_TYPE, D96Parser.VOID_TYPE]:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 10
+                self.mptype()
+                self.state = 11
+                self.match(D96Parser.T__0)
+                self.state = 12
+                self.match(D96Parser.LP)
+                self.state = 13
+                self.match(D96Parser.RP)
+                self.state = 14
+                self.match(D96Parser.LCB)
+                self.state = 16
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if _la==D96Parser.ID:
+                    self.state = 15
+                    self.body()
 
 
-            self.state = 18
-            self.match(D96Parser.RCB)
-            self.state = 19
-            self.match(D96Parser.EOF)
+                self.state = 18
+                self.match(D96Parser.RCB)
+                pass
+            elif token in [D96Parser.CLASS_DECLARE]:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 21 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 20
+                    self.match(D96Parser.CLASS_DECLARE)
+                    self.state = 23 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==D96Parser.CLASS_DECLARE):
+                        break
+
+                self.state = 25
+                self.match(D96Parser.EOF)
+                pass
+            else:
+                raise NoViableAltException(self)
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -249,7 +310,7 @@ class D96Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 21
+            self.state = 28
             _la = self._input.LA(1)
             if not(_la==D96Parser.INT_TYPE or _la==D96Parser.VOID_TYPE):
                 self._errHandler.recoverInline(self)
@@ -290,9 +351,9 @@ class D96Parser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_body)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 23
+            self.state = 30
             self.funcall()
-            self.state = 24
+            self.state = 31
             self.match(D96Parser.SEMI)
         except RecognitionException as re:
             localctx.exception = re
@@ -313,8 +374,8 @@ class D96Parser ( Parser ):
             return self.getTypedRuleContext(D96Parser.FuncallContext,0)
 
 
-        def INTLIT(self):
-            return self.getToken(D96Parser.INTLIT, 0)
+        def INTEGER_LITERAL(self):
+            return self.getToken(D96Parser.INTEGER_LITERAL, 0)
 
         def getRuleIndex(self):
             return D96Parser.RULE_exp
@@ -327,18 +388,18 @@ class D96Parser ( Parser ):
         localctx = D96Parser.ExpContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_exp)
         try:
-            self.state = 28
+            self.state = 35
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [D96Parser.ID]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 26
+                self.state = 33
                 self.funcall()
                 pass
-            elif token in [D96Parser.INTLIT]:
+            elif token in [D96Parser.INTEGER_LITERAL]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 27
-                self.match(D96Parser.INTLIT)
+                self.state = 34
+                self.match(D96Parser.INTEGER_LITERAL)
                 pass
             else:
                 raise NoViableAltException(self)
@@ -384,19 +445,19 @@ class D96Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 30
+            self.state = 37
             self.match(D96Parser.ID)
-            self.state = 31
+            self.state = 38
             self.match(D96Parser.LP)
-            self.state = 33
+            self.state = 40
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==D96Parser.INTLIT or _la==D96Parser.ID:
-                self.state = 32
+            if _la==D96Parser.ID or _la==D96Parser.INTEGER_LITERAL:
+                self.state = 39
                 self.exp()
 
 
-            self.state = 35
+            self.state = 42
             self.match(D96Parser.RP)
         except RecognitionException as re:
             localctx.exception = re

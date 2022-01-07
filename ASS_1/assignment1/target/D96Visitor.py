@@ -34,20 +34,5 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#ids_list_with_colon.
-    def visitIds_list_with_colon(self, ctx:D96Parser.Ids_list_with_colonContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#ids_list.
-    def visitIds_list(self, ctx:D96Parser.Ids_listContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#var_declare.
-    def visitVar_declare(self, ctx:D96Parser.Var_declareContext):
-        return self.visitChildren(ctx)
-
-
 
 del D96Parser
