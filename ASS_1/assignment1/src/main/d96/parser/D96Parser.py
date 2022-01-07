@@ -11,22 +11,22 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3[")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3Z")
         buf.write("/\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2")
         buf.write("\3\2\3\2\3\2\5\2\23\n\2\3\2\3\2\3\2\6\2\30\n\2\r\2\16")
         buf.write("\2\31\3\2\5\2\35\n\2\3\3\3\3\3\4\3\4\3\4\3\5\3\5\5\5&")
         buf.write("\n\5\3\6\3\6\3\6\5\6+\n\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n")
-        buf.write("\2\3\4\2\13\13\r\r\2.\2\34\3\2\2\2\4\36\3\2\2\2\6 \3\2")
+        buf.write("\2\3\4\2\b\b\16\16\2.\2\34\3\2\2\2\4\36\3\2\2\2\6 \3\2")
         buf.write("\2\2\b%\3\2\2\2\n\'\3\2\2\2\f\r\5\4\3\2\r\16\7\3\2\2\16")
-        buf.write("\17\7$\2\2\17\20\7%\2\2\20\22\7&\2\2\21\23\5\6\4\2\22")
-        buf.write("\21\3\2\2\2\22\23\3\2\2\2\23\24\3\2\2\2\24\25\7\'\2\2")
-        buf.write("\25\35\3\2\2\2\26\30\7\4\2\2\27\26\3\2\2\2\30\31\3\2\2")
-        buf.write("\2\31\27\3\2\2\2\31\32\3\2\2\2\32\33\3\2\2\2\33\35\7\2")
-        buf.write("\2\3\34\f\3\2\2\2\34\27\3\2\2\2\35\3\3\2\2\2\36\37\t\2")
-        buf.write("\2\2\37\5\3\2\2\2 !\5\n\6\2!\"\7*\2\2\"\7\3\2\2\2#&\5")
-        buf.write("\n\6\2$&\7B\2\2%#\3\2\2\2%$\3\2\2\2&\t\3\2\2\2\'(\7\37")
-        buf.write("\2\2(*\7$\2\2)+\5\b\5\2*)\3\2\2\2*+\3\2\2\2+,\3\2\2\2")
-        buf.write(",-\7%\2\2-\13\3\2\2\2\7\22\31\34%*")
+        buf.write("\17\7,\2\2\17\20\7-\2\2\20\22\7.\2\2\21\23\5\6\4\2\22")
+        buf.write("\21\3\2\2\2\22\23\3\2\2\2\23\24\3\2\2\2\24\25\7/\2\2\25")
+        buf.write("\35\3\2\2\2\26\30\7\4\2\2\27\26\3\2\2\2\30\31\3\2\2\2")
+        buf.write("\31\27\3\2\2\2\31\32\3\2\2\2\32\33\3\2\2\2\33\35\7\2\2")
+        buf.write("\3\34\f\3\2\2\2\34\27\3\2\2\2\35\3\3\2\2\2\36\37\t\2\2")
+        buf.write("\2\37\5\3\2\2\2 !\5\n\6\2!\"\7\62\2\2\"\7\3\2\2\2#&\5")
+        buf.write("\n\6\2$&\7\23\2\2%#\3\2\2\2%$\3\2\2\2&\t\3\2\2\2\'(\7")
+        buf.write("\'\2\2(*\7,\2\2)+\5\b\5\2*)\3\2\2\2*+\3\2\2\2+,\3\2\2")
+        buf.write("\2,-\7-\2\2-\13\3\2\2\2\7\22\31\34%*")
         return buf.getvalue()
 
 
@@ -41,39 +41,39 @@ class D96Parser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'main'", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "'Int'", "'Float'", "'string'", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "'Void'", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "'Int'", "<INVALID>", "'Void'", "<INVALID>", "<INVALID>", 
-                     "'Float'", "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                      "<INVALID>", "<INVALID>", "<INVALID>", "'val'", "'var'", 
                      "'class'", "'$'", "'('", "')'", "'{'", "'}'", "'['", 
                      "']'", "';'", "','", "':'", "'..'", "'Break'", "'Foreach'", 
                      "'Boolean'", "'Null'", "'Continue'", "'True'", "'False'", 
-                     "'string'", "'if'", "'elseif'", "'Array Int'", "'Else'", 
-                     "'self'", "'return'", "'new'", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "'+'", "'+.'", "'-'", "'*'", 
-                     "'/'", "'%'", "'!'", "'!='", "'=='", "'==.'", "'&&'", 
-                     "'||'", "'>'", "'<='", "'<'", "'>='", "'='" ]
+                     "'if'", "'elseif'", "'Array Int'", "'Else'", "'self'", 
+                     "'return'", "'new'", "'+'", "'+.'", "'-'", "'*'", "'/'", 
+                     "'%'", "'!'", "'!='", "'=='", "'==.'", "'&&'", "'||'", 
+                     "'>'", "'<='", "'<'", "'>='", "'='" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "CLASS_DECLARE", "VAR_DECLARE", 
-                      "MEMBER", "LIST_DATA", "EXPFULL", "ID_LIST", "METHODS", 
-                      "INT_TYPE", "BOOL_TYPE", "VOID_TYPE", "ARRAY_TYPE", 
-                      "ARRAY_LIST", "FLOAT_TYPE", "PRIMITIVE_TYPE", "EXP0", 
+    symbolicNames = [ "<INVALID>", "<INVALID>", "CLASS_DECLARE", "MEMBER", 
+                      "VAR_DECLARE", "EXPFULL", "INT_TYPE", "FLOAT_TYPE", 
+                      "STRING", "BOOL_TYPE", "ID_LIST", "METHODS", "VOID_TYPE", 
+                      "ARRAY_TYPE", "ARRAY_LIST", "PRIMITIVE_TYPE", "LITERAL", 
+                      "INTEGER_LITERAL", "STRING_LITERAL", "REAL_LITERAL", 
+                      "HEX_TYPE", "OCT_TYPE", "BIN_TYPE", "DEC_TYPE", "EXP0", 
                       "EXP1", "EXP2", "EXP3", "EXP4", "EXP5", "EXP6", "EXP7", 
                       "EXP8", "EXP9", "EXP10", "EXP11", "LIST_EXP", "ID", 
                       "VAL", "VAR", "CLASS", "DOLLAR", "LP", "RP", "LCB", 
                       "RCB", "LSB", "RSB", "SEMI", "COMMA", "COLON", "DOTDOT", 
                       "BREAK", "FOREACH", "BOOLEAN", "NULL", "CONTINUE", 
-                      "TRUE", "FALSE", "STRING", "IF", "ELSEIF", "ARRAYINT", 
-                      "ELSE", "SELF", "RETURN", "NEW", "LITERAL", "HEX_TYPE", 
-                      "OCT_TYPE", "BIN_TYPE", "DEC_TYPE", "INTEGER_LITERAL", 
-                      "STRING_LITERAL", "REAL_LITERAL", "ADD", "ADD_STR", 
-                      "SUB", "MUL", "DIV", "MOD", "NOT", "NOTEQUAL", "EQUAL", 
-                      "EQUAL_STR", "AND", "OR", "GT", "LTE", "LT", "GTE", 
-                      "ASSIGN", "WS", "BLOCK_COMMENT", "UNCLOSE_STRING", 
-                      "ILLEGAL_ESCAPE", "ERROR_CHAR", "UNTERMINATED_COMMENT" ]
+                      "TRUE", "FALSE", "IF", "ELSEIF", "ARRAYINT", "ELSE", 
+                      "SELF", "RETURN", "NEW", "ADD", "ADD_STR", "SUB", 
+                      "MUL", "DIV", "MOD", "NOT", "NOTEQUAL", "EQUAL", "EQUAL_STR", 
+                      "AND", "OR", "GT", "LTE", "LT", "GTE", "ASSIGN", "WS", 
+                      "BLOCK_COMMENT", "UNCLOSE_STRING", "ILLEGAL_ESCAPE", 
+                      "ERROR_CHAR", "UNTERMINATED_COMMENT" ]
 
     RULE_program = 0
     RULE_mptype = 1
@@ -86,93 +86,92 @@ class D96Parser ( Parser ):
     EOF = Token.EOF
     T__0=1
     CLASS_DECLARE=2
-    VAR_DECLARE=3
-    MEMBER=4
-    LIST_DATA=5
-    EXPFULL=6
-    ID_LIST=7
-    METHODS=8
-    INT_TYPE=9
-    BOOL_TYPE=10
-    VOID_TYPE=11
-    ARRAY_TYPE=12
-    ARRAY_LIST=13
-    FLOAT_TYPE=14
+    MEMBER=3
+    VAR_DECLARE=4
+    EXPFULL=5
+    INT_TYPE=6
+    FLOAT_TYPE=7
+    STRING=8
+    BOOL_TYPE=9
+    ID_LIST=10
+    METHODS=11
+    VOID_TYPE=12
+    ARRAY_TYPE=13
+    ARRAY_LIST=14
     PRIMITIVE_TYPE=15
-    EXP0=16
-    EXP1=17
-    EXP2=18
-    EXP3=19
-    EXP4=20
-    EXP5=21
-    EXP6=22
-    EXP7=23
-    EXP8=24
-    EXP9=25
-    EXP10=26
-    EXP11=27
-    LIST_EXP=28
-    ID=29
-    VAL=30
-    VAR=31
-    CLASS=32
-    DOLLAR=33
-    LP=34
-    RP=35
-    LCB=36
-    RCB=37
-    LSB=38
-    RSB=39
-    SEMI=40
-    COMMA=41
-    COLON=42
-    DOTDOT=43
-    BREAK=44
-    FOREACH=45
-    BOOLEAN=46
-    NULL=47
-    CONTINUE=48
-    TRUE=49
-    FALSE=50
-    STRING=51
-    IF=52
-    ELSEIF=53
-    ARRAYINT=54
-    ELSE=55
-    SELF=56
-    RETURN=57
-    NEW=58
-    LITERAL=59
-    HEX_TYPE=60
-    OCT_TYPE=61
-    BIN_TYPE=62
-    DEC_TYPE=63
-    INTEGER_LITERAL=64
-    STRING_LITERAL=65
-    REAL_LITERAL=66
-    ADD=67
-    ADD_STR=68
-    SUB=69
-    MUL=70
-    DIV=71
-    MOD=72
-    NOT=73
-    NOTEQUAL=74
-    EQUAL=75
-    EQUAL_STR=76
-    AND=77
-    OR=78
-    GT=79
-    LTE=80
-    LT=81
-    GTE=82
-    ASSIGN=83
-    WS=84
-    BLOCK_COMMENT=85
-    UNCLOSE_STRING=86
-    ILLEGAL_ESCAPE=87
-    ERROR_CHAR=88
-    UNTERMINATED_COMMENT=89
+    LITERAL=16
+    INTEGER_LITERAL=17
+    STRING_LITERAL=18
+    REAL_LITERAL=19
+    HEX_TYPE=20
+    OCT_TYPE=21
+    BIN_TYPE=22
+    DEC_TYPE=23
+    EXP0=24
+    EXP1=25
+    EXP2=26
+    EXP3=27
+    EXP4=28
+    EXP5=29
+    EXP6=30
+    EXP7=31
+    EXP8=32
+    EXP9=33
+    EXP10=34
+    EXP11=35
+    LIST_EXP=36
+    ID=37
+    VAL=38
+    VAR=39
+    CLASS=40
+    DOLLAR=41
+    LP=42
+    RP=43
+    LCB=44
+    RCB=45
+    LSB=46
+    RSB=47
+    SEMI=48
+    COMMA=49
+    COLON=50
+    DOTDOT=51
+    BREAK=52
+    FOREACH=53
+    BOOLEAN=54
+    NULL=55
+    CONTINUE=56
+    TRUE=57
+    FALSE=58
+    IF=59
+    ELSEIF=60
+    ARRAYINT=61
+    ELSE=62
+    SELF=63
+    RETURN=64
+    NEW=65
+    ADD=66
+    ADD_STR=67
+    SUB=68
+    MUL=69
+    DIV=70
+    MOD=71
+    NOT=72
+    NOTEQUAL=73
+    EQUAL=74
+    EQUAL_STR=75
+    AND=76
+    OR=77
+    GT=78
+    LTE=79
+    LT=80
+    GTE=81
+    ASSIGN=82
+    WS=83
+    BLOCK_COMMENT=84
+    UNCLOSE_STRING=85
+    ILLEGAL_ESCAPE=86
+    ERROR_CHAR=87
+    UNTERMINATED_COMMENT=88
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -487,7 +486,7 @@ class D96Parser ( Parser ):
             self.state = 40
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==D96Parser.ID or _la==D96Parser.INTEGER_LITERAL:
+            if _la==D96Parser.INTEGER_LITERAL or _la==D96Parser.ID:
                 self.state = 39
                 self.exp()
 

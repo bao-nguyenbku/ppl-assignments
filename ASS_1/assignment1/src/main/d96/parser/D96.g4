@@ -3,7 +3,16 @@ grammar D96;
 @lexer::header {
 from lexererr import *
 }
-
+@lexer::members {
+def emit(self):
+    tk = self.type
+    result = super().emit() # result mean for input
+    # delete later
+    print(result.text + ' is: ' + self.symbolicNames[tk-1])
+    if tk == self.LITERAL:
+        result.text = result.text.replace('_', '')
+    return result;
+}
 options {
 	language = Python3;
 }
@@ -18,21 +27,28 @@ exp: funcall | INTEGER_LITERAL;
 
 funcall: ID LP exp? RP;
 CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
-VAR_DECLARE: (VAR | VAL) ID_LIST COLON PRIMITIVE_TYPE ()? SEMI;
 
 MEMBER: VAR_DECLARE | METHODS;
+METHODS: ID LP (LIST_PARAM) RP; // function
+LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
+LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD;
+VAR_DECLARE: (VAR | VAL) 
+             ID_LIST COLON PRIMITIVE_TYPE 
+             ((ASSIGN PRIMITIVE_TYPE | COMMA PRIMITIVE_TYPE)
+             | (EXPFULL | COMMA EXPFULL))?
+             SEMI;
 
-LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
+// LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
 EXPFULL: ASSIGN EXP0 | ARRAY_LIST;
-ID_LIST: ID (COMMA ID)*;
-METHODS: ID LP () RP; // function
-// -----------------------DATA TYPE--------------------------
 INT_TYPE: 'Int';
+FLOAT_TYPE: 'Float';
+STRING: 'string';
 BOOL_TYPE: TRUE | FALSE;
+ID_LIST: ID (COMMA ID)*;
+// -----------------------DATA TYPE--------------------------
 VOID_TYPE: 'Void';
 ARRAY_TYPE: 'Array' LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
 ARRAY_LIST: 'Array' LP ( LITERAL (COMMA LITERAL)?) RP;
-FLOAT_TYPE: 'Float';
 PRIMITIVE_TYPE:
     BOOL_TYPE
     | INT_TYPE
@@ -42,6 +58,26 @@ PRIMITIVE_TYPE:
     | CLASS;
 // ID: [a-zA-Z]+;
 
+LITERAL:
+    INTEGER_LITERAL
+    | BOOL_TYPE
+    | REAL_LITERAL
+    | STRING_LITERAL;
+
+INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
+
+STRING_LITERAL: '"' STR_CHAR* '"' {
+        y = str(self.text)
+        self.text = y[1:-1]
+	};
+
+REAL_LITERAL: DIGIT+ DOT (DIGIT | EXPONENT)* // 1 | 1.5 | 1.e-4
+| DIGIT* DOT DIGIT+ EXPONENT? // (1).5(e-4)
+| DIGIT+ EXPONENT; // 12e-5
+HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
+OCT_TYPE: '0' [0-9]+;
+BIN_TYPE: ('0b' | '0B') [01]+;
+DEC_TYPE: [0-9]|[1-9][0-9_]*;
 // EXPRESSION-------------------------------------------------
 EXP0:
     EXP1 LT EXP1
@@ -65,7 +101,7 @@ LIST_EXP: EXP0 | EXP0 COMMA LIST_EXP;
 // ids_list: ID (COMMA ID)*; ------------------VARIABLES DECLARATION--------------------
 
 // Lexer component INTLIT: [0-9]+;
-ID: [_a-zA-Z][_a-zA-Z0-9]*;
+ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR ID;
 VAL: 'val';
 VAR: 'var';
 CLASS: 'class';
@@ -82,6 +118,9 @@ COMMA: ','; // Comma
 COLON: ':'; // Colon
 DOTDOT: '..'; // Dot Dot should be before Dot
 fragment DOT: '.';
+fragment EXPONENT: [eE] SUB? DIGIT+;
+fragment DIGIT: [0-9];
+fragment SIGN: [+-];
 BREAK: 'Break';
 FOREACH: 'Foreach';
 BOOLEAN: 'Boolean';
@@ -89,7 +128,6 @@ NULL: 'Null';
 CONTINUE: 'Continue';
 TRUE: 'True';
 FALSE: 'False';
-STRING: 'string';
 IF: 'if';
 ELSEIF: 'elseif';
 ARRAYINT: 'Array Int';
@@ -97,30 +135,7 @@ ELSE: 'Else';
 SELF: 'self';
 RETURN: 'return';
 NEW: 'new';
-fragment EXPONENT: [eE] SUB? DIGIT+;
-fragment DIGIT: [0-9];
-fragment SIGN: [+-];
-LITERAL:
-    INTEGER_LITERAL
-    | BOOL_TYPE
-    | REAL_LITERAL
-    | STRING_LITERAL;
-HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
-OCT_TYPE: '0' [1-9]+;
-BIN_TYPE: ('0b' | '0B') [01]+;
-DEC_TYPE: [0-9]|[1-9][0-9_]*;
 
-
-INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
-
-STRING_LITERAL: '"' STR_CHAR* '"' {
-        y = str(self.text)
-        self.text = y[1:-1]
-	};
-
-REAL_LITERAL: DIGIT+ DOT (DIGIT | EXPONENT)* // 1 | 1.5 | 1.e-4
-| DIGIT* DOT DIGIT+ EXPONENT? // (1).5(e-4)
-| DIGIT+ EXPONENT; // 12e-5
 // Operator
 ADD: '+';
 ADD_STR: '+.';
