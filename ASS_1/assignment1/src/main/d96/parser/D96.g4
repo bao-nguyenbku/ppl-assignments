@@ -12,13 +12,15 @@ def emit(self):
     
     print ("{:<30} {:<30} {:<50}".format(result.text, '|', self.symbolicNames[tk-1]))
     print('--------------------------------------------------------------------------------')
-    if tk == self.LITERAL:
+    if tk == self.STRING_LITERAL:
         # string type
         if (result.text[0] == result.text[-1] and result.text[-1] == '"'):
             if result.text.find('\'"') >= 0:
                 result.text = result.text.replace('\'"', '"')
             return result
+    if tk == self.INTEGER_LITERAL:
         result.text = result.text.replace('_', '')
+        return result
     return result
 }
 options {
@@ -36,19 +38,19 @@ exp: funcall | INTEGER_LITERAL;
 funcall: ID LP exp? RP;
 CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
 
-MEMBER: VAR_DECLARE | METHODS;
-METHODS: ID LP LIST_PARAM? RP BLOCK_STATEMENT; // function
-BLOCK_STATEMENT: LCB VAR_DECLARE RCB;
+MEMBER: METHODS;
+METHODS: ID LP LIST_PARAM? RP BLOCK_STATEMENT;
+BLOCK_STATEMENT: LCB RCB;
 LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
 LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD;
-VAR_DECLARE: (VAR | VAL) 
-             ID_LIST COLON PRIMITIVE_TYPE 
-             (
-                (ASSIGN LITERAL (COMMA LITERAL)*)
-                | (ASSIGN EXP0 (COMMA EXP0)*)
-                | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
-             )?
-             SEMI;
+// VAR_DECLARE: (VAR | VAL) 
+//              ID_LIST COLON PRIMITIVE_TYPE 
+//              (
+//                 (ASSIGN LITERAL (COMMA LITERAL)*)
+//                 | (ASSIGN EXP0 (COMMA EXP0)*)
+//                 | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
+//              )?
+//              SEMI;
 
 // LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
 INT_TYPE: 'Int';
@@ -60,6 +62,7 @@ BOOL_TYPE: TRUE | FALSE;
 VOID_TYPE: 'Void';
 ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
 ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
+CLASS: 'class';
 PRIMITIVE_TYPE:
     BOOL_TYPE
     | INT_TYPE
@@ -68,52 +71,48 @@ PRIMITIVE_TYPE:
     | ARRAY_TYPE
     | CLASS;
 
+
+INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
+
+HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
+OCT_TYPE: '0' [0-9]+;
+BIN_TYPE: ('0b' | '0B') [01]+;
+DEC_TYPE: [0-9]|[1-9][0-9_]*;
+STRING_LITERAL: '"' STR1* '"'
+{
+        y = str(self.text)
+        self.text = y[1:-1]
+};
+
+REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
 LITERAL:
     INTEGER_LITERAL
     | BOOL_TYPE
     | REAL_LITERAL
     | STRING_LITERAL;
-
-INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
-
-STRING_LITERAL: '"' STR1* '"';
-// {
-//         y = str(self.text)
-//         self.text = y[1:-1]
-// };
-
-REAL_LITERAL: DEC_TYPE DOT (DEC_TYPE | EXPONENT)*; // 1 | 1.5 | 1.e-4
-            //   | DIGIT* DOT DEC_TYPE EXPONENT? // (1).5(e-4)
-            //   | DIGIT+ EXPONENT; // 12e-5
-HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
-OCT_TYPE: '0' [0-9]+;
-BIN_TYPE: ('0b' | '0B') [01]+;
-DEC_TYPE: [0-9]|[1-9][0-9_]*;
 ARRAY: 'Array';
 VAL: 'val';
 VAR: 'var';
-CLASS: 'class';
 // EXPRESSION-------------------------------------------------
-EXP0:
-    EXP1 LT EXP1
-    | EXP1 LTE EXP1
-    | EXP1 GT EXP1
-    | EXP1 GTE EXP1
-    | EXP1; //< > <= >= none
-EXP1: EQUAL EXP2 | NOTEQUAL EXP2 | EXP2; // == !=  
-EXP2: EXP3 | AND EXP3 | OR EXP3; // && ||  
-EXP3: ADD EXP4 | SUB EXP4 | EXP4; // + - 
-EXP4: MUL EXP5 | DIV EXP5 | MOD EXP5 | EXP5; // * / %
-// EXP5: EXP5 | EXP6;
-EXP5: NOT EXP5 | EXP6; // !
-EXP6: ADD EXP6 | SUB EXP6 | EXP7; //  + - 
-EXP7: EXP8 LSB EXP0 RSB | EXP8; //  [ , ]
-EXP8: DOT ID (LP LIST_EXP? RP)? | EXP9; // . left   (exp.(id|method))| ID.ID(,)
-EXP9: NEW EXP9 LP LIST_EXP? RP | EXP10; //  new    right       new int
-EXP10: LITERAL | ID | SELF | EXP11;
-EXP11: LP EXP0 RP; // (    )
-LIST_EXP: EXP0 (COMMA EXP0)*;
-// ids_list: ID (COMMA ID)*; ------------------VARIABLES DECLARATION--------------------
+// EXP0:
+//     EXP1 LT EXP1
+//     | EXP1 LTE EXP1
+//     | EXP1 GT EXP1
+//     | EXP1 GTE EXP1
+//     | EXP1; 
+// EXP1: EQUAL EXP2 | NOTEQUAL EXP2 | EXP2;  
+// EXP2: EXP3 | AND EXP3 | OR EXP3;  
+// EXP3: ADD EXP4 | SUB EXP4 | EXP4; 
+// EXP4: MUL EXP5 | DIV EXP5 | MOD EXP5 | EXP5; 
+
+// EXP5: NOT EXP5 | EXP6; 
+// EXP6: ADD EXP6 | SUB EXP6 | EXP7; 
+// EXP7: EXP8 LSB EXP0 RSB | EXP8; 
+// EXP8: DOT ID (LP LIST_EXP? RP)? | EXP9; 
+// EXP9: NEW EXP9 LP LIST_EXP? RP | EXP10; 
+// EXP10: LITERAL | ID | SELF | EXP11;
+// EXP11: LP EXP0 RP; 
+// LIST_EXP: EXP0 (COMMA EXP0)*;
 // Lexer component
 
 DOLLAR: '$';
@@ -131,6 +130,7 @@ DOTDOT: '..'; // Dot Dot should be before Dot
 fragment DOT: '.';
 fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
+fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*;
 fragment SIGN: [+-];
 BREAK: 'Break';
 FOREACH: 'Foreach';

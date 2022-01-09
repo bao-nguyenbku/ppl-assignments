@@ -24,7 +24,7 @@ def serializedATN():
         buf.write("\2\2\2\31\27\3\2\2\2\31\32\3\2\2\2\32\33\3\2\2\2\33\35")
         buf.write("\7\2\2\3\34\f\3\2\2\2\34\27\3\2\2\2\35\3\3\2\2\2\36\37")
         buf.write("\t\2\2\2\37\5\3\2\2\2 !\5\n\6\2!\"\7\63\2\2\"\7\3\2\2")
-        buf.write("\2#&\5\n\6\2$&\7\24\2\2%#\3\2\2\2%$\3\2\2\2&\t\3\2\2\2")
+        buf.write("\2#&\5\n\6\2$&\7\23\2\2%#\3\2\2\2%$\3\2\2\2&\t\3\2\2\2")
         buf.write("\'(\7W\2\2(*\7-\2\2)+\5\b\5\2*)\3\2\2\2*+\3\2\2\2+,\3")
         buf.write("\2\2\2,-\7.\2\2-\13\3\2\2\2\7\22\31\34%*")
         return buf.getvalue()
@@ -61,9 +61,9 @@ class D96Parser ( Parser ):
                       "METHODS", "BLOCK_STATEMENT", "LIST_PARAM", "LIST_METHOD", 
                       "VAR_DECLARE", "INT_TYPE", "FLOAT_TYPE", "STRING", 
                       "BOOL_TYPE", "VOID_TYPE", "ARRAY_TYPE", "ARRAY_LIST", 
-                      "PRIMITIVE_TYPE", "LITERAL", "INTEGER_LITERAL", "STRING_LITERAL", 
-                      "REAL_LITERAL", "HEX_TYPE", "OCT_TYPE", "BIN_TYPE", 
-                      "DEC_TYPE", "ARRAY", "VAL", "VAR", "CLASS", "EXP0", 
+                      "PRIMITIVE_TYPE", "INTEGER_LITERAL", "HEX_TYPE", "OCT_TYPE", 
+                      "BIN_TYPE", "DEC_TYPE", "STRING_LITERAL", "REAL_LITERAL", 
+                      "LITERAL", "ARRAY", "VAL", "VAR", "CLASS", "EXP0", 
                       "EXP1", "EXP2", "EXP3", "EXP4", "EXP5", "EXP6", "EXP7", 
                       "EXP8", "EXP9", "EXP10", "EXP11", "LIST_EXP", "DOLLAR", 
                       "LP", "RP", "LCB", "RCB", "LSB", "RSB", "SEMI", "COMMA", 
@@ -101,14 +101,14 @@ class D96Parser ( Parser ):
     ARRAY_TYPE=14
     ARRAY_LIST=15
     PRIMITIVE_TYPE=16
-    LITERAL=17
-    INTEGER_LITERAL=18
-    STRING_LITERAL=19
-    REAL_LITERAL=20
-    HEX_TYPE=21
-    OCT_TYPE=22
-    BIN_TYPE=23
-    DEC_TYPE=24
+    INTEGER_LITERAL=17
+    HEX_TYPE=18
+    OCT_TYPE=19
+    BIN_TYPE=20
+    DEC_TYPE=21
+    STRING_LITERAL=22
+    REAL_LITERAL=23
+    LITERAL=24
     ARRAY=25
     VAL=26
     VAR=27
