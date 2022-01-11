@@ -1,1 +1,1 @@
-123,gfdgdsds,<EOF>
+Int,main,(,),{,a,=,20,;,},<EOF>

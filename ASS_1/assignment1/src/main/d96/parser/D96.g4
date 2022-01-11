@@ -13,12 +13,10 @@ def emit(self):
     print ("{:<30} {:<30} {:<50}".format(result.text, '|', self.symbolicNames[tk-1]))
     print('--------------------------------------------------------------------------------')
     if tk == self.STRING_LITERAL:
-        # string type
-        if (result.text[0] == result.text[-1] and result.text[-1] == '"'):
-            if result.text.find('\'"') >= 0:
-                result.text = result.text.replace('\'"', '"')
+        if result.text.find('\'"') >= 0:
+            result.text = result.text.replace('\'"', '"')
             return result
-    if tk == self.INTEGER_LITERAL:
+    if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
         result.text = result.text.replace('_', '')
         return result
     return result
@@ -31,14 +29,15 @@ program: (mptype 'main' LP RP LCB body? RCB) | CLASS_DECLARE+ EOF;
 
 mptype: INT_TYPE | VOID_TYPE;
 
-body: funcall SEMI;
+body: INTEGER_LITERAL;
+// body: funcall SEMI;
 
 exp: funcall | INTEGER_LITERAL;
 
 funcall: ID LP exp? RP;
 CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
 
-MEMBER: METHODS;
+MEMBER: METHODS; // Todo:
 METHODS: ID LP LIST_PARAM? RP BLOCK_STATEMENT;
 BLOCK_STATEMENT: LCB RCB;
 LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
@@ -55,20 +54,20 @@ LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD
 // LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
 INT_TYPE: 'Int';
 FLOAT_TYPE: 'Float';
-STRING: 'string';
+STRING: 'String';
 BOOL_TYPE: TRUE | FALSE;
 
 // -----------------------DATA TYPE--------------------------
 VOID_TYPE: 'Void';
-ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
-ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
+// ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
+// ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
 CLASS: 'class';
 PRIMITIVE_TYPE:
     BOOL_TYPE
     | INT_TYPE
     | FLOAT_TYPE
     | STRING
-    | ARRAY_TYPE
+    // | ARRAY_TYPE
     | CLASS;
 
 
@@ -78,12 +77,28 @@ HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
 OCT_TYPE: '0' [0-9]+;
 BIN_TYPE: ('0b' | '0B') [01]+;
 DEC_TYPE: [0-9]|[1-9][0-9_]*;
-STRING_LITERAL: '"' STR1* '"'
+// '\\' ~[bfnrt"\\]
+STRING_LITERAL: '"' STR* '"'
 {
-        y = str(self.text)
-        self.text = y[1:-1]
+    y = str(self.text)
+    self.text = y[1:-1]
 };
+ILLEGAL_ESCAPE: '"' STR* ESC_ILLEGAL
+{
+   
+    y = str(self.text)
+    raise IllegalEscape(y[1:])
+};
+UNCLOSE_STRING: '"' STR* EOF
+{
+    x = str(self.text)
+    raise UncloseString(x[1:])
+};
+fragment STR: '\\' [bfnrt"\\] | ~[\\"] | '\'"';
 
+fragment ESC_SEQ: '\\' [btnfr"'\\] ;
+
+fragment ESC_ILLEGAL: '\\' ~[bfnrt"\\] ;
 REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
 LITERAL:
     INTEGER_LITERAL
@@ -113,7 +128,8 @@ VAR: 'var';
 // EXP10: LITERAL | ID | SELF | EXP11;
 // EXP11: LP EXP0 RP; 
 // LIST_EXP: EXP0 (COMMA EXP0)*;
-// Lexer component
+
+//------------------Lexer component------------------
 
 DOLLAR: '$';
 LP: '('; // Left Parenthesis
@@ -126,8 +142,9 @@ RSB: ']'; // Right Square Bracket
 SEMI: ';'; // Semicolon
 COMMA: ','; // Comma
 COLON: ':'; // Colon
-DOTDOT: '..'; // Dot Dot should be before Dot
-fragment DOT: '.';
+SCOPE: '::';
+DOTDOT: '..';
+DOT: '.';
 fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
 fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*;
@@ -139,67 +156,49 @@ NULL: 'Null';
 CONTINUE: 'Continue';
 TRUE: 'True';
 FALSE: 'False';
-IF: 'if';
-ELSEIF: 'elseif';
-ARRAYINT: 'Array Int';
+IF: 'If';
+ELSEIF: 'Elseif';
 ELSE: 'Else';
 SELF: 'self';
+IN: 'In';
+BY: 'By';
 RETURN: 'return';
 NEW: 'new';
 
 // Operator
 ADD: '+';
-ADD_STR: '+.';
 SUB: '-';
 MUL: '*';
 DIV: '/';
 MOD: '%';
 NOT: '!';
-NOTEQUAL: '!=';
-EQUAL: '==';
-EQUAL_STR: '==.';
 AND: '&&';
 OR: '||';
+EQUAL: '==';
+ASSIGN: '=';
+NOTEQUAL: '!=';
 GT: '>';
+GTE: '>=';
 LTE: '<=';
 LT: '<';
-GTE: '>=';
-ASSIGN: '=';
+EQUAL_STR: '==.';
+ADD_STR: '+.';
 // Identifier-----------------------------------------
+ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR [_a-zA-Z0-9]+;
 ID_LIST: ID (COMMA ID)*;
-ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR ID;
+
 // ----------------------------
-fragment STR1: '\\' [bfnrt"\\] | ~[\\"\n\r] | '\'"';
-// fragment STR1: '\\' [bfnrt"\\] | ~[\\"\n\r];
 
 WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
+
 BLOCK_COMMENT: ('##' .*? '##') -> skip;
 // ERROR_CHAR: .; UNCLOSE_STRING: .; ILLEGAL_ESCAPE: .;
-UNCLOSE_STRING: '"' STR1* EOF
+
+UNTERMINATED_COMMENT: '##' .*? 
 {
-    x = str(self.text)
-    raise UncloseString(x[1:])
-}
-;
-
-
-    // y = str(self.text)
-    // possible = ['\b', '\t', '\n', '\f', '\r', '"', "'", '\\']
-    // if y[-1] in possible:
-    //     raise UncloseString(y[1:-1])
-    // else:
-    //     raise UncloseString(y[1:])
-
-ILLEGAL_ESCAPE: '"' STR1* '\\' ~[bfnrt"\\] 
-{
-    y = str(self.text)
-    raise IllegalEscape(y[1:])
+    raise ErrorToken('UNTERMINATED_COMMENT')
 };
 ERROR_CHAR:. 
 {
     raise ErrorToken(self.text)
-};
-UNTERMINATED_COMMENT: '##' .*? 
-{
-    raise ErrorToken('UNTERMINATED_COMMENT')
 };
