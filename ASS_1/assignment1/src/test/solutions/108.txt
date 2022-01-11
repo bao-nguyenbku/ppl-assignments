@@ -1,1 +1,1 @@
-Error Token "
+_12343_my,const,<EOF>

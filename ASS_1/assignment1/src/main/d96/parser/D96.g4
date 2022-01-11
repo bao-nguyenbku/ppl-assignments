@@ -25,7 +25,7 @@ options {
 	language = Python3;
 }
 
-program: (mptype 'main' LP RP LCB body? RCB) | CLASS_DECLARE+ EOF;
+program: (mptype 'main' LP RP LCB body? RCB) | CLASS_DECLARE* EOF;
 
 mptype: INT_TYPE | VOID_TYPE;
 
@@ -37,19 +37,19 @@ exp: funcall | INTEGER_LITERAL;
 funcall: ID LP exp? RP;
 CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
 
-MEMBER: METHODS; // Todo:
-METHODS: ID LP LIST_PARAM? RP BLOCK_STATEMENT;
+MEMBER: VAR_DECLARE | METHOD; // Todo:
+METHOD: ID LP LIST_PARAM? RP BLOCK_STATEMENT;
 BLOCK_STATEMENT: LCB RCB;
 LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
 LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD;
-// VAR_DECLARE: (VAR | VAL) 
-//              ID_LIST COLON PRIMITIVE_TYPE 
-//              (
-//                 (ASSIGN LITERAL (COMMA LITERAL)*)
-//                 | (ASSIGN EXP0 (COMMA EXP0)*)
-//                 | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
-//              )?
-//              SEMI;
+VAR_DECLARE: (VAR | VAL) 
+             ID_LIST COLON PRIMITIVE_TYPE 
+             (
+                (ASSIGN LITERAL (COMMA LITERAL)*)
+                | (ASSIGN EXP0 (COMMA EXP0)*)
+                | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
+             )?
+             SEMI;
 
 // LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
 INT_TYPE: 'Int';
@@ -59,15 +59,15 @@ BOOL_TYPE: TRUE | FALSE;
 
 // -----------------------DATA TYPE--------------------------
 VOID_TYPE: 'Void';
-// ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
-// ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
-CLASS: 'class';
+ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
+ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
+CLASS: 'Class';
 PRIMITIVE_TYPE:
     BOOL_TYPE
     | INT_TYPE
     | FLOAT_TYPE
     | STRING
-    // | ARRAY_TYPE
+    | ARRAY_TYPE
     | CLASS;
 
 
@@ -105,9 +105,8 @@ LITERAL:
     | BOOL_TYPE
     | REAL_LITERAL
     | STRING_LITERAL;
-ARRAY: 'Array';
-VAL: 'val';
-VAR: 'var';
+VAL: 'Val';
+VAR: 'Var';
 // EXPRESSION-------------------------------------------------
 // EXP0:
 //     EXP1 LT EXP1
@@ -131,7 +130,7 @@ VAR: 'var';
 
 //------------------Lexer component------------------
 
-DOLLAR: '$';
+fragment DOLLAR: '$';
 LP: '('; // Left Parenthesis
 RP: ')'; // Right Parenthesis
 LCB: '{'; // Left Curly Bracket
@@ -142,28 +141,29 @@ RSB: ']'; // Right Square Bracket
 SEMI: ';'; // Semicolon
 COMMA: ','; // Comma
 COLON: ':'; // Colon
-SCOPE: '::';
 DOTDOT: '..';
-DOT: '.';
 fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
 fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*;
 fragment SIGN: [+-];
 BREAK: 'Break';
-FOREACH: 'Foreach';
-BOOLEAN: 'Boolean';
-NULL: 'Null';
 CONTINUE: 'Continue';
-TRUE: 'True';
-FALSE: 'False';
 IF: 'If';
 ELSEIF: 'Elseif';
 ELSE: 'Else';
-SELF: 'self';
+FOREACH: 'Foreach';
+TRUE: 'True';
+FALSE: 'False';
+ARRAY: 'Array';
 IN: 'In';
+BOOLEAN: 'Boolean';
+RETURN: 'Return';
+NULL: 'Null';
+CONSTRUCTOR: 'Constructor';
+DESTRUCTOR: 'Destructor';
+NEW: 'New';
 BY: 'By';
-RETURN: 'return';
-NEW: 'new';
+SELF: 'Self';
 
 // Operator
 ADD: '+';
@@ -179,10 +179,12 @@ ASSIGN: '=';
 NOTEQUAL: '!=';
 GT: '>';
 GTE: '>=';
-LTE: '<=';
 LT: '<';
+LTE: '<=';
 EQUAL_STR: '==.';
 ADD_STR: '+.';
+DOT: '.';
+SCOPE: '::';
 // Identifier-----------------------------------------
 ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR [_a-zA-Z0-9]+;
 ID_LIST: ID (COMMA ID)*;
