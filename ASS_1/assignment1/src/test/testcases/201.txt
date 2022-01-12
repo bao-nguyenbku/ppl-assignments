@@ -1,5 +1,3 @@
 
-            Int main() {
-                340
-            }   
+            Var myCon: Int;
         

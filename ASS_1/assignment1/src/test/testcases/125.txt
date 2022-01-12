@@ -1,5 +1,5 @@
 
-            If (a > b) {return a;}
+            If (a > b) {Return a;}
             Elseif (a == b) {a = a + b;}
-            Else {return b;}
+            Else {Return b;}
             

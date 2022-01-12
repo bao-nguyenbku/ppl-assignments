@@ -34,5 +34,65 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#class_declare.
+    def visitClass_declare(self, ctx:D96Parser.Class_declareContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#member.
+    def visitMember(self, ctx:D96Parser.MemberContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#var_declare.
+    def visitVar_declare(self, ctx:D96Parser.Var_declareContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#array_list.
+    def visitArray_list(self, ctx:D96Parser.Array_listContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#array_type.
+    def visitArray_type(self, ctx:D96Parser.Array_typeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#primitive_type.
+    def visitPrimitive_type(self, ctx:D96Parser.Primitive_typeContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#literal.
+    def visitLiteral(self, ctx:D96Parser.LiteralContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp0.
+    def visitExp0(self, ctx:D96Parser.Exp0Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp1.
+    def visitExp1(self, ctx:D96Parser.Exp1Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp4.
+    def visitExp4(self, ctx:D96Parser.Exp4Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#list_exp.
+    def visitList_exp(self, ctx:D96Parser.List_expContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#id_list.
+    def visitId_list(self, ctx:D96Parser.Id_listContext):
+        return self.visitChildren(ctx)
+
+
 
 del D96Parser

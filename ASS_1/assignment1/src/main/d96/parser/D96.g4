@@ -25,33 +25,23 @@ options {
 	language = Python3;
 }
 
-program: (mptype 'main' LP RP LCB body? RCB) | CLASS_DECLARE* EOF;
+program: (mptype 'main' LP RP LCB body? RCB | class_declare)+ EOF;
 
 mptype: INT_TYPE | VOID_TYPE;
 
-body: INTEGER_LITERAL;
-// body: funcall SEMI;
+body: funcall SEMI;
 
-exp: funcall | INTEGER_LITERAL;
+exp: funcall | literal;
 
 funcall: ID LP exp? RP;
-CLASS_DECLARE: CLASS ID (COLON ID)? LCB (MEMBER*) RCB;
+class_declare: CLASS ID LCB member* RCB;
 
-MEMBER: VAR_DECLARE | METHOD; // Todo:
-METHOD: ID LP LIST_PARAM? RP BLOCK_STATEMENT;
+member: var_declare | METHOD;
+METHOD: ID LP RP BLOCK_STATEMENT;
 BLOCK_STATEMENT: LCB RCB;
-LIST_PARAM: LIST_METHOD (SEMI LIST_METHOD)*;
-LIST_METHOD: ID COLON PRIMITIVE_TYPE | ID COLON PRIMITIVE_TYPE COMMA LIST_METHOD;
-VAR_DECLARE: (VAR | VAL) 
-             ID_LIST COLON PRIMITIVE_TYPE 
-             (
-                (ASSIGN LITERAL (COMMA LITERAL)*)
-                | (ASSIGN EXP0 (COMMA EXP0)*)
-                | (ASSIGN ARRAY_LIST (COMMA ARRAY_LIST)*)
-             )?
-             SEMI;
+// LIST_METHOD: ID COLON primitive_type | ID COLON primitive_type COMMA LIST_METHOD;
+var_declare: (VAR | VAL) id_list COLON primitive_type SEMI;
 
-// LIST_DATA: ID EXPFULL? | ID EXPFULL? COMMA LIST_DATA;
 INT_TYPE: 'Int';
 FLOAT_TYPE: 'Float';
 STRING: 'String';
@@ -59,15 +49,14 @@ BOOL_TYPE: TRUE | FALSE;
 
 // -----------------------DATA TYPE--------------------------
 VOID_TYPE: 'Void';
-ARRAY_TYPE: ARRAY LSB PRIMITIVE_TYPE COMMA INTEGER_LITERAL RSB;
-ARRAY_LIST: ARRAY LP LITERAL (COMMA LITERAL)* RP;
-CLASS: 'Class';
-PRIMITIVE_TYPE:
+array_list: ARRAY LP literal (COMMA literal)* RP;
+array_type: ARRAY LSB primitive_type COMMA INTEGER_LITERAL RSB;
+primitive_type:
     BOOL_TYPE
     | INT_TYPE
     | FLOAT_TYPE
+    | array_type
     | STRING
-    | ARRAY_TYPE
     | CLASS;
 
 
@@ -85,7 +74,6 @@ STRING_LITERAL: '"' STR* '"'
 };
 ILLEGAL_ESCAPE: '"' STR* ESC_ILLEGAL
 {
-   
     y = str(self.text)
     raise IllegalEscape(y[1:])
 };
@@ -99,35 +87,22 @@ fragment STR: '\\' [bfnrt"\\] | ~[\\"] | '\'"';
 fragment ESC_SEQ: '\\' [btnfr"'\\] ;
 
 fragment ESC_ILLEGAL: '\\' ~[bfnrt"\\] ;
-REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
-LITERAL:
+literal:
     INTEGER_LITERAL
     | BOOL_TYPE
     | REAL_LITERAL
     | STRING_LITERAL;
+REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
 VAL: 'Val';
 VAR: 'Var';
 // EXPRESSION-------------------------------------------------
-// EXP0:
-//     EXP1 LT EXP1
-//     | EXP1 LTE EXP1
-//     | EXP1 GT EXP1
-//     | EXP1 GTE EXP1
-//     | EXP1; 
-// EXP1: EQUAL EXP2 | NOTEQUAL EXP2 | EXP2;  
-// EXP2: EXP3 | AND EXP3 | OR EXP3;  
-// EXP3: ADD EXP4 | SUB EXP4 | EXP4; 
-// EXP4: MUL EXP5 | DIV EXP5 | MOD EXP5 | EXP5; 
-
-// EXP5: NOT EXP5 | EXP6; 
-// EXP6: ADD EXP6 | SUB EXP6 | EXP7; 
-// EXP7: EXP8 LSB EXP0 RSB | EXP8; 
-// EXP8: DOT ID (LP LIST_EXP? RP)? | EXP9; 
-// EXP9: NEW EXP9 LP LIST_EXP? RP | EXP10; 
-// EXP10: LITERAL | ID | SELF | EXP11;
-// EXP11: LP EXP0 RP; 
-// LIST_EXP: EXP0 (COMMA EXP0)*;
-
+exp0: exp1 (LT | LTE | GT | GTE | EQUAL | NOTEQUAL) exp1 | exp1; 
+exp1: exp4 (AND | OR) exp1 | exp4;  
+// EXP2: EXP2 (ADD | SUB) EXP3 | EXP3; 
+// EXP3: EXP3 (MUL | DIV | MOD) EXP4 | EXP4; 
+exp4: (NOT | SUB) exp4 | literal; 
+// OPERAND: OPERAND LSB EXP RSB | LITERAL | LP EXP RP | ID ;
+list_exp: exp0 (COMMA exp0)*;
 //------------------Lexer component------------------
 
 fragment DOLLAR: '$';
@@ -146,6 +121,7 @@ fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
 fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*;
 fragment SIGN: [+-];
+CLASS: 'Class';
 BREAK: 'Break';
 CONTINUE: 'Continue';
 IF: 'If';
@@ -187,7 +163,7 @@ DOT: '.';
 SCOPE: '::';
 // Identifier-----------------------------------------
 ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR [_a-zA-Z0-9]+;
-ID_LIST: ID (COMMA ID)*;
+id_list: ID (COMMA ID)*;
 
 // ----------------------------
 

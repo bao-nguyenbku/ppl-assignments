@@ -1,9 +1,3 @@
-import unittest
-from TestUtils import TestLexer
-
-
-class LexerSuite(unittest.TestCase):
-
     def test_identifier_1(self):
         self.assertTrue(TestLexer.test("_", "_,<EOF>", 101))
 
@@ -104,15 +98,3 @@ class LexerSuite(unittest.TestCase):
                 a[0] = s;
             }
             """, "{,Var,r,,,s,:,Int,;,r,=,2.0,;,Var,a,,,b,:,Array,[,Int,,,5,],;,s,=,r,*,r,*,Self,.,myPI,;,a,[,0,],=,s,;,},<EOF>", 127))
-    
-    # def test_array(self):
-    #     self.assertTrue(TestLexer.test("Array(\"Hello\",\"World\",3,4)", "", 105))
-    # def test_array(self):
-    #     self.assertTrue(TestLexer.test("""
-    #         Array(
-    #             Array(1,2,3),
-    #             Array(\"a,b,c\"),
-    #             Array(12.4, 45e4, 0b1001)
-    #         )""", "", 105))
-
-    
