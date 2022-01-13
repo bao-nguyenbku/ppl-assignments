@@ -1,3 +1,7 @@
 
-            Var myCon: Int;
+            Class Program {
+                main() {
+                    Var a = New MyClass();
+                }
+            }
         

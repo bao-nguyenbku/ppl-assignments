@@ -4,7 +4,11 @@ from TestUtils import TestParser
 class ParserSuite(unittest.TestCase):
     def test_simple_program(self):
         input = """
-            Var myCon: Int;
+            Class Program {
+                main() {
+                    Var a = New MyClass();
+                }
+            }
         """
         expect = "successful"
         self.assertTrue(TestParser.test(input,expect,201))

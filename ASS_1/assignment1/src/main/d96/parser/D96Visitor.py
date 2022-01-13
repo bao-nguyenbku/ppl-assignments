@@ -14,18 +14,8 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#mptype.
-    def visitMptype(self, ctx:D96Parser.MptypeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by D96Parser#body.
     def visitBody(self, ctx:D96Parser.BodyContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#exp.
-    def visitExp(self, ctx:D96Parser.ExpContext):
         return self.visitChildren(ctx)
 
 
@@ -69,6 +59,11 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#exp.
+    def visitExp(self, ctx:D96Parser.ExpContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#exp0.
     def visitExp0(self, ctx:D96Parser.Exp0Context):
         return self.visitChildren(ctx)
@@ -79,8 +74,48 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#exp2.
+    def visitExp2(self, ctx:D96Parser.Exp2Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp3.
+    def visitExp3(self, ctx:D96Parser.Exp3Context):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#exp4.
     def visitExp4(self, ctx:D96Parser.Exp4Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp5.
+    def visitExp5(self, ctx:D96Parser.Exp5Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp6.
+    def visitExp6(self, ctx:D96Parser.Exp6Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp7.
+    def visitExp7(self, ctx:D96Parser.Exp7Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp8.
+    def visitExp8(self, ctx:D96Parser.Exp8Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp9.
+    def visitExp9(self, ctx:D96Parser.Exp9Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#exp10.
+    def visitExp10(self, ctx:D96Parser.Exp10Context):
         return self.visitChildren(ctx)
 
 
