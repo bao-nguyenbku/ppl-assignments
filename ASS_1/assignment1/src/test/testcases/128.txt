@@ -1,8 +1,5 @@
 
-            Var $arr : Array[Array[Int, 3], 3] = 
-                                       Array(
-                                           Array(1,2,5),
-                                           Array(2,5,6),
-                                           Array(5,8,7)
-                                           );
-            )
+            Foreach ($x In 1 .. 100 By 1) {
+                sum = sum + a[$x];
+            }
+            

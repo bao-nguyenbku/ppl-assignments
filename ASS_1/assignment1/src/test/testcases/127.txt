@@ -1,9 +1,5 @@
 
-            {
-                Var r, s: Int; 
-                r = 2.0; 
-                Var a, b: Array[Int, 5]; 
-                s = r * r * Self.myPI; 
-                a[0] = s;
-            }
+            If (a > b) {Return a;}
+            Elseif (a == b) {a = a + b;}
+            Else {Return b;}
             

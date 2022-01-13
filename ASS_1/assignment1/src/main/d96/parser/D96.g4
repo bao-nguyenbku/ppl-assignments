@@ -2,6 +2,7 @@ grammar D96;
 
 @lexer::header {
 from lexererr import *
+import inspect
 }
 @lexer::members {
 def emit(self):
@@ -9,7 +10,11 @@ def emit(self):
     result = super().emit() # result mean for input
     # delete later
     print('--------------------------------------------------------------------------------')
-    print ("{:<30} {:<30} {:<50}".format(result.text, '|', self.symbolicNames[tk-2]))
+    attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
+    user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
+    for i in user_defined_attr:
+        if tk == i[1]:
+            print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
     print('--------------------------------------------------------------------------------')
     if tk == self.STRING_LITERAL:
         if result.text.find('\'"') >= 0:
@@ -24,21 +29,24 @@ options {
 	language = Python3;
 }
 
-program: class_declare* (CLASS 'Program' LCB 'main' LP RP LCB body? RCB RCB) class_declare* EOF;
+program: class_declare* class_Program class_declare* EOF;
+// "Program" class is class where program is started
+class_Program: CLASS 'Program' LCB 'main' LP RP LCB statement* RCB RCB;
 
-body: funcall SEMI;
-
-// exp: funcall | literal;
-
-funcall: ID LP exp? RP;
+// Common class declaration
 class_declare: CLASS ID LCB member* RCB;
 
-member: var_declare | METHOD;
-METHOD: ID LP RP BLOCK_STATEMENT;
-BLOCK_STATEMENT: LCB RCB;
-// LIST_METHOD: ID COLON primitive_type | ID COLON primitive_type COMMA LIST_METHOD;
-var_declare: (VAR | VAL) id_list COLON primitive_type SEMI;
-
+member: var_declare | method;
+method: ID LP RP block_statement;
+block_statement: LCB statement* RCB;
+statement: var_declare
+           | assign_statement 
+           | function_call
+           ;
+assign_statement: 'assign_statement';
+function_call: ID LP exp? RP;
+var_declare: (VAR | VAL) id_list COLON primitive_type (init_value)? SEMI;
+init_value: ASSIGN list_exp;
 
 // -----------------------DATA TYPE--------------------------
 BOOL_TYPE: TRUE | FALSE;
@@ -62,7 +70,7 @@ INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE;
 HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
 OCT_TYPE: '0' [0-9]+;
 BIN_TYPE: ('0b' | '0B') [01]+;
-DEC_TYPE: [0-9]|[1-9][0-9_]*;
+DEC_TYPE: [0-9][0-9_]*;
 // '\\' ~[bfnrt"\\]
 ILLEGAL_ESCAPE: '"' STR* ESC_ILLEGAL
 {
@@ -94,7 +102,8 @@ literal:
     INTEGER_LITERAL
     | BOOL_TYPE
     | REAL_LITERAL
-    | STRING_LITERAL;
+    | STRING_LITERAL
+    ;
 REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
 VAL: 'Val';
 VAR: 'Var';
@@ -200,6 +209,7 @@ LT: '<';
 LTE: '<=';
 EQUAL_STR: '==.';
 ADD_STR: '+.';
+DOTDOT:'..';
 DOT: '.';
 SCOPE: '::';
 // Identifier-----------------------------------------

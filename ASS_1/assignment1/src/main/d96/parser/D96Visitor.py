@@ -14,13 +14,8 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#body.
-    def visitBody(self, ctx:D96Parser.BodyContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#funcall.
-    def visitFuncall(self, ctx:D96Parser.FuncallContext):
+    # Visit a parse tree produced by D96Parser#class_Program.
+    def visitClass_Program(self, ctx:D96Parser.Class_ProgramContext):
         return self.visitChildren(ctx)
 
 
@@ -34,8 +29,38 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#method.
+    def visitMethod(self, ctx:D96Parser.MethodContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#block_statement.
+    def visitBlock_statement(self, ctx:D96Parser.Block_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#statement.
+    def visitStatement(self, ctx:D96Parser.StatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#assign_statement.
+    def visitAssign_statement(self, ctx:D96Parser.Assign_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#function_call.
+    def visitFunction_call(self, ctx:D96Parser.Function_callContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#var_declare.
     def visitVar_declare(self, ctx:D96Parser.Var_declareContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#init_value.
+    def visitInit_value(self, ctx:D96Parser.Init_valueContext):
         return self.visitChildren(ctx)
 
 

@@ -1,1 +1,1 @@
-Illegal Escape In String: aj\e
+1234,34,1256234,0189,<EOF>

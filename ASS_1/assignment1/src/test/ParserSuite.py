@@ -4,10 +4,13 @@ from TestUtils import TestParser
 class ParserSuite(unittest.TestCase):
     def test_simple_program(self):
         input = """
+            Class MyClass {
+                Var name: String;
+                Var age, height: Int = 0, 0;
+                setName() {}
+            }
             Class Program {
-                main() {
-                    Var a = New MyClass();
-                }
+                main() {}
             }
         """
         expect = "successful"
