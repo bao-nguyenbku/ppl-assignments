@@ -47,7 +47,9 @@
         self.assertTrue(TestLexer.test("0x1T", "0x1,T,<EOF>", 116))
 
     def test_string_1(self):
-        self.assertTrue(TestLexer.test("\"aj\elhadef\"", "Illegal Escape In String: aj\e", 117)) 
+        self.assertTrue(TestLexer.test("""
+        "aj\elhadef"
+        """, "Illegal Escape In String: aj\e", 117)) 
 
     def test_string_2(self):
         self.assertTrue(TestLexer.test("\"ab3j\tlhadef\"", "ab3j	lhadef,<EOF>", 118))  

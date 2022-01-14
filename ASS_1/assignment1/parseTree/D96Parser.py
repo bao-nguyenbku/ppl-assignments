@@ -1,4 +1,4 @@
-# Generated from main/d96/parser/D96.g4 by ANTLR 4.9.2
+# Generated from D96.g4 by ANTLR 4.9.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -354,11 +354,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_program
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitProgram" ):
-                return visitor.visitProgram(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterProgram" ):
+                listener.enterProgram(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitProgram" ):
+                listener.exitProgram(self)
 
 
 
@@ -442,11 +444,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_class_Program
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitClass_Program" ):
-                return visitor.visitClass_Program(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterClass_Program" ):
+                listener.enterClass_Program(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitClass_Program" ):
+                listener.exitClass_Program(self)
 
 
 
@@ -524,11 +528,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_class_declare
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitClass_declare" ):
-                return visitor.visitClass_declare(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterClass_declare" ):
+                listener.enterClass_declare(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitClass_declare" ):
+                listener.exitClass_declare(self)
 
 
 
@@ -585,11 +591,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_member
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMember" ):
-                return visitor.visitMember(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterMember" ):
+                listener.enterMember(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitMember" ):
+                listener.exitMember(self)
 
 
 
@@ -647,11 +655,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_method
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMethod" ):
-                return visitor.visitMethod(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterMethod" ):
+                listener.enterMethod(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitMethod" ):
+                listener.exitMethod(self)
 
 
 
@@ -702,11 +712,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_block_statement
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBlock_statement" ):
-                return visitor.visitBlock_statement(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterBlock_statement" ):
+                listener.enterBlock_statement(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitBlock_statement" ):
+                listener.exitBlock_statement(self)
 
 
 
@@ -763,11 +775,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_statement
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStatement" ):
-                return visitor.visitStatement(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStatement" ):
+                listener.enterStatement(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStatement" ):
+                listener.exitStatement(self)
 
 
 
@@ -818,11 +832,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_assign_statement
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssign_statement" ):
-                return visitor.visitAssign_statement(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterAssign_statement" ):
+                listener.enterAssign_statement(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitAssign_statement" ):
+                listener.exitAssign_statement(self)
 
 
 
@@ -867,11 +883,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_function_call
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFunction_call" ):
-                return visitor.visitFunction_call(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFunction_call" ):
+                listener.enterFunction_call(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFunction_call" ):
+                listener.exitFunction_call(self)
 
 
 
@@ -940,11 +958,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_var_declare
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitVar_declare" ):
-                return visitor.visitVar_declare(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterVar_declare" ):
+                listener.enterVar_declare(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitVar_declare" ):
+                listener.exitVar_declare(self)
 
 
 
@@ -1005,11 +1025,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_init_value
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitInit_value" ):
-                return visitor.visitInit_value(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterInit_value" ):
+                listener.enterInit_value(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitInit_value" ):
+                listener.exitInit_value(self)
 
 
 
@@ -1056,11 +1078,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_array_list
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitArray_list" ):
-                return visitor.visitArray_list(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterArray_list" ):
+                listener.enterArray_list(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitArray_list" ):
+                listener.exitArray_list(self)
 
 
 
@@ -1109,11 +1133,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_literal_list
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitLiteral_list" ):
-                return visitor.visitLiteral_list(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterLiteral_list" ):
+                listener.enterLiteral_list(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitLiteral_list" ):
+                listener.exitLiteral_list(self)
 
 
 
@@ -1186,11 +1212,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_array_type
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitArray_type" ):
-                return visitor.visitArray_type(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterArray_type" ):
+                listener.enterArray_type(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitArray_type" ):
+                listener.exitArray_type(self)
 
 
 
@@ -1251,11 +1279,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_primitive_type
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPrimitive_type" ):
-                return visitor.visitPrimitive_type(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterPrimitive_type" ):
+                listener.enterPrimitive_type(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitPrimitive_type" ):
+                listener.exitPrimitive_type(self)
 
 
 
@@ -1332,11 +1362,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_literal
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitLiteral" ):
-                return visitor.visitLiteral(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterLiteral" ):
+                listener.enterLiteral(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitLiteral" ):
+                listener.exitLiteral(self)
 
 
 
@@ -1390,11 +1422,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp" ):
-                return visitor.visitExp(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp" ):
+                listener.enterExp(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp" ):
+                listener.exitExp(self)
 
 
 
@@ -1478,11 +1512,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp0
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp0" ):
-                return visitor.visitExp0(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp0" ):
+                listener.enterExp0(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp0" ):
+                listener.exitExp0(self)
 
 
 
@@ -1595,11 +1631,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp1
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp1" ):
-                return visitor.visitExp1(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp1" ):
+                listener.enterExp1(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp1" ):
+                listener.exitExp1(self)
 
 
 
@@ -1690,11 +1728,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp2
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp2" ):
-                return visitor.visitExp2(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp2" ):
+                listener.enterExp2(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp2" ):
+                listener.exitExp2(self)
 
 
 
@@ -1788,11 +1828,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp3
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp3" ):
-                return visitor.visitExp3(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp3" ):
+                listener.enterExp3(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp3" ):
+                listener.exitExp3(self)
 
 
 
@@ -1893,11 +1935,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp4
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp4" ):
-                return visitor.visitExp4(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp4" ):
+                listener.enterExp4(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp4" ):
+                listener.exitExp4(self)
 
 
 
@@ -1955,11 +1999,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp5
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp5" ):
-                return visitor.visitExp5(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp5" ):
+                listener.enterExp5(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp5" ):
+                listener.exitExp5(self)
 
 
 
@@ -2020,11 +2066,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp6
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp6" ):
-                return visitor.visitExp6(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp6" ):
+                listener.enterExp6(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp6" ):
+                listener.exitExp6(self)
 
 
 
@@ -2102,11 +2150,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp7
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp7" ):
-                return visitor.visitExp7(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp7" ):
+                listener.enterExp7(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp7" ):
+                listener.exitExp7(self)
 
 
 
@@ -2240,11 +2290,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp8
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp8" ):
-                return visitor.visitExp8(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp8" ):
+                listener.enterExp8(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp8" ):
+                listener.exitExp8(self)
 
 
 
@@ -2318,11 +2370,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp9
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp9" ):
-                return visitor.visitExp9(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp9" ):
+                listener.enterExp9(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp9" ):
+                listener.exitExp9(self)
 
 
 
@@ -2381,11 +2435,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_exp10
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExp10" ):
-                return visitor.visitExp10(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExp10" ):
+                listener.enterExp10(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExp10" ):
+                listener.exitExp10(self)
 
 
 
@@ -2446,11 +2502,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_list_exp
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitList_exp" ):
-                return visitor.visitList_exp(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterList_exp" ):
+                listener.enterList_exp(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitList_exp" ):
+                listener.exitList_exp(self)
 
 
 
@@ -2511,11 +2569,13 @@ class D96Parser ( Parser ):
         def getRuleIndex(self):
             return D96Parser.RULE_id_list
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitId_list" ):
-                return visitor.visitId_list(self)
-            else:
-                return visitor.visitChildren(self)
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterId_list" ):
+                listener.enterId_list(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitId_list" ):
+                listener.exitId_list(self)
 
 
 

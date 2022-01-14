@@ -66,40 +66,29 @@ INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE
 }
 ;
 ARRAY_SIZE: DEC_TYPE;
-HEX_TYPE: ('0x' | '0X') [0-9a-fA-F][0-9a-fA-F_]*[0-9a-fA-F_]
-          | ('0x' | '0X') [0-9a-fA-F]
+HEX_TYPE: ('0x' | '0X') [0-9a-fA-F]+;
+OCT_TYPE: '0' [0-9]+;
+BIN_TYPE: ('0b' | '0B') [01]+;
+DEC_TYPE: [0-9][0-9_]*
 {
-    self.text = self.text.replace('_', '')
+    self.text = self.text.replace('_', '_')
 };
-OCT_TYPE: '0'[0-9][0-9_]*[0-9]
-           | '0'[0-9]
-{
-    self.text = self.text.replace('_', '')
-};
-BIN_TYPE: ('0b' | '0B')[01][01_]*[01]
-          | ('0b' | '0B')[01]
-{
-    self.text = self.text.replace('_', '')
-};
-DEC_TYPE: [0-9]
-          | [0-9][0-9_]*[0-9]
-{
-    self.text = self.text.replace('_', '')
-};
+// '\\' ~[bfnrt"\\]
+
 
 STRING_LITERAL: '"' STR* '"'
 {
-    illegal_escape = ['\v']
-    for i in self.text:
-        if i in illegal_escape:
-            y = str(self.text)
-            ill_idx = y.index(i)
-            raise IllegalEscape(y[1:ill_idx+1])
+    #illegal_escape = ['\v']
+    #for i in self.text:
+     #   if i in illegal_escape:
+      #      y = str(self.text)
+       #     ill_idx = y.index(i)
+        #    raise IllegalEscape(y[1:ill_idx+1])
     
     y = str(self.text)
     print(y)
     if y.find('\'"') >= 0:
-        y = y.replace('\'"', '"')
+            y = y.replace('\'"', '"')
     self.text = y[1:-1]
 };
 ILLEGAL_ESCAPE: '"' STR* ESC_ILLEGAL
@@ -112,7 +101,7 @@ UNCLOSE_STRING: '"' STR* EOF
     x = str(self.text)
     raise UncloseString(x[1:])
 };
-fragment STR: '\'"' | ~[\b\t\n\f\r"\\] | ESC_SEQ;
+fragment STR: '\'"' | ~[\b\t\n\f\r'"\\] | ESC_SEQ;
 
 fragment ESC_SEQ: '\\' [btnfr'\\] ;
 
@@ -123,12 +112,7 @@ literal:
     | REAL_LITERAL
     | STRING_LITERAL
     ;
-REAL_LITERAL: DEC_TYPE DOT DEC_TYPE
-              | DEC_TYPE EXPONENT
-              | DEC_TYPE DOT DEC_TYPE EXPONENT
-{
-    self.text = self.text.replace('_', '')
-};
+REAL_LITERAL: DEC_DIGIT DOT? (DEC_DIGIT | EXPONENT)*;
 VAL: 'Val';
 VAR: 'Var';
 // EXPRESSION-------------------------------------------------
@@ -193,7 +177,7 @@ COMMA: ',';
 COLON: ':';
 fragment EXPONENT: [eE] SIGN? DEC_TYPE;
 fragment DIGIT: [0-9];
-fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*[0-9];
+fragment DEC_DIGIT: [0-9]|[1-9][0-9_]*;
 fragment SIGN: [+-];
 CLASS: 'Class';
 BREAK: 'Break';
