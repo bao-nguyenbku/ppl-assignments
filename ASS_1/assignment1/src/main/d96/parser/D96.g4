@@ -16,6 +16,9 @@ def emit(self):
         if tk == i[1]:
             print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
     print('--------------------------------------------------------------------------------')
+
+    if tk == self.INTEGER_LITERAL:
+        result.text = result.text.replace('_', '')
     return result
 }
 options {

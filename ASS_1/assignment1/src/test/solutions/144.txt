@@ -1,1 +1,2 @@
-Unclosed String: (IFq+lq("IhK6we(*.*)GdvS{(}
+(IFq+lq(,IhK6we,(,*,.,*,),GdvS,{,(,},<EOF>
+(IFq+lq(,IhK6we,GdvS,<EOF>

@@ -1,2 +1,1 @@
-0.1anc'cv,0.,mne,12\\3,<EOF>
 0.1anc'cv,0,.,mne,12\\3,<EOF>
