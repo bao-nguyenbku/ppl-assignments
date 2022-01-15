@@ -1,10 +1,1 @@
-
-            Class MyClass {
-                Var name: String;
-                Var age, height: Int = 0, 0;
-                setName() {}
-            }
-            Class Program {
-                main() {}
-            }
-        
+int main() {}

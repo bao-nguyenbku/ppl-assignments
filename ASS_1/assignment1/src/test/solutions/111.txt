@@ -1,1 +1,1 @@
-%,eHello,<EOF>
+*,abcd,<EOF>

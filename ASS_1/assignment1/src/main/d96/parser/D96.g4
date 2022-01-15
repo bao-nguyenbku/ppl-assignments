@@ -2,25 +2,39 @@ grammar D96;
 
 @lexer::header {
 from lexererr import *
-import inspect
 }
 @lexer::members {
 def emit(self):
     tk = self.type
-    result = super().emit() # result mean for input
-    # delete later
-    print('--------------------------------------------------------------------------------')
-    attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
-    user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
-    for i in user_defined_attr:
-        if tk == i[1]:
-            print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
-    print('--------------------------------------------------------------------------------')
-
-    if tk == self.INTEGER_LITERAL:
+    # result mean for input
+    result = super().emit() 
+    
+    if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
         result.text = result.text.replace('_', '')
     return result
 }
+// @lexer::header {
+// from lexererr import *
+// import inspect
+// }
+// @lexer::members {
+// def emit(self):
+//     tk = self.type
+//     result = super().emit() # result mean for input
+//     # delete later
+//     print('--------------------------------------------------------------------------------')
+//     attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
+//     user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
+//     for i in user_defined_attr:
+//         if tk == i[1]:
+//             print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
+//     print('--------------------------------------------------------------------------------')
+
+//     if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
+//         result.text = result.text.replace('_', '')
+
+//     return result
+// }
 options {
 	language = Python3;
 }
@@ -89,10 +103,15 @@ DEC_TYPE: [0-9]
 {
     self.text = self.text.replace('_', '')
 };
+fragment STR: '\'"' | ~[\b\t\n\f\r'"\\] | ESC_SEQ | '\'';
 
+fragment ESC_SEQ: '\\' [btnfr'\\] | '\\\\';
+// fragment ESC_SEQ: [\b\t\n\f\r'] | '\\\\';
+
+fragment ESC_ILLEGAL: '\\' ~[btnfr'\\] | '\'' ~'"' | '\\';
 STRING_LITERAL: '"' STR* '"'
 {
-    illegal_escape = ['\v']
+    illegal_escape = ['\v', '\a']
     for i in self.text:
         if i in illegal_escape:
             y = str(self.text)
@@ -100,7 +119,6 @@ STRING_LITERAL: '"' STR* '"'
             raise IllegalEscape(y[1:ill_idx+1])
     
     y = str(self.text)
-    print(y)
     if y.find('\'"') >= 0:
         y = y.replace('\'"', '"')
     self.text = y[1:-1]
@@ -110,16 +128,12 @@ ILLEGAL_ESCAPE: '"' STR* ESC_ILLEGAL
     y = str(self.text)
     raise IllegalEscape(y[1:])
 };
-UNCLOSE_STRING: '"' STR* EOF
+UNCLOSE_STRING: '"' STR*
 {
     x = str(self.text)
     raise UncloseString(x[1:])
 };
-fragment STR: '\'"' | ~[\b\t\n\f\r"\\] | ESC_SEQ;
 
-fragment ESC_SEQ: '\\' [btnfr'\\] ;
-
-fragment ESC_ILLEGAL: '\\' ~[btnfr'\\] | '\\' ;
 literal:
     INTEGER_LITERAL
     | BOOL_TYPE
@@ -243,12 +257,7 @@ SCOPE: '::';
 id_list: ID (COMMA ID)*;
 ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR [_a-zA-Z0-9]+;
 
-
-
+WS: [ \t\r\n\f]+ -> skip; // skip spaces, tabs, newlines
 BLOCK_COMMENT: ('##' .*? '##') -> skip;
 
-WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines
-ERROR_CHAR:. 
-{
-    raise ErrorToken(self.text)
-};
+ERROR_CHAR:. {raise ErrorToken(self.text)};

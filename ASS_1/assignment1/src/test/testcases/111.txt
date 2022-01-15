@@ -1,1 +1,1 @@
-%eHello
+*abcd

@@ -205,7 +205,7 @@ class D96Parser ( Parser ):
                       "NEW", "BY", "SELF", "ADD", "SUB", "MUL", "DIV", "MOD", 
                       "NOT", "AND", "OR", "EQUAL", "ASSIGN", "NOTEQUAL", 
                       "GT", "GTE", "LT", "LTE", "EQUAL_STR", "ADD_STR", 
-                      "DOT", "DOTDOT", "SCOPE", "ID", "BLOCK_COMMENT", "WS", 
+                      "DOT", "DOTDOT", "SCOPE", "ID", "WS", "BLOCK_COMMENT", 
                       "ERROR_CHAR" ]
 
     RULE_program = 0
@@ -317,8 +317,8 @@ class D96Parser ( Parser ):
     DOTDOT=67
     SCOPE=68
     ID=69
-    BLOCK_COMMENT=70
-    WS=71
+    WS=70
+    BLOCK_COMMENT=71
     ERROR_CHAR=72
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):

@@ -7,5 +7,5 @@ Then type: python run.py test ASTGenSuite
 Then type: python run.py test CheckerSuite
 Then type: python run.py test CodeGenSuite
 
-"""Use run.cmd to run command faster"""
+
 
