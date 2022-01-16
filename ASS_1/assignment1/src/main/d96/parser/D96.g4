@@ -1,58 +1,67 @@
 grammar D96;
 
-@lexer::header {
-from lexererr import *
-}
-@lexer::members {
-def emit(self):
-    tk = self.type
-    # result mean for input
-    result = super().emit() 
-    
-    if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
-        result.text = result.text.replace('_', '')
-    return result
-}
 // @lexer::header {
 // from lexererr import *
-// import inspect
 // }
 // @lexer::members {
 // def emit(self):
 //     tk = self.type
-//     result = super().emit() # result mean for input
-//     # delete later
-//     print('--------------------------------------------------------------------------------')
-//     attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
-//     user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
-//     for i in user_defined_attr:
-//         if tk == i[1]:
-//             print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
-//     print('--------------------------------------------------------------------------------')
-
+//     # result mean for input
+//     result = super().emit() 
+    
 //     if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
 //         result.text = result.text.replace('_', '')
-
 //     return result
 // }
+@lexer::header {
+from lexererr import *
+import inspect
+}
+@lexer::members {
+def emit(self):
+    tk = self.type
+    result = super().emit() # result mean for input
+    # delete later
+    print('--------------------------------------------------------------------------------')
+    attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
+    user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
+    for i in user_defined_attr:
+        if tk == i[1]:
+            print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
+    print('--------------------------------------------------------------------------------')
+
+    if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
+        result.text = result.text.replace('_', '')
+
+    return result
+}
 options {
 	language = Python3;
 }
-
-program: class_declare* class_Program class_declare* EOF;
+// program: class_declare* class_program class_declare* EOF;
+program: var_declare EOF;
 // "Program" class is class where program is started
-class_Program: CLASS 'Program' LCB 'main' LP RP LCB statement* RCB RCB;
-
+class_program: CLASS 'Program' LCB 'main' LP RP LCB body_main RCB RCB;
+body_main: var_declare | function_call | ;
 // Common class declaration
-class_declare: CLASS ID LCB member* RCB;
+class_declare: CLASS NORMAL_ID extend LCB member RCB;
+extend: COLON NORMAL_ID | ;
+member: var_declare | method ;
 
-member: var_declare | method;
-method: ID LP RP block_statement;
-block_statement: LCB statement* RCB;
-statement: var_declare
-           | assign_statement 
-           | function_call
-           ;
+constructor_method: CONSTRUCTOR LP param_list? RP block_statement;
+destructor_method: DESTRUCTOR LP RP block_statement;
+method: (NORMAL_ID | DOLLAR_ID) LP RP block_statement;
+
+param_list: parameter
+            | parameter SEMI param_list
+            ;
+
+parameter: id_list COLON primitive_type;
+
+block_statement: LCB statement RCB;
+
+statement: var_declare | assign_statement | function_call | ;
+
 assign_statement: 'assign_statement';
 function_call: ID LP exp? RP;
 var_declare: (VAR | VAL) id_list COLON primitive_type (init_value)? SEMI;
@@ -68,7 +77,7 @@ array_list: ARRAY LP literal_list RP;
 literal_list: literal COMMA literal_list | literal | ;
 
 
-array_type: ARRAY LSB primitive_type COMMA ARRAY_SIZE RSB;
+array_type: ARRAY LSB primitive_type COMMA INTEGER_LITERAL RSB;
 primitive_type:
     BOOL_TYPE
     | INT_TYPE
@@ -82,7 +91,7 @@ INTEGER_LITERAL: HEX_TYPE | OCT_TYPE | BIN_TYPE | DEC_TYPE
     self.text = self.text.replace('_', '')
 }
 ;
-ARRAY_SIZE: DEC_TYPE;
+
 HEX_TYPE: ('0x' | '0X') [0-9a-fA-F][0-9a-fA-F_]*[0-9a-fA-F_]
           | ('0x' | '0X') [0-9a-fA-F]
 {
@@ -99,19 +108,18 @@ BIN_TYPE: ('0b' | '0B')[01][01_]*[01]
     self.text = self.text.replace('_', '')
 };
 DEC_TYPE: [0-9]
-          | [0-9][0-9_]*[0-9]
+          | [1-9][0-9_]*[0-9]
 {
     self.text = self.text.replace('_', '')
 };
-fragment STR: '\'"' | ~[\b\t\n\f\r'"\\] | ESC_SEQ | '\'';
 
-fragment ESC_SEQ: '\\' [btnfr'\\] | '\\\\';
-// fragment ESC_SEQ: [\b\t\n\f\r'] | '\\\\';
+fragment STR: '\'"' | ~[\\"] | ESC_SEQ;
 
+fragment ESC_SEQ: '\\' [btnfr'\\];
 fragment ESC_ILLEGAL: '\\' ~[btnfr'\\] | '\'' ~'"' | '\\';
 STRING_LITERAL: '"' STR* '"'
 {
-    illegal_escape = ['\v', '\a']
+    illegal_escape = ['\v']
     for i in self.text:
         if i in illegal_escape:
             y = str(self.text)
@@ -133,12 +141,13 @@ UNCLOSE_STRING: '"' STR*
     x = str(self.text)
     raise UncloseString(x[1:])
 };
-
+ 
 literal:
     INTEGER_LITERAL
     | BOOL_TYPE
     | REAL_LITERAL
     | STRING_LITERAL
+    | array_list
     ;
 REAL_LITERAL: DEC_TYPE DOT DEC_TYPE
               | DEC_TYPE EXPONENT
@@ -179,20 +188,21 @@ exp4: NOT exp4
 exp5: SUB exp5 
      | exp6
      ;
-exp6: exp7 LCB exp RCB
+
+exp6: exp7 LSB exp RSB
      | exp7
      ;
-exp7: exp7 DOT ID (LP list_exp? RP)?
-     | exp7 SCOPE ID (LP list_exp? RP)?
+exp7: exp7 DOT NORMAL_ID (LP list_exp? RP)?
+     | exp7 SCOPE NORMAL_ID (LP list_exp? RP)?
      | exp8
      ;
-exp8: NEW ID LP list_exp? RP
+exp8: NEW NORMAL_ID LP list_exp? RP
      | exp9
      ;
 exp9: LP exp RP
      | exp10
      ;
-exp10: literal | ID | SELF;
+exp10: literal | NORMAL_ID | SELF;
 
 list_exp: exp | exp COMMA list_exp;
 //------------------Lexer component------------------
@@ -254,9 +264,16 @@ DOT: '.';
 DOTDOT:'..';
 SCOPE: '::';
 // Identifier-----------------------------------------
-id_list: ID (COMMA ID)*;
-ID: [_a-zA-Z][_a-zA-Z0-9]* | DOLLAR [_a-zA-Z0-9]+;
-
+normal_id_list: NORMAL_ID
+		 | NORMAL_ID COMMA normal_id_list
+		 ;
+dollar_id_list: DOLLAR_ID
+				| DOLLAR_ID COMMA dollar_id_list
+                ;
+id_list: normal_id_list | dollar_id_list;
+NORMAL_ID: [_a-zA-Z][_a-zA-Z0-9]*;
+DOLLAR_ID: DOLLAR [_0-9a-zA-Z]+;
+ID: NORMAL_ID | DOLLAR_ID;
 WS: [ \t\r\n\f]+ -> skip; // skip spaces, tabs, newlines
 BLOCK_COMMENT: ('##' .*? '##') -> skip;
 

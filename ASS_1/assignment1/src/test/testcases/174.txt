@@ -1,0 +1,6 @@
+
+        function_test(a: Int) {
+            ## comment at here ## 
+            getString("input");
+        }
+        

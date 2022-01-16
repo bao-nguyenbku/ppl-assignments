@@ -1,0 +1,1 @@
+String,Return,(,input,:,String,;,l,:,Int,),{,classSTR,.,getData,(,input,),;,if,(,l,>,0,),{,return,getS,(,),+,input,;,},else,{,return,input,;,},},<EOF>

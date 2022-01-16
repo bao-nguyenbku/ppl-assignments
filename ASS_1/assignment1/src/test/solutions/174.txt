@@ -1,0 +1,1 @@
+function_test,(,a,:,Int,),{,getString,(,input,),;,},<EOF>
