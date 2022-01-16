@@ -43,8 +43,8 @@ def test_identifier_1(self):
                         "$abc,1,adv,_123,df3df,<EOF>", 113))
 
     def test_var_declare(self):
-        self.assertTrue(TestLexer.test("Var $dec, num: Int = 0b0101110, 0xaff",
-                        "Var,$dec,,,num,:,Int,=,0b0101110,,,0xaff,<EOF>", 114))
+        self.assertTrue(TestLexer.test("Var $dec, num: Int = 0b0101110, 0xAFF",
+                        "Var,$dec,,,num,:,Int,=,0b0101110,,,0xAFF,<EOF>", 114))
 
     def test_float_number(self):
         self.assertTrue(TestLexer.test(
@@ -52,7 +52,7 @@ def test_identifier_1(self):
 
     def test_integer_number(self):
         self.assertTrue(TestLexer.test(
-            "1_234 34 12_56_234 0189", "1234,34,1256234,0189,<EOF>", 116))
+            "1_234 34 12_56_234 0189", "1234,34,1256234,01,89,<EOF>", 116))
 
     def test_hex_number(self):
         self.assertTrue(TestLexer.test("0x1T 0XA100 0x123 0x0000",
@@ -135,9 +135,9 @@ def test_identifier_1(self):
 
     def test_string_5(self):
         self.assertTrue(TestLexer.test("""
-                Var s : String = \"adsfsdf\vas\"
-                """, "Var,s,:,String,=,Illegal Escape In String: adsfsdf", 131))
-
+                Var s : String = \"adsfsdf\\vas\"
+                """, "Var,s,:,String,=,Illegal Escape In String: adsfsdf\\v", 131))
+                
     def test_literal(self):
             self.assertTrue(TestLexer.test("""
                     0b12 0b01 12.34 1560 0X1B

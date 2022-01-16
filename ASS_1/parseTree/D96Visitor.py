@@ -19,6 +19,11 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#class_program_member.
+    def visitClass_program_member(self, ctx:D96Parser.Class_program_memberContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#body_main.
     def visitBody_main(self, ctx:D96Parser.Body_mainContext):
         return self.visitChildren(ctx)
@@ -26,6 +31,11 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#class_declare.
     def visitClass_declare(self, ctx:D96Parser.Class_declareContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#extend.
+    def visitExtend(self, ctx:D96Parser.ExtendContext):
         return self.visitChildren(ctx)
 
 
@@ -154,6 +164,11 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#index_operator.
+    def visitIndex_operator(self, ctx:D96Parser.Index_operatorContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#exp7.
     def visitExp7(self, ctx:D96Parser.Exp7Context):
         return self.visitChildren(ctx)
@@ -186,11 +201,6 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#dollar_id_list.
     def visitDollar_id_list(self, ctx:D96Parser.Dollar_id_listContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#id_list.
-    def visitId_list(self, ctx:D96Parser.Id_listContext):
         return self.visitChildren(ctx)
 
 

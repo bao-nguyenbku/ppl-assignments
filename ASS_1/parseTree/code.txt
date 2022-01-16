@@ -1,10 +1,9 @@
-Class MyClass {
-                getName() {
+            Class Program {
+                Val count: Int = 0;
+                getName(name: String) {
                     
                 }
-            }
-            Class Program {
                 main() {
-                    Var a: String;
+
                 }
             }

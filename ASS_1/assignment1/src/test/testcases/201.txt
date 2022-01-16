@@ -1,3 +1,1 @@
-
-            Var $bcd : Int = New Player(a, b, c);
-        
+b - a[0] + 9 - 1.234e5 || 6

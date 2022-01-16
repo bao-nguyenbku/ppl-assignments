@@ -19,6 +19,11 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#class_program_member.
+    def visitClass_program_member(self, ctx:D96Parser.Class_program_memberContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#body_main.
     def visitBody_main(self, ctx:D96Parser.Body_mainContext):
         return self.visitChildren(ctx)
@@ -31,6 +36,11 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#extend.
     def visitExtend(self, ctx:D96Parser.ExtendContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#member_list.
+    def visitMember_list(self, ctx:D96Parser.Member_listContext):
         return self.visitChildren(ctx)
 
 
@@ -76,6 +86,16 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#assign_statement.
     def visitAssign_statement(self, ctx:D96Parser.Assign_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#lhs.
+    def visitLhs(self, ctx:D96Parser.LhsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by D96Parser#index.
+    def visitIndex(self, ctx:D96Parser.IndexContext):
         return self.visitChildren(ctx)
 
 
@@ -159,6 +179,11 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by D96Parser#index_operator.
+    def visitIndex_operator(self, ctx:D96Parser.Index_operatorContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by D96Parser#exp7.
     def visitExp7(self, ctx:D96Parser.Exp7Context):
         return self.visitChildren(ctx)
@@ -191,11 +216,6 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#dollar_id_list.
     def visitDollar_id_list(self, ctx:D96Parser.Dollar_id_listContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#id_list.
-    def visitId_list(self, ctx:D96Parser.Id_listContext):
         return self.visitChildren(ctx)
 
 
