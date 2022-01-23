@@ -1,0 +1,17 @@
+
+                Class MyClass {
+                    Var name: String;
+                    Var age: Int = 0;
+                    $printName() {
+                        Out.print(Self.name);
+                    }
+                    setAge(_age: Int) {
+                        Self.age = _age;
+                    }
+                }
+                Class Program {
+                    main(){
+
+                    }
+                }
+            

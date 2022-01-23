@@ -1,1 +1,1 @@
-Hello from "Python",<EOF>
+Hello from '"Python'",<EOF>

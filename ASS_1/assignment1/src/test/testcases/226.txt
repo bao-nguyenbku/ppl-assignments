@@ -1,0 +1,13 @@
+
+            Class Program {
+                main() {
+
+                }
+            }
+            Class parent {
+                Var lname, fname: String = "";
+                $getName() {
+                    Return Self.name[2];
+                }
+            }
+        

@@ -1,9 +1,0 @@
-            Class Program {
-                Val count: Int = 0;
-                getName(name: String) {
-                    
-                }
-                main() {
-
-                }
-            }

@@ -1,0 +1,10 @@
+
+            Class Program {
+                main() {
+
+                }
+            }
+            Class Func {
+                Constructor(){Return name;}
+            }
+        

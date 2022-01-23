@@ -1,0 +1,5 @@
+
+            Class foo {
+                Var Foo: Int = 0xFF;
+            }
+        

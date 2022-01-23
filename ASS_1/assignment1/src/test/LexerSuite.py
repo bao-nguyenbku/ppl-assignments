@@ -1,12 +1,54 @@
 import unittest
 from TestUtils import TestLexer
 
+
 class LexerSuite(unittest.TestCase):
 
-    # def test(self):
-    #     self.assertTrue(TestLexer.test("""
-    #     "a\nb"
-    #     """, "", 99))
+    def test_comment(self):
+        self.assertTrue(TestLexer.test("""
+        ## Loreamsdadasfdksfsdksdljfs
+        """, "Error Token #", 90))
+    def test_comment_2(self):
+        self.assertTrue(TestLexer.test("""
+        ## adsadaa\\adadff ## saadaa ##
+        """, "saadaa,Error Token #", 91))
+    def test_random_number_1(self):
+        self.assertTrue(TestLexer.test("""
+        0001231 0b000000000001 0xAF_01 34_21.000002100000e000008 0.000000000
+        """, "00,01231,0b0,00,00,00,00,00,1,0xAF01,3421.000002100000e000008,0.000000000,<EOF>", 92))
+    def test_string_20(self):
+        self.assertTrue(TestLexer.test("""
+        \"Abdskasakla \\' ajwqwla \\y adaff
+        """, "Illegal Escape In String: Abdskasakla \\' ajwqwla \\y", 93))
+    def test_comment_5(self):
+        self.assertTrue(TestLexer.test("""
+        ##
+        asdajfskdjfwqwqlqdk
+        ##
+        ffskss
+        ##dfkss
+        ###sfdjsls
+        ##
+        """, "ffskss,Error Token #", 94))
+    def test_random_number_3(self):
+        self.assertTrue(TestLexer.test("""
+        1.2344 1_3_452_5.e000006  34_123___X3 345_2331___341_3 23_3_521_52_2 0x1_23A_345___5 0b0100A 002141_2211474 0x_12_2 0_21_4 0b_01 12_0001_111 1_33_351_31.45e19_231 0xAF221.451 098_09 12_311_ 31___211__2
+        """, "1.2344,134525.e000006,34123,___X3,3452331,___341_3,233521522,0x123A345,___5,0b0,100,A,00,21412211474,0,x_12_2,0,_21_4,0,b_01,120001111,13335131.45e19,_231,0xAF221,.,451,0,9809,12311,_,31,___211__2,<EOF>", 95))
+    def test_float_number(self):
+        self.assertTrue(TestLexer.test("""
+        1.2344 1_3_452_5.e000006 3e23391_393 5.45e-902_34 _1234.334 22___341___3
+        """, "1.2344,134525.e000006,3e23391,_393,5.45e-902,_34,_1234,.,334,22,___341___3,<EOF>", 96))
+    def test_compile_error(self):
+        self.assertTrue(TestLexer.test("""
+        "a\nbcvbddds"
+        """, "Unclosed String: a", 97))
+    def test_compile_error_2(self):
+        self.assertTrue(TestLexer.test("""
+        "a
+        cdef"
+        """, "Unclosed String: a", 98))
+    def test111(self):
+        self.assertTrue(TestLexer.test("0b0000001 0x00AFF 0004511","0b0,00,00,01,0x0,0,AFF,00,04511,<EOF>",99))
     def test_identifier_1(self):
         self.assertTrue(TestLexer.test("_ _123 __abc__", "_,_123,__abc__,<EOF>", 100))
 
@@ -53,27 +95,24 @@ class LexerSuite(unittest.TestCase):
 
     def test_var_declare(self):
         self.assertTrue(TestLexer.test("Var $dec, num: Int = 0b0101110, 0xAFF",
-                        "Var,$dec,,,num,:,Int,=,0b0101110,,,0xAFF,<EOF>", 114))
+                        "Var,$dec,,,num,:,Int,=,0b0,101110,,,0xAFF,<EOF>", 114))
 
-    def test_float_number(self):
+    def test_float_number_2(self):
         self.assertTrue(TestLexer.test(
-            "12.45e67 12E-9 1E3 12.2 17.3E+9", "12.45e67,12E-9,1E3,12.2,17.3E+9,<EOF>", 115))
+            "12.45e67 12E-9 1E3 12.2 17.3E+9 2. .45 .e3 .4e5 4.e10 45.e1_234 19.4_456e3 1_234.3_456", "12.45e67,12E-9,1E3,12.2,17.3E+9,2.,.,45,.e3,.4e5,4.e10,45.e1,_234,19.4,_456e3,1234.3,_456,<EOF>", 115))
 
     def test_integer_number(self):
         self.assertTrue(TestLexer.test(
             "1_234 34 12_56_234 0189", "1234,34,1256234,01,89,<EOF>", 116))
 
-    def test_hex_number(self):
-        self.assertTrue(TestLexer.test("0x1T 0XA100 0x123 0x0000",
-                        "0x1,T,0XA100,0x123,0x0000,<EOF>", 117))
-
-
+    def test_hex_oct_number(self):
+        self.assertTrue(TestLexer.test("0x1T 0XA100 0x123 0x0000 00123 0346 0895 0345","0x1,T,0XA100,0x123,0x0,00,0,00,123,0346,0,895,0345,<EOF>", 117))
 
     def test_string_2(self):
         self.assertTrue(TestLexer.test(
             """
-            "a\\nbc"
-            """, "a\\nbc,<EOF>", 118))
+            "a\nbc"
+            """, "Unclosed String: a", 118))
 
     def test_hex_number_2(self):
         self.assertTrue(TestLexer.test("0xFG 0FAA X123",
@@ -85,7 +124,7 @@ class LexerSuite(unittest.TestCase):
     def test_string_3(self):
         self.assertTrue(TestLexer.test("""
             "Hello from '"Python'""
-        """, """Hello from "Python",<EOF>""", 121))
+        """, """Hello from '"Python'",<EOF>""", 121))
 
     def test_string_4(self):
         self.assertTrue(TestLexer.test("\"\r\"", """
@@ -99,7 +138,7 @@ class LexerSuite(unittest.TestCase):
         self.assertTrue(TestLexer.test("34 < 9 + 12e3 - 1.34",
                         "34,<,9,+,12e3,-,1.34,<EOF>", 124))
 
-    def test_comment(self):
+    def test_comment_3(self):
         self.assertTrue(TestLexer.test("""
             ## This is comment ##
         """, "<EOF>", 125))
@@ -150,7 +189,7 @@ class LexerSuite(unittest.TestCase):
     def test_literal(self):
             self.assertTrue(TestLexer.test("""
                     0b12 0b01 12.34 1560 0X1B
-                    """, "0b1,2,0b01,12.34,1560,0X1B,<EOF>", 132))
+                    """, "0b1,2,0b0,1,12.34,1560,0X1B,<EOF>", 132))
 
     def test_keyword(self):
         self.assertTrue(TestLexer.test("""
@@ -169,33 +208,33 @@ class LexerSuite(unittest.TestCase):
     # "abc\nabc"
     def test_string_7(self):
         self.assertTrue(TestLexer.test("\"abc\\nabc\"","abc\\nabc,<EOF>",136))
-    
+
     # "abc\ta\nbc"
     def test_string_8(self):
         self.assertTrue(TestLexer.test("\"abc\\ta\\nbc\"","abc\\ta\\nbc,<EOF>",137))
-    
+
     def test_string_9(self):
         self.assertTrue(TestLexer.test("\"abc\" 0 \"12ab\\fc0.1\"","abc,0,12ab\\fc0.1,<EOF>",138))
-    
+
     def test_string_10(self):
         self.assertTrue(TestLexer.test("""
         "0.1anc\'cv" 0.mne "12\\\\3"
-        ""","0.1anc'cv,0,.,mne,12\\\\3,<EOF>",139))
+        ""","0.1anc'cv,0.,mne,12\\\\3,<EOF>",139))
 
     def test_string_11(self):
         self.assertTrue(TestLexer.test("abc \"abc1!!@#$$%^i\\n\" 12yz","abc,abc1!!@#$$%^i\\n,12,yz,<EOF>",140))
-    
+
     def test_string_12(self):
         self.assertTrue(TestLexer.test("\"!h$5FBi6\"_q\"!SZR,H}\"sIfpw","!h$5FBi6,_q,!SZR,H},sIfpw,<EOF>",141))
-    
+
     def test_string_13(self):
         self.assertTrue(TestLexer.test("""
         4"&J^1a_." QGn"?67Sp"{,}6Asz"Yx]("
         ""","4,&J^1a_.,QGn,?67Sp,{,,,},6,Asz,Yx](,<EOF>",142))
-    
+
     def test_string_14(self):
         self.assertTrue(TestLexer.test("0f1_\"^VLR@\\\\OusM;\"uGM+jE","0,f1_,^VLR@\\\\OusM;,uGM,+,jE,<EOF>",143))
-    
+
     def test_string_15(self):
         self.assertTrue(TestLexer.test("\"(IFq+lq(\"IhK6we(*.*)GdvS{(}","(IFq+lq(,IhK6we,(,*,.,*,),GdvS,{,(,},<EOF>",144))
 
@@ -219,39 +258,39 @@ class LexerSuite(unittest.TestCase):
 
     def test_illegal_escape_7(self):
         self.assertTrue(TestLexer.test("ba+12+\"na\"\"md+1.2-468\lb","ba,+,12,+,na,Illegal Escape In String: md+1.2-468\l",151))
-    
+
     def test_illegal_escape_8(self):
         self.assertTrue(TestLexer.test("\"1.2+1.3+1.4\\o'\"123","Illegal Escape In String: 1.2+1.3+1.4\\o",152))
-    
+
     def test_illegal_escape_9(self):
         self.assertTrue(TestLexer.test("(*nac*)+1.1 \"ba\\qm\f\"","(,*,nac,*,),+,1.1,Illegal Escape In String: ba\q",153))
-    
+
     def test_illegal_escape_10(self):
         self.assertTrue(TestLexer.test("\"concaheo\\uabc","Illegal Escape In String: concaheo\\u",154))
-    
+
     def test_unclose_String_1(self):
         self.assertTrue(TestLexer.test("\"bacxyc","Unclosed String: bacxyc",155))
-    
+
     def test_unclose_String_2(self):
         self.assertTrue(TestLexer.test("NmkobYn{!}+I1+\"`YS2h.J(","NmkobYn,{,!,},+,I1,+,Unclosed String: `YS2h.J(",156))
-    
+
     def test_unclose_String_3(self):
         self.assertTrue(TestLexer.test("\"acnv \" \"abc","acnv ,Unclosed String: abc",157))
 
     def test_unclose_String_4(self):
         self.assertTrue(TestLexer.test("\"acms!,lds \" {\"abc\"} 123\"abc","acms!,lds ,{,abc,},123,Unclosed String: abc",158))
-    
+
     def test_unclose_String_5(self):
         self.assertTrue(TestLexer.test("a+11.2+\"mam.123\" 12 \"%^&","a,+,11.2,+,mam.123,12,Unclosed String: %^&",159))
-    
+
     def test_unclose_String_6(self):
-        self.assertTrue(TestLexer.test("38n\"[#Ffs?0ED\"0.\"T`#","38,n,[#Ffs?0ED,0,.,Unclosed String: T`#",160))
+        self.assertTrue(TestLexer.test("38n\"[#Ffs?0ED\"0.\"T`#","38,n,[#Ffs?0ED,0.,Unclosed String: T`#",160))
 
     def test_string_16(self):
         self.assertTrue(TestLexer.test("\"str1  \\r ahihi \"","str1  \\r ahihi ,<EOF>",161))
-    
+
     def test_unclose_string_7(self):
-        self.assertTrue(TestLexer.test("\"He asked me: '\"Where \\t is John?'\"\"","He asked me: \"Where \\t is John?\",<EOF>",162))
+        self.assertTrue(TestLexer.test("\"He asked me: '\"Where \\t is John?'\"\"","He asked me: \'\"Where \\t is John?\'\",<EOF>",162))
     def test_unclose_string_8(self):
         self.assertTrue(TestLexer.test("\"  str \\\' \\\" str \"","Illegal Escape In String:   str \\' \\\"",163))
         #   str \' \"
@@ -259,7 +298,7 @@ class LexerSuite(unittest.TestCase):
         self.assertTrue(TestLexer.test("\" \\\\ \\n \\t \\n fddd \\\\\" "," \\\\ \\n \\t \\n fddd \\\\,<EOF>",164))
 
     def test_21(self):
-        self.assertTrue(TestLexer.test("{ 1,2  ,  32,  2}; {1.2,2., 3e8  , 4.0e-1}","{,1,,,2,,,32,,,2,},;,{,1.2,,,2,.,,,3e8,,,4.0e-1,},<EOF>",165))
+        self.assertTrue(TestLexer.test("{ 1,2  ,  32,  2}; {1.2,2., 3e8  , 4.0e-1}","{,1,,,2,,,32,,,2,},;,{,1.2,,,2.,,,3e8,,,4.0e-1,},<EOF>",165))
     def test_22(self):
         self.assertTrue(TestLexer.test("{true,false   ,  true, false}; {\" nam\", \" vat ly \"  ,  \" aaa \" }",
         """{,true,,,false,,,true,,,false,},;,{, nam,,, vat ly ,,, aaa ,},<EOF>""",166))
@@ -293,21 +332,21 @@ class LexerSuite(unittest.TestCase):
     def test_stmt_8(self):
         self.assertTrue(TestLexer.test("""
         function_test(a: Int) {
-            ## comment at here ## 
+            ## comment at here ##
             getString("input");
         }
         ""","function_test,(,a,:,Int,),{,getString,(,input,),;,},<EOF>", 174))
-    
+
     def test_met_de_8(self):
         self.assertTrue(TestLexer.test("""
         String Return(input: String; l: Int) {
             classSTR.getData(input);
             if (l > 0) {
                 return getS() + input;
-            } 
+            }
             else {
                 return input;
-            }    
+            }
         }
         """
         ,"String,Return,(,input,:,String,;,l,:,Int,),{,classSTR,.,getData,(,input,),;,if,(,l,>,0,),{,return,getS,(,),+,input,;,},else,{,return,input,;,},},<EOF>", 175))
@@ -319,35 +358,35 @@ class LexerSuite(unittest.TestCase):
 
     def test_integer_real1(self):
         self.assertTrue(TestLexer.test("1.2 1.0 0.1 1e2 1.2E-2 1.2e-2 .1E2 9.0 12e8 0.33E-3 128e-42",
-        "1.2,1.0,0.1,1e2,1.2E-2,1.2e-2,.,1E2,9.0,12e8,0.33E-3,128e-42,<EOF>",178))
+        "1.2,1.0,0.1,1e2,1.2E-2,1.2e-2,.1E2,9.0,12e8,0.33E-3,128e-42,<EOF>",178))
     def test_integer_real2(self):
         self.assertTrue(TestLexer.test("9.0 12e8 0.33E-3 128e-42","9.0,12e8,0.33E-3,128e-42,<EOF>",179))
     def test_integer_real3(self):
-       
+
         self.assertTrue(TestLexer.test("11.0 12.0e8 0.11+E-3 145e-42","11.0,12.0e8,0.11,+,E,-,3,145e-42,<EOF>",180))
     def test_integer_real4(self):
         self.assertTrue(TestLexer.test("0.11E2 1.11 0.33 1.0e12 1E-15","0.11E2,1.11,0.33,1.0e12,1E-15,<EOF>",181))
     def test_integer_real5(self):
-        self.assertTrue(TestLexer.test("e--12 e12 E-15 99e 1 1. 1","e,-,-,12,e12,E,-,15,99,e,1,1,.,1,<EOF>",182))
-    
+        self.assertTrue(TestLexer.test("e--12 e12 E-15 99e 1 1. 1","e,-,-,12,e12,E,-,15,99,e,1,1.,1,<EOF>",182))
+
     def test_integer_real7(self):
         self.assertTrue(TestLexer.test("12.2e0 -101 11E-2 11.1e2","12.2e0,-,101,11E-2,11.1e2,<EOF>",183))
 
-    def test_comment_2(self):
+    def test_comment_4(self):
         self.assertTrue(TestLexer.test("""
         ## Function(){} abcd
             abcde ##
-            abcd_abcde 
+            abcd_abcde
         ## ##
         ""","abcd_abcde,<EOF>",184))
-    
+
     def test_random_1(self):
         input ="""
         add(s: Int, t: Int) {
             Var obj = New Bus();
             if (s > 0) {
                 obj.insert(s,t);
-            }    
+            }
             else {
                 return obj;
             }
@@ -360,7 +399,7 @@ class LexerSuite(unittest.TestCase):
         remove(s: Int, t: Int, obj: Class) {
             obj.removeBus(t);
         }
-    
+
         minPark() {
             return max;
         }
@@ -369,7 +408,7 @@ class LexerSuite(unittest.TestCase):
         self.assertTrue(TestLexer.test(input, output, 186))
 
     def test_unclose_string_9(self):
-        # "str1 \" \n dd " 
+        # "str1 \" \n dd "
         self.assertTrue(TestLexer.test("\"str1 \\\" \n dd \" ","Illegal Escape In String: str1 \\\"",187))
     def test_unclose_string_10(self):
         self.assertTrue(TestLexer.test("\"line 1 df dfff","""Unclosed String: line 1 df dfff""",188))
@@ -377,3 +416,61 @@ class LexerSuite(unittest.TestCase):
         self.assertTrue(TestLexer.test("\"str11\\ \"","Illegal Escape In String: str11\\ ",189))
     def test_unclose_string_11(self):
         self.assertTrue(TestLexer.test("\"str1  Hello World\'\" ahihi ","Unclosed String: str1  Hello World\'\" ahihi ",190))
+
+    def test_illegal_escape_12(self):
+            """test identifiers"""
+            self.assertTrue(TestLexer.test("\"GameDev\\dlub \\dHCMUT\";",
+                            "Illegal Escape In String: GameDev\\d", 191))
+    def test_string_18(self):
+        """test identifiers"""
+        self.assertTrue(TestLexer.test("\"GameDev\\nlub \\nHCMUT\";","""GameDev\\nlub \\nHCMUT,;,<EOF>""",192))
+    
+    def test_var_declare_2(self):
+        """test identifiers"""
+        self.assertTrue(TestLexer.test("""Var $arr : Array[Array[Int, 3], 3] = 
+                                       Array(
+                                           Array(1,2,5),
+                                           Array(2,5,6),
+                                           Array(5,8,7)
+                                           );""","Var,$arr,:,Array,[,Array,[,Int,,,3,],,,3,],=,Array,(,Array,(,1,,,2,,,5,),,,Array,(,2,,,5,,,6,),,,Array,(,5,,,8,,,7,),),;,<EOF>",193))
+    
+    def test_random_3(self):
+        self.assertTrue(TestLexer.test("""
+                                       4"&J^1a_." QGn"?67Sp"{,}6Asz"Yx]("
+                                       ""","4,&J^1a_.,QGn,?67Sp,{,,,},6,Asz,Yx](,<EOF>", 194)) 
+
+    def test_foreach(self):
+        self.assertTrue(TestLexer.test("""
+            Foreach ($i In 1 .. 100 By 1) {
+                e = e + $i;
+                k[$i] = k[$i + 1];
+                Foreach ($j In 1 .. 100 By 1) {
+                    e = e - $j;
+                    l[$i] = l[$j] + e; 
+                }
+            }
+            """, "Foreach,(,$i,In,1,..,100,By,1,),{,e,=,e,+,$i,;,k,[,$i,],=,k,[,$i,+,1,],;,Foreach,(,$j,In,1,..,100,By,1,),{,e,=,e,-,$j,;,l,[,$i,],=,l,[,$j,],+,e,;,},},<EOF>", 195))
+    def test_string_19(self):
+        self.assertTrue(TestLexer.test("\"##This is a string, not a comment##\"", "##This is a string, not a comment##,<EOF>", 196))
+    
+    def test_var_declare_3(self):
+        """test identifiers"""
+        self.assertTrue(TestLexer.test("Var $x, num, $y, 9gh : Int = 5, 6, 7;","Var,$x,,,num,,,$y,,,9,gh,:,Int,=,5,,,6,,,7,;,<EOF>",197))
+    def test_var_declare_4(self):
+        """test identifiers"""
+        self.assertTrue(TestLexer.test("Var $dec, num: Int = 0b0101110, 0xAFF;","Var,$dec,,,num,:,Int,=,0b0,101110,,,0xAFF,;,<EOF>",198))
+    def test_if_stmt(self):
+        """test identifiers"""
+        self.assertTrue(TestLexer.test("""
+            If (a >= b) {
+                a = a + b;
+            }
+            Elseif (b >= c) {
+                b = a + b || r;
+            }
+            Else {
+                Return result;
+            }
+        ""","If,(,a,>=,b,),{,a,=,a,+,b,;,},Elseif,(,b,>=,c,),{,b,=,a,+,b,||,r,;,},Else,{,Return,result,;,},<EOF>",199))
+    
+    

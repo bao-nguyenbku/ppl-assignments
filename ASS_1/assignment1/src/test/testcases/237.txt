@@ -1,0 +1,12 @@
+
+            Class Program {
+                main() {
+
+                }
+            }
+            Class Method {
+                newMethod(a: String) {
+                    Return a[0].length;
+                }
+            }
+        

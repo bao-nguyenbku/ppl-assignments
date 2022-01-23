@@ -1,0 +1,11 @@
+
+            Class Program {
+                main(){}
+            }
+
+            Class Main {
+                menu() {
+                    Return Self.arr;
+                }
+            }
+        

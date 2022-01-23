@@ -1,1 +1,17 @@
-b - a[0] + 9 - 1.234e5 || 6
+
+            Class Dog: Animal {
+                $gaugau() {
+                    a = b[7][2];
+                }
+            }
+            Class Snake: De {
+                $OpOp() {
+                    Return Self.Op;
+                }
+            }
+            Class Program {
+                main() {
+                    Var a, b: Int;
+                }
+            }
+            

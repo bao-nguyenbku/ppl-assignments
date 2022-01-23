@@ -1,0 +1,11 @@
+
+            If (a >= b) {
+                a = a + b;
+            }
+            Elseif (b >= c) {
+                b = a + b || r;
+            }
+            Else {
+                Return result;
+            }
+        

@@ -3,9 +3,9 @@
             classSTR.getData(input);
             if (l > 0) {
                 return getS() + input;
-            } 
+            }
             else {
                 return input;
-            }    
+            }
         }
         
