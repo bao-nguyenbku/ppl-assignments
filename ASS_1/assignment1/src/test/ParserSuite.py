@@ -802,33 +802,33 @@ class ParserSuite(unittest.TestCase):
     #     expect = "Error on line 9 col 16: Return"
     #     self.assertTrue(TestParser.test(input, expect,250))
 
-    # def test51(self):
-    #     input = """
-    #         Class Program {
-    #             main() {
+    def test51(self):
+        input = """
+            Class Program {
+                main() {
 
-    #             }
+                }
 
-    #             func(){
-    #                 test();
+                func(){
+                    test();
 
-    #                 test().a().b().c().d();
+                    test().a().b().c().d();
 
-    #                 test()::a()::b()::c()::d();
+                    test()::a()::b()::c()::d();
 
-    #                 test().a()::b()::c().d();
+                    test().a()::b()::c().d();
 
-    #                 test().a::test().b::c()::d::e::$f();
+                    test().a::test().b::c()::d::e::$f();
 
-    #                 test(1,a,b,23234,0x12).a______AFEFE::$_EAFWEFtest(AASDSAwqqeqw, 132___216387__78.34e-362536)._____bfwefew::c(MAIN, PROGRAM)::d::e::$f(\"qwdqdq\");
+                    test(1,a,b,23234,0x12).a______AFEFE::$_EAFWEFtest(AASDSAwqqeqw, 132___216387__78.34e-362536)._____bfwefew::c(MAIN, PROGRAM)::d::e::$f(\"qwdqdq\");
                 
-    #             }
+                }
                 
-    #         }
+            }
             
-    #     """
-    #     expect = "successful"
-    #     self.assertTrue(TestParser.test(input, expect,251))
+        """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect,251))
 
     # def test52(self):
     #     input = """
@@ -841,12 +841,18 @@ class ParserSuite(unittest.TestCase):
     #     expect = "successful"
     #     self.assertTrue(TestParser.test(input, expect,252))
 
-    def test53(self):
-        input = """
-            dog.sound = a + b;
-        """
-        expect = "successful"
-        self.assertTrue(TestParser.test(input, expect,253))
+    # def test53(self):
+    #     input = """
+    #         Self.age = 2;
+    #     """
+    #     expect = "successful"
+    #     self.assertTrue(TestParser.test(input, expect,253))
+    # def test53(self):
+    #     input = """
+    #         Array[Array[Int, 0b1], 0xAF]
+    #     """
+    #     expect = "successful"
+    #     self.assertTrue(TestParser.test(input, expect,253))
 
     # def test54(self):
     #     input = """

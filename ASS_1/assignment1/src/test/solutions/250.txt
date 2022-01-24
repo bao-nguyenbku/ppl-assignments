@@ -1,1 +1,1 @@
-Error on line 9 col 16: Return
+Error on line 2 col 18: Program
