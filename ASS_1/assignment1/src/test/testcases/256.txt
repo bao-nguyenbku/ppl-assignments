@@ -1,7 +1,6 @@
 
             Class Program {
-                main() {
-
-                }
+                main() {PPL() {}}
+                Var method(): Int;
             }
         

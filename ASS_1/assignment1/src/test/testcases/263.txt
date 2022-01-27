@@ -1,7 +1,7 @@
 
-            Class Program {
-                main() {
-
+            Class Construc {
+                Destruc() {
+                    Des.DeleteAll();
                 }
             }
         

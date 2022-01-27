@@ -6,7 +6,7 @@
             }
             Class Another {
                 function() {
-                    program.Main();
+                    A.Main()::$dollar();
                 }
             }
         

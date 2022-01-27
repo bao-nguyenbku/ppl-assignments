@@ -6,7 +6,4 @@
                     Self.c = arr[2][1];
                 }
             }
-            Class Program {
-                main(){}
-            }
         

@@ -4,4 +4,6 @@
 
                 }
             }
+            Class B {$method(){}}
+            Class C {$method(){}}
         

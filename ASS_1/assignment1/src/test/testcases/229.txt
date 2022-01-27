@@ -1,10 +1,8 @@
 
-            Class Program {
-                main() {
-
-                }
-            }
             Class Func {
                 Constructor(){Return name;}
+            }
+            Class B {
+                Return statements;
             }
         

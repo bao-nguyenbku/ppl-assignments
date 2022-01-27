@@ -9,9 +9,4 @@
                     Return Self.Op;
                 }
             }
-            Class Program {
-                main() {
-                    Var a, b: Int;
-                }
-            }
             

@@ -1,0 +1,13 @@
+e2d>Fw
+
+- No global variable, method, attribute
+- New X().Y() is a valid expression
+-  The in the parameter declaration must not have the dollar identifier ($) in it. không truyền static qua method
+OK - Do chỉ có thể là số nguyên nên bạn sẽ cần kiểm tra xem có lớn hơn 0 hay không trong bài tập lớn này nha. Check size của array > 0
+- The content inside the double quote will not be changed.
+- 0.0000000 là float hợp lệ
+- Không cần có class Program
+- Không cần có hàm main
+- Không cần có Constructor hay Destructor
+- Không cần return trong method (nếu có)
+- Scalar variable trong các mục 6.2 và 6.4 là tương tự nhau, đối với D96, một scalar variable là một thực thể có thể mang giá trị tại một thời điểm, sinh viên cần phải suy luận ra từ định nghĩa này.

@@ -1,7 +1,9 @@
 
-            Class Program {
-                main() {
-
+            Class name {
+                method () {
+                    a = name::$age;
+                    c = age;
+                    e = $age();
                 }
             }
         

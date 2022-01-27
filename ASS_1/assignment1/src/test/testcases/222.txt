@@ -5,6 +5,8 @@
                 }
             }
             Class Program {
-                main() {}
+                main() {
+
+                }
             }
         

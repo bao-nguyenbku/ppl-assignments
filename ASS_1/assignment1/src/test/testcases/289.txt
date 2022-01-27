@@ -1,7 +1,8 @@
 
-            Class Program {
-                main() {
-
+            Class InLit: Type {
+                __str__(str: String) {
+                    Self.str = str;
+                    Self.a = Self.count() + expr.$dollar();
                 }
             }
         

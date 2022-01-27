@@ -10,9 +10,4 @@
                     Mew.EraseAll();
                 }
             }
-            Class Program {
-                main(){
-
-                }
-            }
         

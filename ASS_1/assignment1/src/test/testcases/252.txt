@@ -1,7 +1,6 @@
 
-            Class Program {
-                main() {
-
-                }
+            Class Main {
+                If (a<=b)
+                Else Return
             }
         

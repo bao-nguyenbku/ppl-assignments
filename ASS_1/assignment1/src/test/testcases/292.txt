@@ -1,7 +1,6 @@
 
-            Class Program {
-                main() {
-
-                }
+            Class B {
+                Val b: Int = 0;
+                Val a: Float = Self.a.b.c().t[1];
             }
         

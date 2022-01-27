@@ -1,7 +1,8 @@
 
-            Class Program {
-                main() {
-
+            Class Soc {
+                
+                function() {
+                    Return A::$name() + t();
                 }
             }
         

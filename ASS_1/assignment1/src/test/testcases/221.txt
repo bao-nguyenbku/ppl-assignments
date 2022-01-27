@@ -4,5 +4,7 @@
                     Out.print("Hello From Main");
                 }
             }
-            Class iden {}
+            Class iden {
+
+            }
         

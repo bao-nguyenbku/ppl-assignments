@@ -1,7 +1,5 @@
 
-            Class Program {
-                main() {
-
-                }
+            Class B {
+                B.call();
             }
         

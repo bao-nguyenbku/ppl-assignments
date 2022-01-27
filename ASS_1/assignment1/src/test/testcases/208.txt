@@ -9,9 +9,4 @@
                         Self.age = _age;
                     }
                 }
-                Class Program {
-                    main(){
-
-                    }
-                }
             

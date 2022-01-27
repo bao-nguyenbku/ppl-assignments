@@ -1,5 +1,5 @@
 
             Class foo {
-                Var Foo: Int = 0xFF;
+                Var Foo: Array[Int, -5] = 0xFF;
             }
         

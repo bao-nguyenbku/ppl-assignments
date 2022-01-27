@@ -1,10 +1,12 @@
 
             Class Program {
-                main(){}
+                main(){
+
+                }
             }
             Class Des {
                 Destructor() {
-                    Des.Delete();
+                    Stand.Delete().All(0);
                 }
             }
         

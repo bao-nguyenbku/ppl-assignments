@@ -1,13 +1,11 @@
 
-            Class Program {
-                main() {
-
-                }
-            }
             Class parent {
                 Var lname, fname: String = "";
                 $getName() {
                     Return Self.name[2];
+                }
+                setName(name: Int) {
+                    lname = name[0];
                 }
             }
         

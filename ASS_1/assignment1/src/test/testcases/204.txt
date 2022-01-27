@@ -1,9 +1,4 @@
  
-            Class Program {
-                main() {
-
-                }
-            }
             Class MeowMeow: Dog {
                 Var b: Int;
                 Var $a, c, d: Float = .e4, 2., 78.9;

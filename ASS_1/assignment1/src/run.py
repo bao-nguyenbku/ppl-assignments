@@ -16,7 +16,7 @@ def main(argv):
         subprocess.run(["java","-jar",ANTLR_JAR,"-o","../target","-no-listener","-visitor","main/d96/parser/D96.g4"])
     elif argv[0] == 'clean':
         subprocess.run(["rm","-rf",TARGET_DIR + "/*"])
-               
+
     elif argv[0] == 'test':     
         if not os.path.isdir(TARGET_DIR + "/" + GENERATE_DIR):
             subprocess.run(["java","-jar",ANTLR_JAR,"-o",GENERATE_DIR,"-no-listener","-visitor","main/d96/parser/D96.g4"])

@@ -3,6 +3,5 @@
                 dethod() {
                     Return Self.method();
                 }
-                main(){}
             }
         

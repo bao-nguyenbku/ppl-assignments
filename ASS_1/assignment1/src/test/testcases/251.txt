@@ -6,19 +6,10 @@
 
                 func(){
                     test();
-
                     test().a().b().c().d();
 
                     test()::a()::b()::c()::d();
-
-                    test().a()::b()::c().d();
-
-                    test().a::test().b::c()::d::e::$f();
-
-                    test(1,a,b,23234,0x12).a______AFEFE::$_EAFWEFtest(AASDSAwqqeqw, 132___216387__78.34e-362536)._____bfwefew::c(MAIN, PROGRAM)::d::e::$f("qwdqdq");
-                
-                }
-                
+                } 
             }
             
         

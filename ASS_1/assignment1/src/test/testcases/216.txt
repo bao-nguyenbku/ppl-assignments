@@ -1,10 +1,7 @@
 
-            Class Program {
-                main(){}
-            }
-
             Class Main {
                 menu() {
+                    t = R::$test()[2] >= 8;
                     Return Self.arr;
                 }
             }

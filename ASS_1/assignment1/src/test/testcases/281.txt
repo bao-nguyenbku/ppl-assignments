@@ -1,7 +1,7 @@
 
-            Class Program {
-                main() {
-
+            Class dfskjf_jdss {
+                Rfsfsa() {
+                    Val $r: Int = 20;
                 }
             }
         

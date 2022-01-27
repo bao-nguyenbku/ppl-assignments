@@ -1,7 +1,8 @@
 
-            Class Program {
-                main() {
-
+            Class MyClass {
+                Val count: Int = 0;
+                setCount() {
+                    Return Self.count + Self.count() - name::$turn() * age.$Age();
                 }
             }
         

@@ -1,5 +1,4 @@
 import sys
-from types import NoneType
 from antlr4 import *
 from D96Lexer import D96Lexer
 from D96Parser import D96Parser

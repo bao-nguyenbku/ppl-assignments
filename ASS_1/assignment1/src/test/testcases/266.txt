@@ -1,7 +1,7 @@
 
             Class Program {
-                main() {
-
-                }
+                Var b: Int = A::$f()[1] + a.g() * 4 + !y;
+                Var a: Stu = New Teach(New Stu());
+                Var d: Boolean = 4 >= f && t <= 2 || 7 == !b + 3;
             }
         

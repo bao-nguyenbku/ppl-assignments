@@ -1,7 +1,8 @@
 
-            Class Program {
-                main() {
-
+            Class method {
+                $getName() {
+                    Out.print(B.$name);
+                    Return C.get;
                 }
             }
         

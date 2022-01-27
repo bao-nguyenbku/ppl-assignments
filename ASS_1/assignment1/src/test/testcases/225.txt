@@ -1,7 +1,7 @@
 
             Class Program {
                 main() {
-                
+                    Var a,b: Array[Float, 4.5];
                 }
             }
             Class lop {

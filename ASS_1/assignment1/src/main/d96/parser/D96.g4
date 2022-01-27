@@ -9,7 +9,7 @@ grammar D96;
 //     # result mean for input
 //     result = super().emit() 
     
-//     if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL:
+//     if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL or tk == self.ARRAY_SIZE:
 //         result.text = result.text.replace('_', '')
 //     return result
 // }
@@ -22,7 +22,6 @@ import inspect
 def emit(self):
     tk = self.type
     result = super().emit()
-    # delete later
     print('----------------------------------------------------------------------------')
     attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
     user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
@@ -39,10 +38,10 @@ options {
 	language = Python3;
 }
 // official program
-program: (class_declares_list | assign_statement)+ EOF;
+program: class_declares_list EOF;
 
 // test program
-// program: (instance_attr_call | exp | assign_statement) EOF;
+// program: (exp | return_statement | assign_statement)+ EOF;
 
 // Common class declaration
 class_declares_list: class_declare | class_declare class_declares_list;
@@ -55,9 +54,9 @@ class_members: LCB member_list RCB;
 member_list: members |;
 members: member members | member;
 
-member: var_declare | constructor_method | destructor_method | main_method | method_declare;
+member: attribute_declare | constructor_method | destructor_method | method_declare;
 
-main_method: MAIN LP RP block_statements;
+// main_method: 'main' LP RP block_statements;
 constructor_method: CONSTRUCTOR LP param_list RP block_statements;
 destructor_method: DESTRUCTOR LP RP block_statements;
 
@@ -77,16 +76,15 @@ statement
         | break_statement
         | continue_statement
         | return_statement
-        | instance_method_call SEMI
-        | instance_attr_call SEMI
-        | static_attr_call SEMI
-        | static_method_call SEMI
+        | static_method_call SEMI   // A::$func();
+        | exp instance_method_dot_call SEMI     // exp.func();
         | if_else_statement
         | foreach_statement
         ;
 break_statement: BREAK SEMI;
 continue_statement: CONTINUE SEMI;
-return_statement: RETURN exp? SEMI;
+return_statement: RETURN exp_value SEMI;
+exp_value:exp |;
 assign_statement: lhs ASSIGN exp SEMI;
 // IF ELSE STATEMENT---------------------------------
 // If (expression) {}
@@ -104,24 +102,29 @@ else_stmt: ELSE block_statements | ;
 foreach_statement: FOREACH LP (NORMAL_ID | DOLLAR_ID) IN exp DOTDOT exp increment RP block_statements;
 increment: BY exp | ;
 // lhs stand for "left hand side"
-lhs: NORMAL_ID | DOLLAR_ID | element_index | instance_attr_call | static_attr_call;
-element_index:  exp index_operator;
-
-function_call: (NORMAL_ID | DOLLAR_ID) LP list_exp RP;
+lhs: NORMAL_ID | DOLLAR_ID | element_index | static_attr_call | exp instance_attr_dot_call;
+element_index:  exp index_operator_list;
 
 // Class member access-------------------------------------
 static_attr_call: NORMAL_ID SCOPE DOLLAR_ID;
 static_method_call: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP;
 
-instance_attr_call: exp? DOT? NORMAL_ID;
-instance_method_call: exp? DOT? NORMAL_ID LP list_exp RP;
+instance_attr_dot_call: DOT NORMAL_ID;
+instance_method_dot_call: DOT NORMAL_ID LP list_exp RP;
 
-var_declare: (VAR | VAL) dec_and_init_list SEMI;
-
-dec_and_init_list: (NORMAL_ID | DOLLAR_ID) pair exp 
+attribute_declare: (VAR | VAL) dec_and_init_list1 SEMI;
+dec_and_init_list1: (NORMAL_ID | DOLLAR_ID) pair1 exp 
                 | (id_list|normal_id_list) COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID)
                 ;  
-pair: COMMA (NORMAL_ID | DOLLAR_ID) pair exp COMMA
+pair1: COMMA (NORMAL_ID | DOLLAR_ID) pair1 exp COMMA
+    | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
+    ;
+
+var_declare: (VAR | VAL) dec_and_init_list2 SEMI;
+dec_and_init_list2: NORMAL_ID pair2 exp 
+                | normal_id_list COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID)
+                ;  
+pair2: COMMA NORMAL_ID pair2 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;
 
@@ -178,22 +181,12 @@ ADD_STR: '+.';
 DOT: '.';
 DOTDOT:'..';
 SCOPE: '::';
-PROGRAM: 'Program';
-MAIN: 'main';
 // -----------------------DATA TYPE--------------------------
 CLASS: 'Class';
 FLOAT_TYPE: 'Float';
 STRING: 'String';
 INT_TYPE: 'Int';
-array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) COMMA ARRAY_SIZE RSB
-{
-#last = len(self._input.tokens)
-#for i in self._input.getTokens(0, last):
-    #i.text mean for text of token
-    #print(i.text)
-    #if i.type == self.INTEGER_LITERAL:
-    #    print(bin(int(i.text, 2)))
-};
+array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) COMMA ARRAY_SIZE RSB;
 
 BOOL_LITERAL: TRUE | FALSE;
 ARRAY_SIZE: ARRAY_SIZE_OCT | ARRAY_SIZE_BIN | ARRAY_SIZE_DEC | ARRAY_SIZE_HEX;
@@ -230,7 +223,7 @@ STRING_LITERAL: '"' STR* '"'
     newLineIdx = y.find('\n')
     if newLineIdx >= 0:
         raise UncloseString(y[1:newLineIdx-1])
-    if y[-2:] == '\'"':
+    if y[-2:] == '\'"' and y[-3] != '\\':
         raise UncloseString(y[1:])
     self.text = y[1:-1]
 };
@@ -250,9 +243,9 @@ literals: exp COMMA literals | exp;
 
 // FLOAT NUMBER LITERAL ------------------------------
 REAL_LITERAL: DEC_TYPE DOT (DEC_DIGIT | EXPONENT)?      // 1. or 1.2 or 1.e2
-              | DEC_TYPE EXPONENT                       // 1e4
-              | DEC_TYPE? DOT DEC_DIGIT EXPONENT        // 2.4e6 or .5e7
-              | DOT EXPONENT;                            // .e56
+            | DEC_TYPE EXPONENT                         // 1e4
+            | DEC_TYPE? DOT DEC_DIGIT EXPONENT          // 2.4e6 or .5e7
+            | DOT EXPONENT;                             // .e56
 
 // EXPRESSION -----------------------------------------
 // string expression
@@ -294,19 +287,23 @@ exp5: SUB exp5
     | exp6
     ;
 // a[exp] LEFT ASSOCIATE
-exp6: exp6 LSB exp RSB
+exp6: exp6 index_operator
     | exp7
     ;
 // a[exp][exp][....
-index_operator: LSB exp RSB 
-                | LSB exp RSB index_operator
-                ;
+index_operator_list: index_operators |;
+index_operators: index_operators index_operator | index_operator;
+index_operator: LSB exp RSB;
 // expression.identifier LEFT ASSOCIATE
-exp7: exp7 DOT NORMAL_ID LP list_exp RP
-    | exp7 DOT NORMAL_ID
-    | function_call
+exp7: exp7 index_operator_list instance_attr_dot_call
+    | exp7 index_operator_list instance_method_dot_call
     | exp8
     ;
+// exp7: exp7 index_operator_list DOT (NORMAL_ID | DOLLAR_ID) LP list_exp RP
+//     | exp7 index_operator_list DOT (NORMAL_ID | DOLLAR_ID)
+//     | function_call
+//     | exp8
+//     ;
 // identifier::static identifier NONE ASSOCIATE
 exp8: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP
     | NORMAL_ID SCOPE DOLLAR_ID
@@ -314,8 +311,8 @@ exp8: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP
     ;
 // New operator RIGHT ASSOCIATE
 exp9: NEW exp9 LP list_exp RP
-     | exp10
-     ;
+    | exp10
+    ;
 // exp can be number, identifier
 exp10
     : ARRAY_SIZE
@@ -325,7 +322,6 @@ exp10
     | REAL_LITERAL
     | STRING_LITERAL
     | NORMAL_ID
-    | DOLLAR_ID
     | SELF 
     | exp11
     ;
