@@ -4,6 +4,9 @@ from TestUtils import TestLexer
 
 class LexerSuite(unittest.TestCase):
 
+    def test(self):
+        inp = """ "The string: \\"""
+        self.assertTrue(TestLexer.test(inp,"Unclosed String: The string: \\", 99))
     def test_identifier_1(self):
         self.assertTrue(TestLexer.test("_ _123 __abc__", "_,_123,__abc__,<EOF>", 100))
 

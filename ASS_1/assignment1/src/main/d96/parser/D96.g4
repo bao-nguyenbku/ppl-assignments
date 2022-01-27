@@ -299,15 +299,11 @@ index_operator_list: index_operators |;
 index_operators: index_operators index_operator | index_operator;
 index_operator: LSB exp RSB;
 // expression.identifier LEFT ASSOCIATE
-exp7: exp7 index_operator_list instance_attr_dot_call
-    | exp7 index_operator_list instance_method_dot_call
+exp7: exp7 instance_attr_dot_call
+    | exp7 instance_method_dot_call
     | exp8
     ;
-// exp7: exp7 index_operator_list DOT (NORMAL_ID | DOLLAR_ID) LP list_exp RP
-//     | exp7 index_operator_list DOT (NORMAL_ID | DOLLAR_ID)
-//     | function_call
-//     | exp8
-//     ;
+
 // identifier::static identifier NONE ASSOCIATE
 exp8: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP
     | NORMAL_ID SCOPE DOLLAR_ID
