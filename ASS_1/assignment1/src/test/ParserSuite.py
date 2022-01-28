@@ -564,7 +564,7 @@ class ParserSuite(unittest.TestCase):
                 }
             }
         """
-        expect = "successful"
+        expect = "Error on line 9 col 50: ."
         self.assertTrue(TestParser.test(input, expect,237))
 
     def test38(self):
@@ -585,7 +585,7 @@ class ParserSuite(unittest.TestCase):
                 }
             }
         """
-        expect = "successful"
+        expect = "Error on line 6 col 50: ."
         self.assertTrue(TestParser.test(input, expect,238))
 
     def test39(self):
@@ -978,7 +978,7 @@ class ParserSuite(unittest.TestCase):
                 method () { }
             }
         """
-        expect = "successful"
+        expect = "Error on line 4 col 43: ."
         self.assertTrue(TestParser.test(input, expect,269))
 
     def test70(self):
@@ -1249,7 +1249,7 @@ class ParserSuite(unittest.TestCase):
                 }
             }
         """
-        expect = "successful"
+        expect = "Error on line 4 col 31: ."
         self.assertTrue(TestParser.test(input, expect,290))
 
     def test91(self):
@@ -1297,7 +1297,7 @@ class ParserSuite(unittest.TestCase):
                 }
             }
         """
-        expect = "successful"
+        expect = "Error on line 5 col 37: ."
         self.assertTrue(TestParser.test(input, expect,294))
 
     def test95(self):
