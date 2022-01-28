@@ -179,13 +179,13 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#instance_attr_dot_call.
-    def visitInstance_attr_dot_call(self, ctx:D96Parser.Instance_attr_dot_callContext):
+    # Visit a parse tree produced by D96Parser#instance_attr_call.
+    def visitInstance_attr_call(self, ctx:D96Parser.Instance_attr_callContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#instance_method_dot_call.
-    def visitInstance_method_dot_call(self, ctx:D96Parser.Instance_method_dot_callContext):
+    # Visit a parse tree produced by D96Parser#instance_method_call.
+    def visitInstance_method_call(self, ctx:D96Parser.Instance_method_callContext):
         return self.visitChildren(ctx)
 
 

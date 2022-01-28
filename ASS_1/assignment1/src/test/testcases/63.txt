@@ -1,0 +1,5 @@
+
+            If (a > b) {Return a;}
+            Elseif (a == b) {a = a + b;}
+            Else {Return b;}
+            

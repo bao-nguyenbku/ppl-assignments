@@ -3,44 +3,12 @@ grammar D96;
 @lexer::header {
 from lexererr import *
 }
-@lexer::members {
-def emit(self):
-    tk = self.type
-    result = super().emit() 
-    
-    if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL or tk == self.ARRAY_SIZE:
-        result.text = result.text.replace('_', '')
-    return result
-}
-// @lexer::header {
-// from lexererr import *
-// import inspect
-// }
-
-// @lexer::members {
-// def emit(self):
-//     tk = self.type
-//     result = super().emit()
-//     print('----------------------------------------------------------------------------')
-//     attributes = inspect.getmembers(D96Lexer, lambda a:not(inspect.isroutine(a)))
-//     user_defined_attr = [a for a in attributes if not(a[0].startswith('__') and a[0].endswith('__'))]
-//     for i in user_defined_attr:
-//         if tk == i[1]:
-//             print ("{:<30} {:<30} {:<50}".format(result.text, '|', i[0]))
-//     print('----------------------------------------------------------------------------')
-//     if tk == self.INTEGER_LITERAL or tk == self.REAL_LITERAL or tk == self.ARRAY_SIZE:
-//         result.text = result.text.replace('_', '')
-//     return result
-// }
 
 options {
 	language = Python3;
 }
 // official program
 program: class_declares_list EOF;
-
-// test program
-// program: (exp | return_statement | assign_statement)+ EOF;
 
 // Common class declaration
 class_declares_list: class_declare | class_declare class_declares_list;
@@ -49,13 +17,11 @@ extend: COLON NORMAL_ID |;
 class_members: LCB member_list RCB;
 
 // extend from super class
-// member_list: members | ;
 member_list: members |;
 members: member members | member;
 
 member: attribute_declare | constructor_method | destructor_method | method_declare;
 
-// main_method: 'main' LP RP block_statements;
 constructor_method: CONSTRUCTOR LP param_list RP block_statements;
 destructor_method: DESTRUCTOR LP RP block_statements;
 
@@ -76,14 +42,14 @@ statement
         | continue_statement
         | return_statement
         | static_method_call SEMI   // A::$func();
-        | exp instance_method_dot_call SEMI     // exp.func();
+        | instance_method_call SEMI     // exp.func();
         | if_else_statement
         | foreach_statement
         ;
 break_statement: BREAK SEMI;
 continue_statement: CONTINUE SEMI;
 return_statement: RETURN exp_value SEMI;
-exp_value:exp |;
+exp_value: exp |;
 assign_statement: lhs ASSIGN exp SEMI;
 // IF ELSE STATEMENT---------------------------------
 // If (expression) {}
@@ -98,18 +64,18 @@ elseif_stmt: ELSEIF LP exp RP block_statements;
 else_stmt: ELSE block_statements | ;
 
 // Foreach statement----------------------------------------
-foreach_statement: FOREACH LP (NORMAL_ID | DOLLAR_ID) IN exp DOTDOT exp increment RP block_statements;
+foreach_statement: FOREACH LP (NORMAL_ID | static_attr_call | instance_attr_call) IN exp DOTDOT exp increment RP block_statements;
 increment: BY exp | ;
 // lhs stand for "left hand side"
-lhs: NORMAL_ID | DOLLAR_ID | element_index | static_attr_call | exp instance_attr_dot_call;
+lhs: NORMAL_ID | element_index | static_attr_call | instance_attr_call;
 element_index:  exp index_operators;
 
 // Class member access-------------------------------------
 static_attr_call: NORMAL_ID SCOPE DOLLAR_ID;
 static_method_call: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP;
 
-instance_attr_dot_call: DOT NORMAL_ID;
-instance_method_dot_call: DOT NORMAL_ID LP list_exp RP;
+instance_attr_call: exp7 DOT NORMAL_ID;
+instance_method_call: exp7 DOT NORMAL_ID LP list_exp RP;
 
 attribute_declare: (VAR | VAL) dec_and_init_list1 SEMI;
 dec_and_init_list1: (NORMAL_ID | DOLLAR_ID) pair1 exp 
@@ -188,7 +154,11 @@ INT_TYPE: 'Int';
 array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) COMMA ARRAY_SIZE RSB;
 
 BOOL_LITERAL: TRUE | FALSE;
-ARRAY_SIZE: ARRAY_SIZE_OCT | ARRAY_SIZE_BIN | ARRAY_SIZE_DEC | ARRAY_SIZE_HEX;
+ARRAY_SIZE: ARRAY_SIZE_OCT {self.text = self.text.replace('_', '')}
+            | ARRAY_SIZE_BIN {self.text = self.text.replace('_', '')}
+            | ARRAY_SIZE_DEC {self.text = self.text.replace('_', '')}
+            | ARRAY_SIZE_HEX {self.text = self.text.replace('_', '')}
+            ;
 // INTEGER ARRAY SIZE (Use only for array type)
 fragment ARRAY_SIZE_HEX: ('0x'|'0X') [1-9A-F]
                 | ('0x'|'0X') [1-9A-F]('_'? [0-9A-F]+)*;
@@ -210,7 +180,11 @@ fragment BIN_TYPE: ('0b'|'0B')[01]
 fragment DEC_TYPE: [0-9]
                 | [1-9] ('_'? [0-9]+)*;
 
-INTEGER_LITERAL: OCT_TYPE | BIN_TYPE | DEC_TYPE | HEX_TYPE;
+INTEGER_LITERAL: OCT_TYPE {self.text = self.text.replace('_', '')} 
+                | BIN_TYPE {self.text = self.text.replace('_', '')} 
+                | DEC_TYPE {self.text = self.text.replace('_', '')}
+                | HEX_TYPE {self.text = self.text.replace('_', '')}
+                ;
 
 // STRING LITERAL----------------------------------------
 fragment STR: '\'"' | ~[\\"] | ESC_SEQ;
@@ -246,10 +220,14 @@ literal_list: literals | ;
 literals: exp COMMA literals | exp;
 
 // FLOAT NUMBER LITERAL ------------------------------
-REAL_LITERAL: DEC_TYPE DOT (DEC_DIGIT | EXPONENT)?      // 1. or 1.2 or 1.e2
-            | DEC_TYPE EXPONENT                         // 1e4
-            | DEC_TYPE? DOT DEC_DIGIT EXPONENT          // 2.4e6 or .5e7
-            | DOT EXPONENT;                             // .e56
+            // 1. or 1.2 or 1.e2
+REAL_LITERAL: DEC_TYPE DOT (DEC_DIGIT | EXPONENT)? {self.text = self.text.replace('_', '')} 
+            // 1e4
+            | DEC_TYPE EXPONENT {self.text = self.text.replace('_', '')} 
+            // 2.4e6 or .5e7
+            | DEC_TYPE? DOT DEC_DIGIT EXPONENT {self.text = self.text.replace('_', '')} 
+            // .e56
+            | DOT EXPONENT {self.text = self.text.replace('_', '')}; 
 
 // EXPRESSION -----------------------------------------
 // string expression
@@ -298,8 +276,8 @@ exp6: exp6 index_operator
 index_operators: index_operators index_operator | index_operator;
 index_operator: LSB exp RSB;
 // expression.identifier LEFT ASSOCIATE
-exp7: exp7 instance_attr_dot_call
-    | exp7 instance_method_dot_call
+exp7: exp7 DOT NORMAL_ID
+    | exp7 DOT NORMAL_ID LP list_exp RP
     | exp8
     ;
 
