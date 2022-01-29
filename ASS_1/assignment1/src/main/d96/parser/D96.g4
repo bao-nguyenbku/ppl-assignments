@@ -1,3 +1,5 @@
+// 1912683
+// Nguyen Thien Bao
 grammar D96;
 
 @lexer::header {
@@ -67,8 +69,7 @@ else_stmt: ELSE block_statements | ;
 foreach_statement: FOREACH LP (NORMAL_ID | static_attr_call | instance_attr_call) IN exp DOTDOT exp increment RP block_statements;
 increment: BY exp | ;
 // lhs stand for "left hand side"
-lhs: NORMAL_ID | element_index | static_attr_call | instance_attr_call;
-element_index:  exp index_operators;
+lhs: NORMAL_ID | exp6 | static_attr_call | instance_attr_call;
 
 // Class member access-------------------------------------
 static_attr_call: NORMAL_ID SCOPE DOLLAR_ID;
@@ -151,7 +152,7 @@ CLASS: 'Class';
 FLOAT_TYPE: 'Float';
 STRING: 'String';
 INT_TYPE: 'Int';
-array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) COMMA ARRAY_SIZE RSB;
+array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING) COMMA ARRAY_SIZE RSB;
 
 BOOL_LITERAL: TRUE | FALSE;
 ARRAY_SIZE: ARRAY_SIZE_OCT {self.text = self.text.replace('_', '')}
@@ -269,12 +270,11 @@ exp5: SUB exp5
     | exp6
     ;
 // a[exp] LEFT ASSOCIATE
-exp6: exp6 index_operator
+// a[exp][exp][....
+exp6: exp6 LSB exp RSB
     | exp7
     ;
-// a[exp][exp][....
-index_operators: index_operators index_operator | index_operator;
-index_operator: LSB exp RSB;
+
 // expression.identifier LEFT ASSOCIATE
 exp7: exp7 DOT NORMAL_ID
     | exp7 DOT NORMAL_ID LP list_exp RP
@@ -299,7 +299,7 @@ exp10
     | REAL_LITERAL
     | STRING_LITERAL
     | NORMAL_ID
-    | SELF 
+    | SELF
     | exp11
     ;
 

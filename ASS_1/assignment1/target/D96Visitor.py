@@ -164,11 +164,6 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#element_index.
-    def visitElement_index(self, ctx:D96Parser.Element_indexContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by D96Parser#static_attr_call.
     def visitStatic_attr_call(self, ctx:D96Parser.Static_attr_callContext):
         return self.visitChildren(ctx)
@@ -276,16 +271,6 @@ class D96Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by D96Parser#exp6.
     def visitExp6(self, ctx:D96Parser.Exp6Context):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#index_operators.
-    def visitIndex_operators(self, ctx:D96Parser.Index_operatorsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#index_operator.
-    def visitIndex_operator(self, ctx:D96Parser.Index_operatorContext):
         return self.visitChildren(ctx)
 
 

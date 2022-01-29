@@ -1,8 +1,9 @@
+# 1912683
+# Nguyen Thien Bao
 import unittest
 from TestUtils import TestParser
 
 class ParserSuite(unittest.TestCase):
-
     def test0(self):
         input = """
             Class Dog: Animal { }
@@ -16,6 +17,7 @@ class ParserSuite(unittest.TestCase):
             """
         expect = "Error on line 7 col 32: $e"
         self.assertTrue(TestParser.test(input, expect, 200))
+
     def test1(self):
         input = """
             Class Dog: Animal {
