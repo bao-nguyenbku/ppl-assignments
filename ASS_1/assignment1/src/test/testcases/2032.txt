@@ -1,0 +1,16 @@
+
+            Class obj {
+                Val obj1, $obj2: Int = 1 + 5, 2;
+            }
+            Class Test {
+                method1() {
+                    a[1] = 0;
+                    Self.id = 1912980;
+                    Test::$id = 1912981;
+                    a[1].id = 10;
+                    a = Main[1][2][3].get();
+                    d = Main[1][2][3];
+                    Return a;
+                }
+            }
+        
