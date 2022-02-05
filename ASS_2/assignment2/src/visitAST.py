@@ -107,7 +107,7 @@ class ASTGeneration(D96Visitor):
     def visitInstance_method_call(self, ctx: D96Parser.Instance_method_callContext):
         return None
 
-    def visitAttribute_declare(self, ctx: D96Parser.Attribute_declareContext):
+    def visitVar_attribute_declare(self, ctx: D96Parser.Var_attribute_declareContext):
         return None
 
     def visitDec_and_init_list1(self, ctx: D96Parser.Dec_and_init_list1Context):
@@ -116,13 +116,31 @@ class ASTGeneration(D96Visitor):
     def visitPair1(self, ctx: D96Parser.Pair1Context):
         return None
 
-    def visitVar_declare(self, ctx: D96Parser.Var_declareContext):
+    def visitConst_attribute_declare(self, ctx: D96Parser.Const_attribute_declareContext):
         return None
 
     def visitDec_and_init_list2(self, ctx: D96Parser.Dec_and_init_list2Context):
         return None
 
     def visitPair2(self, ctx: D96Parser.Pair2Context):
+        return None
+
+    def visitVar_declare(self, ctx: D96Parser.Var_declareContext):
+        return None
+
+    def visitDec_and_init_list3(self, ctx: D96Parser.Dec_and_init_list3Context):
+        return None
+
+    def visitPair3(self, ctx: D96Parser.Pair3Context):
+        return None
+
+    def visitConst_declare(self, ctx: D96Parser.Const_declareContext):
+        return None
+
+    def visitDec_and_init_list4(self, ctx: D96Parser.Dec_and_init_list4Context):
+        return None
+
+    def visitPair4(self, ctx: D96Parser.Pair4Context):
         return None
 
     def visitArray_type(self, ctx: D96Parser.Array_typeContext):

@@ -1,0 +1,8 @@
+
+            Class obj {
+                Val obj1, $obj2: Int = 10, 2;
+            }
+            Class Test {
+               
+            }
+        

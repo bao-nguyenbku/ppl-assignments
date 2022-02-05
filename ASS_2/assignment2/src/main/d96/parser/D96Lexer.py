@@ -1,8 +1,11 @@
-# Generated from e:\HCMUT\PRINCIPLES_OF_PROGRAMMING_LANGUAGE\ppl-assignments\ASS_2\assignment2\src\main\d96\parser\D96backup.g4 by ANTLR 4.8
+# Generated from main/d96/parser/D96.g4 by ANTLR 4.9.2
 from antlr4 import *
 from io import StringIO
-from typing.io import TextIO
 import sys
+if sys.version_info[1] > 5:
+    from typing import TextIO
+else:
+    from typing.io import TextIO
 
 
 from lexererr import *
@@ -460,11 +463,11 @@ class D96Lexer(Lexer):
                   "REAL_LITERAL", "NORMAL_ID", "DOLLAR_ID", "BLOCK_COMMENT", 
                   "WS", "ERROR_CHAR" ]
 
-    grammarFileName = "D96backup.g4"
+    grammarFileName = "D96.g4"
 
     def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.8")
+        self.checkVersion("4.9.2")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None

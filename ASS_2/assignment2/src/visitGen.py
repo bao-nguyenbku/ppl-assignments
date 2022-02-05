@@ -3,7 +3,7 @@ with open('./main/d96/parser/D96.g4', 'r', encoding='utf-8') as file:
     for header in file:
         if header.startswith('program'):
             break
-    rule = header[:header.find(':')].title()
+    rule = header[:header.find(':')].strip().title()
     # Write header and program rule to output file
     ASTFile = open('visitAST.py', 'w', encoding='utf-8')
     ASTFile.write("""from D96Visitor import D96Visitor
