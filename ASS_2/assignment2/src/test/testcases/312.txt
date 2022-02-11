@@ -1,0 +1,8 @@
+
+        Class Dog : Animal 
+        { 
+            $test()
+            { 
+                Var ast, d, c : Int = 1, 5, 7; 
+            } 
+        }

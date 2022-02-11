@@ -1,0 +1,24 @@
+
+        Class Dog : Animal 
+        { 
+            $test()
+            { 
+                Var a, b, c : Int = 0, 0, 0;
+                If (a == b)
+                {
+                    b = c;
+                    Var div, mod, mul : Float = 0.25, 1.2e5, 0.3;
+                    c = div / mod * mul;
+                }
+                Elseif (a != b)
+                {
+                    b = 0;
+                    c = 0;
+                }
+                Else
+                {
+                    b = -1;
+                    a = -2;
+                }
+            } 
+        }

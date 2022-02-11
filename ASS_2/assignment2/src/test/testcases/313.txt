@@ -1,0 +1,12 @@
+
+        Class Dog : Animal 
+        { 
+            $test()
+            { 
+                Var ast, d, c : Int = 1, 5, 7; 
+                Var a : Boolean = True; 
+                Var a : String = "abc";
+            } 
+            Var c, $d, e, $f : Int = 1, 2, 2, 3;
+            Var a, b : Int = 5 - 6 * 7, 6 / 7 + 2;
+        }

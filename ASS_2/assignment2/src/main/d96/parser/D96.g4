@@ -89,7 +89,7 @@ pair1: COMMA (NORMAL_ID | DOLLAR_ID) pair1 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;
 const_attribute_declare:VAL dec_and_init_list2 SEMI;
-dec_and_init_list2: (NORMAL_ID | DOLLAR_ID) pair2 exp;  
+dec_and_init_list2: (NORMAL_ID | DOLLAR_ID) pair2 exp;
 pair2: COMMA (NORMAL_ID | DOLLAR_ID) pair2 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;

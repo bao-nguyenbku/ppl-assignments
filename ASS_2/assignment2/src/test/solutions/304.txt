@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(Dog),Id(Animal),[MethodDecl(Id($test),Static,[],None),MethodDecl(Id(main),Instance,[],None)])])

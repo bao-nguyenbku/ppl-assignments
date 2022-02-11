@@ -1,0 +1,13 @@
+
+        Class Dog : Animal 
+        { 
+            Val $a : String;
+            Var b, $c: Int;
+            $test()
+            { 
+                Var ast, bdafs, cdadsas: Int; 
+                Val bv : Float;
+                Break; 
+                Continue; 
+            } 
+        }

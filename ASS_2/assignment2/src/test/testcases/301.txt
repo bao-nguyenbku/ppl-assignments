@@ -1,3 +1,7 @@
-int main () {
-            putIntLn(4);
-        }
+
+        Class Program {
+            main () {
+                a = 1;
+            }
+        } 
+        

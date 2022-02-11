@@ -4,17 +4,17 @@ import unittest
 from TestUtils import TestParser
 
 class ParserSuite(unittest.TestCase):
-    def test32(self):
-        """Assignment statement"""
-        input = """
-            Class obj {
-                Val obj1, $obj2: Int = 10, 2;
-            }
-            Class Test {
-            }
-        """
-        expect = "successful"
-        self.assertTrue(TestParser.test(input, expect, 2032))
+    # def test32(self):
+    #     """Assignment statement"""
+    #     input = """
+    #         Class obj {
+    #             Val obj1, $obj2: Int = 10, 2;
+    #         }
+    #         Class Test {
+    #         }
+    #     """
+    #     expect = "successful"
+    #     self.assertTrue(TestParser.test(input, expect, 2032))
 
     # def test0(self):
     #     input = """
@@ -58,36 +58,36 @@ class ParserSuite(unittest.TestCase):
     #         """
     #     expect = "successful"
     #     self.assertTrue(TestParser.test(input, expect, 202))
-    # def test3(self):
-    #     input = """
-    #         Class A {
-    #             getName() {
-    #                 Var b: Float = 0.3;
-    #             }
-    #             func() {
-    #                 If (a >= b) {
-    #                     Var a: Int = 0;
-    #                     a = a + 3;
-    #                 }
-    #                 Elseif (b >= c) {
-    #                     Self.getName(a >= b);
-    #                 }
-    #                 Elseif (12 >= g) {
-    #                     Self.insert("String");
-    #                 }
-    #                 Else {
-    #                     GiaBao = Hieu;
-    #                     Hung = Vi;
-    #                 }
-    #             }
+    def test3(self):
+        input = """
+            Class A {
+                getName() {
+                    Var b: Float = 0.3;
+                }
+                func() {
+                    If (a >= b) {
+                        Var a: Int = 0;
+                        a = a + 3;
+                    }
+                    Elseif (b >= c) {
+                        Self.getName(a >= b);
+                    }
+                    Elseif (12 >= g) {
+                        Self.insert("String");
+                    }
+                    Else {
+                        GiaBao = Hieu;
+                        Hung = Vi;
+                    }
+                }
 
-    #             setAge(age: Int) {
-    #                 Self.age = age;
-    #             }
-    #         }
-    #         """
-    #     expect = "successful"
-    #     self.assertTrue(TestParser.test(input, expect, 203))
+                setAge(age: Int) {
+                    Self.age = age;
+                }
+            }
+            """
+        expect = "successful"
+        self.assertTrue(TestParser.test(input, expect, 203))
     # def test4(self):
     #     input = """ 
     #         Class MeowMeow: Dog {

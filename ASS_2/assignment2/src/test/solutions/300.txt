@@ -1,1 +1,1 @@
-Program([Id(myClass),[]])
+Program([ClassDecl(Id(Cat),[MethodDecl(Id(f),Instance,[],Block([],[For(Id($a),IntLit(0),IntLit(10),True,Block([],[AssignStmt(Id(a),IntLit(3))])])]))])])

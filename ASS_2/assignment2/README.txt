@@ -8,4 +8,5 @@ Then type: python run.py test CheckerSuite
 Then type: python run.py test CodeGenSuite
 
 
-
+Note:
+- Trong Return statement, nếu không có expr thì expr = None

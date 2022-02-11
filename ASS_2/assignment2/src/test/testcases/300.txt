@@ -1,1 +1,8 @@
-a, b, c, d
+
+        Class Cat {
+            f() {
+                Foreach (name::$a In 0 .. 10) {
+                    a = 3;
+                }
+            }
+        }

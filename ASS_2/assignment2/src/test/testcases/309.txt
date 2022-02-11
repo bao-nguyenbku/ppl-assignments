@@ -1,0 +1,10 @@
+
+        Class Dog : Animal 
+        { 
+            $test()
+            { 
+                Var ast, bdafs, cdadsas: Int; 
+                Break; 
+                Continue; 
+            } 
+        }
