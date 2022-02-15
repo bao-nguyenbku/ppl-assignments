@@ -1,0 +1,10 @@
+
+            Class A {
+                main() {
+                    Program.main();
+                    Val a: Int;
+                    Val b: Float = .2e6;
+                    Lang::$e();
+                }
+            }
+            

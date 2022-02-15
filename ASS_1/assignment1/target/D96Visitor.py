@@ -224,16 +224,6 @@ class D96Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by D96Parser#literal_list.
-    def visitLiteral_list(self, ctx:D96Parser.Literal_listContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by D96Parser#literals.
-    def visitLiterals(self, ctx:D96Parser.LiteralsContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by D96Parser#exp.
     def visitExp(self, ctx:D96Parser.ExpContext):
         return self.visitChildren(ctx)

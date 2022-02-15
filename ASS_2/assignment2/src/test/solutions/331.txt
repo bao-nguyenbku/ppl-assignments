@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(A),Id(B),[AttributeDecl(Instance,VarDecl(Id(a),StringType,StringLit(Hello))),MethodDecl(Id(main),Instance,[],Block([Call(Id(myC),Id(f),[]),AssignStmt(Id(a),CallExpr(Id(myB),Id(f),[])),Return(FieldAccess(Self(),Id(b)))]))])])

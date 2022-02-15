@@ -1,0 +1,17 @@
+
+            Class Reverse {
+                reverse() {
+                    IO.input("Enter an integer: ");
+                    Foreach (n In n .. 0) {
+                        remainder = n % 10;
+                        reversed_number = reversed_number * 10 + remainder;
+                        n = n / 10;
+                    }
+                }
+                Var n, reminder: Int;
+                Var reversed_number: Int = 0;
+                get() {
+                    Return Self.reversed_number;
+                }
+            }
+            

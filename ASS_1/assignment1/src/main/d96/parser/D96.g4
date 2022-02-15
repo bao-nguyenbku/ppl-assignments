@@ -10,7 +10,9 @@ options {
 	language = Python3;
 }
 // official program
+// program: normal_id_list EOF;
 program: class_declares_list EOF;
+
 
 // Common class declaration
 class_declares_list: class_declare | class_declare class_declares_list;
@@ -94,6 +96,7 @@ pair2: COMMA NORMAL_ID pair2 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;
 
+
 VAL: 'Val';
 VAR: 'Var';
 LP: '('; // Left Parenthesis
@@ -113,8 +116,6 @@ IF: 'If';
 ELSEIF: 'Elseif';
 ELSE: 'Else';
 FOREACH: 'Foreach';
-TRUE: 'True';
-FALSE: 'False';
 ARRAY: 'Array';
 IN: 'In';
 BOOLEAN: 'Boolean';
@@ -154,7 +155,7 @@ STRING: 'String';
 INT_TYPE: 'Int';
 array_type: ARRAY LSB (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING) COMMA ARRAY_SIZE RSB;
 
-BOOL_LITERAL: TRUE | FALSE;
+BOOL_LITERAL: 'True' | 'False';
 ARRAY_SIZE: ARRAY_SIZE_OCT {self.text = self.text.replace('_', '')}
             | ARRAY_SIZE_BIN {self.text = self.text.replace('_', '')}
             | ARRAY_SIZE_DEC {self.text = self.text.replace('_', '')}
@@ -216,9 +217,9 @@ UNCLOSE_STRING: '"' STR*
 };
 
 // ARRAY LITERAL ------------------------------------
-array_literal: ARRAY LP literal_list RP;
-literal_list: literals | ;
-literals: exp COMMA literals | exp;
+array_literal: ARRAY LP list_exp RP;
+// literal_list: literals | ;
+// literals: exp COMMA literals | exp;
 
 // FLOAT NUMBER LITERAL ------------------------------
             // 1. or 1.2 or 1.e2
@@ -232,49 +233,48 @@ REAL_LITERAL: DEC_TYPE DOT (DEC_DIGIT | EXPONENT)? {self.text = self.text.replac
 
 // EXPRESSION -----------------------------------------
 // string expression
-exp: exp0 EQUAL_STR exp0
-    | exp0 ADD_STR exp0
-    | exp0
+exp: exp0 EQUAL_STR exp0 //OK
+    | exp0 ADD_STR exp0 //OK
+    | exp0 //OK
     ; 
 // <, <=, >, >=, ==, != NONE ASSOCIATE
-exp0: exp1 LT exp1 
-    | exp1 LTE exp1 
-    | exp1 GT exp1 
-    | exp1 EQUAL exp1 
-    | exp1 NOTEQUAL exp1 
-    | exp1 GTE exp1 
-    | exp1
+exp0: exp1 LT exp1  //OK
+    | exp1 LTE exp1 //OK
+    | exp1 GT exp1 //OK
+    | exp1 EQUAL exp1 //OK
+    | exp1 NOTEQUAL exp1 //OK
+    | exp1 GTE exp1 //OK
+    | exp1 //OK
     ; 
 // &&, || LEFT ASSOCIATE
-exp1: exp1 AND exp2
-    | exp1 OR exp2 
-    | exp2
+exp1: exp1 AND exp2 //OK
+    | exp1 OR exp2  //OK
+    | exp2 //OK
     ;
 // +, - LEFT ASSOCIATE
-exp2: exp2 ADD exp3
-    | exp2 SUB exp3
-    | exp3
+exp2: exp2 ADD exp3 //OK
+    | exp2 SUB exp3 //OK
+    | exp3 //OK
     ;
 // *, /, % LEFT ASSOCIATE
-exp3: exp3 MUL exp4
-    | exp3 DIV exp4
-    | exp3 MOD exp4
-    | exp4
+exp3: exp3 MUL exp4 //OK
+    | exp3 DIV exp4 //OK
+    | exp3 MOD exp4 //OK
+    | exp4 //OK
     ;
 // ! RIGHT ASSOCCIATE
-exp4: NOT exp4 
-    | exp5
+exp4: NOT exp4 //OK
+    | exp5 //OK
     ;
 // - (Sign) RIGHT ASSOCIATE
-exp5: SUB exp5 
-    | exp6
+exp5: SUB exp5 //OK
+    | exp6 //OK
     ;
 // a[exp] LEFT ASSOCIATE
 // a[exp][exp][....
 exp6: exp6 LSB exp RSB
     | exp7
     ;
-
 // expression.identifier LEFT ASSOCIATE
 exp7: exp7 DOT NORMAL_ID
     | exp7 DOT NORMAL_ID LP list_exp RP
@@ -300,6 +300,7 @@ exp10
     | STRING_LITERAL
     | NORMAL_ID
     | SELF
+    | NULL
     | exp11
     ;
 
@@ -308,14 +309,14 @@ exp11: LP exp RP;
 
 // list of expressions separated by ',' (COMMA)
 list_exp: exps |;
-exps: exp COMMA exps | exp;
+exps: exp COMMA exps | exp; //OK
 
 
 // Identifier -----------------------------------------
 NORMAL_ID: [_a-zA-Z][_a-zA-Z0-9]*;
 DOLLAR_ID: '$' [_0-9a-zA-Z]+;
-normal_id_list: NORMAL_ID COMMA normal_id_list | NORMAL_ID;
-id_list: (NORMAL_ID | DOLLAR_ID) COMMA id_list | (NORMAL_ID | DOLLAR_ID);
+normal_id_list: NORMAL_ID COMMA normal_id_list | NORMAL_ID; //OK
+id_list: (NORMAL_ID | DOLLAR_ID) COMMA id_list | (NORMAL_ID | DOLLAR_ID); //OK
 
 BLOCK_COMMENT: '##' .*? '##' -> skip;
 WS: [ \t\r\n]+ -> skip; // skip spaces, tabs, newlines

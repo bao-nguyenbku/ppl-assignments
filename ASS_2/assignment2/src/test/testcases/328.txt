@@ -1,0 +1,33 @@
+
+        Class Dog 
+        { 
+            Val d,b: Int = 9, 5;
+            Var c,d: Float = .2e5, 0.5;
+            main()
+            {
+            }
+            Val d,b: Int = 9, 5;
+            Var c,d: Float = .2e5, 0.5;
+            main()
+            {
+            }
+            Val d,b: Int = 9, 5;
+            Var c,d: Float = .2e5, 0.5;
+            main()
+            {
+            }
+            Val d,b: Int = 9, 5;
+            Var c,d: Float = .2e5, 0.5;
+            main()
+            {
+            }
+            main()
+            {
+            }
+            main()
+            {
+            }
+            main()
+            {
+            }
+        }

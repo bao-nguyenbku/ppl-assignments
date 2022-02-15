@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(Dog),Id(Cat),[AttributeDecl(Instance,ConstDecl(Id(a),IntType,IntLit(106))),MethodDecl(Id(f),Instance,[],Block([If(Id(a),Block([For(Id(i),IntLit(0),IntLit(100),BinaryOp(<=,Id(t),IntLit(1)),Block([If(BinaryOp(>,Id(i),IntLit(10)),Block([If(Id(y),Block([Return()]),If(Id(b),Block([Break])))]))])])]))]))])])

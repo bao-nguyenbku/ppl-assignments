@@ -1,0 +1,12 @@
+
+            Class Program {
+                main() {
+                    a = New B();
+                }
+            }
+            Class Main {
+                main() {
+                    Return a;
+                }
+            }
+            

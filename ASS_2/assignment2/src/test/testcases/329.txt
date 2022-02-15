@@ -1,0 +1,6 @@
+
+        Class Dog 
+        { 
+            Var a : Int;
+            Val b : Int;
+        }

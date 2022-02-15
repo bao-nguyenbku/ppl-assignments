@@ -1,3 +1,12 @@
 
-                Class main{}
-                
+            Class Dog: Animal {
+                $gaugau() {
+                    a = b[7][2];
+                }
+            }
+            Class Snake: De {
+                $OpOp() {
+                    Return Self.Op;
+                }
+            }
+            

@@ -1,0 +1,15 @@
+
+            Class Roman {
+                convertToRoman(num: Int) {
+                    Var lookup: Array[Array[Int, 2], 0x10] = Array(Array(M, 1000), Array(CM, 900), Array(D, 500), Array(CD, 400), Array(C, 100), Array(XC, 90), Array(L, 50), Array(XL, 40), Array(X, 10), Array(IX, 9), Array(V, 5), Array(IV, 4), Array(I, 1));
+                    Var roman: String;
+                    Foreach (i In 0 .. lookup.length()) {
+                        Foreach (num In lookup[i] .. 0) {
+                            roman = roman + i;
+                            num = num - lookup[i];
+                        }
+                    }
+                    Return roman;
+                }
+            }
+            

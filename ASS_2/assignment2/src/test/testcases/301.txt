@@ -1,7 +1,5 @@
 
-        Class Program {
-            main () {
-                a = 1;
-            }
-        } 
-        
+        Class Dog { 
+            Var r: Float = 0xA001;
+            Val $a, $b: Boolean = True, True;
+        }

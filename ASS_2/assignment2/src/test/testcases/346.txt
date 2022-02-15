@@ -1,0 +1,20 @@
+
+            Class Max {
+                findMax(arr: Array[Int, 100]) {
+                    Var maxElement: Int = arr[1];
+                    Foreach (i In 2 .. arr.length()) {
+                        If (maxElement < arr[i]) {
+                            maxElement = arr[i];
+                        }
+                    }
+                    Return maxElement;
+                }
+            }
+            Class Program {
+                main() {
+                    arr = IO.input("Your array: ");
+                    max = New Max();
+                    Console.print(max.findMax(arr));
+                }
+            }
+            

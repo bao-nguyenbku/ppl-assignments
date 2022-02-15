@@ -1,0 +1,19 @@
+
+            Class Dog: Cat {
+                Val a: Int = 0x6A;
+                f() {
+                    If (a) {
+                        Foreach (i In 0 .. 100 By t <= 0b1) {
+                            If (i > 10) {
+                                If (y) {
+                                    Return;
+                                }
+                                Elseif (b) {
+                                    Break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            

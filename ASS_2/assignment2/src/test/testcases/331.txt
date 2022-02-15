@@ -1,0 +1,10 @@
+
+            Class A: B {
+                Var a: String = "Hello";
+                main() {
+                    myC.f();
+                    a = myB.f();
+                    Return Self.b;
+                }
+            }
+            

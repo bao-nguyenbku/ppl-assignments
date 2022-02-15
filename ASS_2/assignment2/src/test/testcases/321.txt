@@ -1,0 +1,9 @@
+
+        Class Dog : Animal 
+        { 
+            $test()
+            { 
+                Player::$name = "Hieu";
+                a::$c = "Henry" +. "Le";
+            } 
+        }

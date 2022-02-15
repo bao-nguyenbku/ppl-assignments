@@ -1,0 +1,8 @@
+
+            Class Dog: Animal {
+                $gaugau() {
+                    a = b[7][2];
+                    c[2][3] = d;
+                }
+            }
+            

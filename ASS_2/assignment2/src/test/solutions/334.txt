@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(a),NewExpr(Id(B),[]))]))]),ClassDecl(Id(Main),[MethodDecl(Id(main),Instance,[],Block([Return(Id(a))]))])])

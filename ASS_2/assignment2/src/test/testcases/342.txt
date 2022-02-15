@@ -1,0 +1,5 @@
+
+            Class B {
+                Val a, $b, c, $d: Int = 1 + 2, 4, 0b1, 06;
+            }
+            

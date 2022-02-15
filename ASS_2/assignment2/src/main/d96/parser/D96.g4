@@ -24,7 +24,7 @@ class_members: LCB member_list RCB;
 member_list: members |;
 members: member members | member;
 
-member: var_attribute_declare | const_attribute_declare | constructor_method | destructor_method | method_declare;
+member: attribute_declare | constructor_method | destructor_method | method_declare;
 
 constructor_method: CONSTRUCTOR LP param_list RP block_statements;
 destructor_method: DESTRUCTOR LP RP block_statements;
@@ -42,7 +42,6 @@ statements: statement statements | statement;
 statement 
         : assign_statement 
         | var_declare
-        | const_declare
         | break_statement
         | continue_statement
         | return_statement
@@ -81,31 +80,22 @@ static_method_call: NORMAL_ID SCOPE DOLLAR_ID LP list_exp RP;
 instance_attr_call: exp7 DOT NORMAL_ID;
 instance_method_call: exp7 DOT NORMAL_ID LP list_exp RP;
 
-var_attribute_declare: VAR dec_and_init_list1 SEMI;
+attribute_declare: (VAR | VAL) dec_and_init_list1 SEMI;
 dec_and_init_list1: (NORMAL_ID | DOLLAR_ID) pair1 exp 
                 | (id_list|normal_id_list) COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID)
                 ;  
 pair1: COMMA (NORMAL_ID | DOLLAR_ID) pair1 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;
-const_attribute_declare:VAL dec_and_init_list2 SEMI;
-dec_and_init_list2: (NORMAL_ID | DOLLAR_ID) pair2 exp;
-pair2: COMMA (NORMAL_ID | DOLLAR_ID) pair2 exp COMMA
+
+var_declare: (VAR | VAL) dec_and_init_list2 SEMI;
+dec_and_init_list2: NORMAL_ID pair2 exp 
+                | normal_id_list COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID)
+                ;  
+pair2: COMMA NORMAL_ID pair2 exp COMMA
     | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
     ;
 
-var_declare: VAR dec_and_init_list3 SEMI;
-dec_and_init_list3: NORMAL_ID pair3 exp 
-                | normal_id_list COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID)
-                ;  
-pair3: COMMA NORMAL_ID pair3 exp COMMA
-    | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
-    ;
-const_declare: VAL dec_and_init_list4 SEMI;
-dec_and_init_list4: NORMAL_ID pair4 exp;  
-pair4: COMMA NORMAL_ID pair4 exp COMMA
-    | COLON (BOOLEAN|INT_TYPE|FLOAT_TYPE|array_type|STRING|NORMAL_ID) ASSIGN
-    ;
 
 VAL: 'Val';
 VAR: 'Var';
@@ -227,9 +217,9 @@ UNCLOSE_STRING: '"' STR*
 };
 
 // ARRAY LITERAL ------------------------------------
-array_literal: ARRAY LP literal_list RP;
-literal_list: literals | ;
-literals: exp COMMA literals | exp;
+array_literal: ARRAY LP list_exp RP;
+// literal_list: literals | ;
+// literals: exp COMMA literals | exp;
 
 // FLOAT NUMBER LITERAL ------------------------------
             // 1. or 1.2 or 1.e2
@@ -282,10 +272,13 @@ exp5: SUB exp5 //OK
     ;
 // a[exp] LEFT ASSOCIATE
 // a[exp][exp][....
-exp6: exp6 LSB exp RSB
+exp6: exp6 index_operators
     | exp7
     ;
-
+index_operators: index_operators LSB exp RSB | LSB exp RSB;
+// exp6: exp6 LSB exp RSB
+//     | exp7
+//     ;
 // expression.identifier LEFT ASSOCIATE
 exp7: exp7 DOT NORMAL_ID
     | exp7 DOT NORMAL_ID LP list_exp RP

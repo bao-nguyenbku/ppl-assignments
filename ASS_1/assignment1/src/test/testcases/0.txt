@@ -1,1 +1,5 @@
-"str1  Hello World'" ahihi 
+Class Cat {
+            f() {
+                a = b[1][2][3];
+            }
+        }

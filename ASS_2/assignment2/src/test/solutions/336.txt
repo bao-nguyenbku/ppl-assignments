@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(A),[MethodDecl(Id(main),Instance,[],Block([Call(Id(Program),Id(main),[]),ConstDecl(Id(a),IntType,None),ConstDecl(Id(b),FloatType,FloatLit(200000.0)),Call(Id(Lang),Id($e),[])]))])])

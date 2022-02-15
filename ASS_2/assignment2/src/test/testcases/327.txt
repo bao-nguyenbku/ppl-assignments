@@ -1,0 +1,12 @@
+
+        Class Dog 
+        { 
+            Val d,b: Int = 9, 5;
+            main()
+            {
+                Player::$setName("Henry");
+                Var player: String = Player::$getName();
+                Player::$age = 22;
+                Player::$Move(0,1,0);
+            }
+        }

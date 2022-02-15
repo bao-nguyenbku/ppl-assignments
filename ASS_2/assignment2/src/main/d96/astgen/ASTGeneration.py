@@ -1,3 +1,5 @@
+from operator import index
+from unicodedata import name
 from D96Visitor import D96Visitor
 from D96Parser import D96Parser
 from AST import *
@@ -58,38 +60,32 @@ class ASTGeneration(D96Visitor):
         if ctx.destructor_method():
             return [self.visit(ctx.destructor_method())]
 
-        if ctx.var_attribute_declare():
-            return self.visit(ctx.var_attribute_declare())
-
-        if ctx.const_attribute_declare():
-            return self.visit(ctx.const_attribute_declare())
-        
+        if ctx.attribute_declare():
+            return self.visit(ctx.attribute_declare())
 
     def visitConstructor_method(self, ctx: D96Parser.Constructor_methodContext):
-        methodName = ctx.CONSTRUCTOR().getText()
-        kind = Instance()
+        methodName = Id(ctx.CONSTRUCTOR().getText())
         paramList = self.visit(ctx.param_list())
         blockStmt = self.visit(ctx.block_statements())
-        return MethodDecl(kind, Id(methodName), paramList, blockStmt)
+        return MethodDecl(Instance(), methodName, paramList, blockStmt)
 
     def visitDestructor_method(self, ctx: D96Parser.Destructor_methodContext):
-        methodName = ctx.DESTRUCTOR().getText()
-        kind = Instance()
+        methodName = Id(ctx.DESTRUCTOR().getText())
         blockStmt = self.visit(ctx.block_statements())
-        return MethodDecl(kind, Id(methodName), [], blockStmt)
+        return MethodDecl(Instance(), methodName, [], blockStmt)
 
     def visitMethod_declare(self, ctx: D96Parser.Method_declareContext):
         if ctx.NORMAL_ID():
-            methodName = ctx.NORMAL_ID().getText()
+            methodName = Id(ctx.NORMAL_ID().getText())
             kind = Instance()
         if ctx.DOLLAR_ID():
-            methodName = ctx.DOLLAR_ID().getText()
+            methodName = Id(ctx.DOLLAR_ID().getText())
             kind = Static()
         
         paramList = self.visit(ctx.param_list())
         blockStmt = self.visit(ctx.block_statements())
 
-        return MethodDecl(kind, Id(methodName), paramList, blockStmt)
+        return MethodDecl(kind, methodName, paramList, blockStmt)
 
     def visitParam_list(self, ctx: D96Parser.Param_listContext):
         if ctx.getChildCount() == 0:
@@ -122,24 +118,14 @@ class ASTGeneration(D96Visitor):
 
         return [VarDecl(elementId, typ) for elementId in idList]
     def visitBlock_statements(self, ctx: D96Parser.Block_statementsContext):
-        stmtList = self.visit(ctx.statements_list())
-        if stmtList == []:
-            return None
-        return Block(stmtList[0], stmtList[1])
+        return Block(self.visit(ctx.statements_list()))
 
     def visitStatements_list(self, ctx: D96Parser.Statements_listContext):
         if ctx.getChildCount() == 0:
             return []
         # print(self.visit(ctx.statements()))
-        stmtList = self.visit(ctx.statements())
-        declStmt = []
-        stmt = []
-        for i in stmtList:
-            if isinstance(i, VarDecl) or isinstance(i, ConstDecl):
-                declStmt.append(i)
-            else:
-                stmt.append(i)
-        return [declStmt, stmt]
+        return self.visit(ctx.statements())
+        
     def visitStatements(self, ctx: D96Parser.StatementsContext):
         if ctx.getChildCount() == 1:
             return self.visit(ctx.statement())
@@ -153,8 +139,6 @@ class ASTGeneration(D96Visitor):
             return [self.visit(ctx.assign_statement())]
         if ctx.var_declare():
             return self.visit(ctx.var_declare())
-        if ctx.const_declare():
-            return self.visit(ctx.const_declare())
         if ctx.break_statement():
             return [self.visit(ctx.break_statement())]
         if ctx.continue_statement():
@@ -177,7 +161,7 @@ class ASTGeneration(D96Visitor):
         return Continue()
 
     def visitReturn_statement(self, ctx: D96Parser.Return_statementContext):
-        return self.visit(ctx.exp_value())
+        return Return(self.visit(ctx.exp_value()))
 
     def visitExp_value(self, ctx: D96Parser.Exp_valueContext):
         return self.visit(ctx.exp()) if ctx.exp() else None
@@ -243,14 +227,13 @@ class ASTGeneration(D96Visitor):
 
         exp1 = self.visit(ctx.exp(0))
         exp2 = self.visit(ctx.exp(1))
-        # up = self.visit(ctx.increment())
-        up = True
+        exp3 = self.visit(ctx.increment())
         blockStmt = self.visit(ctx.block_statements())
-        return For(myId, exp1, exp2, up, blockStmt)
+        return For(myId, exp1, exp2, blockStmt, exp3)
 
     def visitIncrement(self, ctx: D96Parser.IncrementContext):
         if ctx.getChildCount() == 0:
-            return True
+            return None
         return self.visit(ctx.exp())
     def visitLhs(self, ctx: D96Parser.LhsContext):
         if ctx.NORMAL_ID():
@@ -271,7 +254,7 @@ class ASTGeneration(D96Visitor):
     def visitStatic_method_call(self, ctx: D96Parser.Static_method_callContext):
         obj = Id(ctx.NORMAL_ID().getText())
         method = Id(ctx.DOLLAR_ID().getText())
-        listExp = self.visit(ctx.list_exp)
+        listExp = self.visit(ctx.list_exp())
         return CallStmt(obj, method, listExp)
 
     def visitInstance_attr_call(self, ctx: D96Parser.Instance_attr_callContext):
@@ -281,16 +264,38 @@ class ASTGeneration(D96Visitor):
     def visitInstance_method_call(self, ctx: D96Parser.Instance_method_callContext):
         obj = self.visit(ctx.exp7())
         method = Id(ctx.NORMAL_ID().getText())
-        listExp = self.visit(ctx.list_exp)
+        listExp = self.visit(ctx.list_exp())
         return CallStmt(obj, method, listExp)
 
-    def visitVar_attribute_declare(self, ctx: D96Parser.Var_attribute_declareContext):
-        declList = self.visit(ctx.dec_and_init_list1())
-        attrDeclList = []
-        for decl in declList:
-            tmp = AttributeDecl(Static(), decl) if decl.variable.name.startswith('$') else AttributeDecl(Instance(), decl)
-            attrDeclList.append(tmp)        
+    def visitAttribute_declare(self, ctx: D96Parser.Attribute_declareContext):
+        components = self.visit(ctx.dec_and_init_list1())
+        typ = components[1][0]
+        declList = components[1][1]
+
+        if components[0] == 'no init':
+            if ctx.VAR():
+                varDeclList = [VarDecl(decl, typ) for decl in declList]
+                varOrConstDecl = varDeclList
+            if ctx.VAL():
+                constDeclList = [ConstDecl(decl, typ) for decl in declList]
+                varOrConstDecl = constDeclList
         
+        elif components[0] == 'init':
+            if ctx.VAR():
+                varDeclList = [VarDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+                varOrConstDecl = varDeclList
+            if ctx.VAL():
+                constDeclList = [ConstDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+                varOrConstDecl = constDeclList
+        
+        attrDeclList = []
+        for decl in varOrConstDecl:
+            if isinstance(decl, VarDecl):
+                tmp = AttributeDecl(Static(), decl) if decl.variable.name.startswith('$') else AttributeDecl(Instance(), decl)
+            if isinstance(decl, ConstDecl):
+                tmp = AttributeDecl(Static(), decl) if decl.constant.name.startswith('$') else AttributeDecl(Instance(), decl)
+            attrDeclList.append(tmp)        
+
         return attrDeclList
 
 
@@ -313,25 +318,24 @@ class ASTGeneration(D96Visitor):
                 listId = self.visit(ctx.id_list())
             if ctx.normal_id_list():
                 listId = self.visit(ctx.normal_id_list())
-            return [VarDecl(elementId, typ) for elementId in listId]
+            return ('no init', [typ, listId])
         else:
             if ctx.NORMAL_ID():
                 firstId = Id(ctx.NORMAL_ID().getText())
             if ctx.DOLLAR_ID():
                 firstId = Id(ctx.DOLLAR_ID().getText())
             lastExp = self.visit(ctx.exp())
-
             pair1 = self.visit(ctx.pair1())
             if len(pair1) == 1:
-                
-                return [VarDecl(firstId, pair1[0], lastExp)]
+                return ('init', [pair1[0], [firstId, lastExp]])
             else:
                 typ = pair1[int(len(pair1) / 2)]
                 newPair = pair1[:int(len(pair1) / 2)] + pair1[int(len(pair1) / 2) + 1:]
                 # [Id, Id, Id, Id, Exp, Exp, Exp, Exp]
                 declList = [firstId] + newPair + [lastExp]
                     
-            return [VarDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+            # return [VarDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+                return ('init', [typ, declList])
 
     def visitPair1(self, ctx: D96Parser.Pair1Context):
         if ctx.COLON():
@@ -358,31 +362,62 @@ class ASTGeneration(D96Visitor):
         myExp = self.visit(ctx.exp())
         return [myId] + pair1 + [myExp]
     
-    def visitConst_attribute_declare(self, ctx: D96Parser.Const_attribute_declareContext):
-        declList = self.visit(ctx.dec_and_init_list2())
-        attrDeclList = []
-        for decl in declList:
-            tmp = AttributeDecl(Static(), decl) if decl.constant.name.startswith('$') else AttributeDecl(Instance(), decl)
-            attrDeclList.append(tmp)        
+    
+    def visitVar_declare(self, ctx: D96Parser.Var_declareContext):
+        components = self.visit(ctx.dec_and_init_list2())
+        typ = components[1][0]
+        declList = components[1][1]
+
+        if components[0] == 'no init':
+            if ctx.VAR():
+                varDeclList = [VarDecl(decl, typ) for decl in declList]
+                varOrConstDecl = varDeclList
+            if ctx.VAL():
+                constDeclList = [ConstDecl(decl, typ) for decl in declList]
+                varOrConstDecl = constDeclList
         
-        return attrDeclList
+        elif components[0] == 'init':
+            if ctx.VAR():
+                varDeclList = [VarDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+                varOrConstDecl = varDeclList
+            if ctx.VAL():
+                constDeclList = [ConstDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+                varOrConstDecl = constDeclList
+    
+        return varOrConstDecl
 
     def visitDec_and_init_list2(self, ctx: D96Parser.Dec_and_init_list2Context):
-        if ctx.NORMAL_ID():
-            firstId = Id(ctx.NORMAL_ID().getText())
-        if ctx.DOLLAR_ID():
-            firstId = Id(ctx.DOLLAR_ID().getText())
-        lastExp = self.visit(ctx.exp())
-        pair2 = self.visit(ctx.pair2())
-        if len(pair2) == 1:
-            return [ConstDecl(firstId, pair2[0], lastExp)]
+        if ctx.COLON():
+            if ctx.BOOLEAN():
+                typ = BoolType()
+            elif ctx.INT_TYPE():
+                typ = IntType()
+            elif ctx.FLOAT_TYPE():
+                typ = FloatType()
+            elif ctx.STRING():
+                typ = StringType()
+            elif ctx.NORMAL_ID():
+                typ = ClassType(Id(ctx.NORMAL_ID().getText()))
+            elif ctx.array_type():
+                typ = self.visit(ctx.array_type())
+
+            if ctx.normal_id_list():
+                listId = self.visit(ctx.normal_id_list())
+            return ('no init', [typ, listId])
         else:
-            typ = pair2[int(len(pair2) / 2)]
-            newPair = pair2[:int(len(pair2) / 2)] + pair2[int(len(pair2) / 2) + 1:]
-            # [Id, Id, Id, Id, Exp, Exp, Exp, Exp]
-            declList = [firstId] + newPair + [lastExp]
-                
-        return [ConstDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
+            if ctx.NORMAL_ID():
+                firstId = Id(ctx.NORMAL_ID().getText())
+            lastExp = self.visit(ctx.exp())
+            pair2 = self.visit(ctx.pair2())
+            if len(pair2) == 1:
+                return ('init', [pair2[0], [firstId, lastExp]])
+            else:
+                typ = pair2[int(len(pair2) / 2)]
+                newPair = pair2[:int(len(pair2) / 2)] + pair2[int(len(pair2) / 2) + 1:]
+                # [Id, Id, Id, Id, Exp, Exp, Exp, Exp]
+                declList = [firstId] + newPair + [lastExp]
+
+            return ('init', [typ, declList])
 
     def visitPair2(self, ctx: D96Parser.Pair2Context):
         if ctx.COLON():
@@ -402,114 +437,10 @@ class ASTGeneration(D96Visitor):
 
         if ctx.NORMAL_ID():
             myId = Id(ctx.NORMAL_ID().getText())
-        if ctx.DOLLAR_ID():
-            myId = Id(ctx.DOLLAR_ID().getText())
 
         pair2 = self.visit(ctx.pair2())
         myExp = self.visit(ctx.exp())
         return [myId] + pair2 + [myExp]
-
-    def visitVar_declare(self, ctx: D96Parser.Var_declareContext):
-        return self.visit(ctx.dec_and_init_list3())
-
-    def visitDec_and_init_list3(self, ctx: D96Parser.Dec_and_init_list3Context):
-        if ctx.COLON():
-            if ctx.BOOLEAN():
-                typ = BoolType()
-            elif ctx.INT_TYPE():
-                typ = IntType()
-            elif ctx.FLOAT_TYPE():
-                typ = FloatType()
-            elif ctx.STRING():
-                typ = StringType()
-            elif ctx.NORMAL_ID():
-                typ = ClassType(Id(ctx.NORMAL_ID().getText()))
-            elif ctx.array_type():
-                typ = self.visit(ctx.array_type())
-
-            if ctx.normal_id_list():
-                listId = self.visit(ctx.normal_id_list())
-            return [VarDecl(elementId, typ) for elementId in listId]
-        else:
-            if ctx.NORMAL_ID():
-                firstId = Id(ctx.NORMAL_ID().getText())
-            lastExp = self.visit(ctx.exp())
-
-            pair3 = self.visit(ctx.pair3())
-            if len(pair3) == 1:
-                return [VarDecl(firstId, pair3[0], lastExp)]
-            else:
-                typ = pair3[int(len(pair3) / 2)]
-                newPair = pair3[:int(len(pair3) / 2)] + pair3[int(len(pair3) / 2) + 1:]
-                # [Id, Id, Id, Id, Exp, Exp, Exp, Exp]
-                declList = [firstId] + newPair + [lastExp]
-
-            return [VarDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
-
-    def visitPair3(self, ctx: D96Parser.Pair3Context):
-        if ctx.COLON():
-            if ctx.BOOLEAN():
-                typ = BoolType()
-            elif ctx.INT_TYPE():
-                typ = IntType()
-            elif ctx.FLOAT_TYPE():
-                typ = FloatType()
-            elif ctx.STRING():
-                typ = StringType()
-            elif ctx.NORMAL_ID():
-                typ = ClassType(Id(ctx.NORMAL_ID().getText()))
-            elif ctx.array_type():
-                typ = self.visit(ctx.array_type())
-            return [typ]
-
-        if ctx.NORMAL_ID():
-            myId = Id(ctx.NORMAL_ID().getText())
-
-        pair3 = self.visit(ctx.pair3())
-        myExp = self.visit(ctx.exp())
-        return [myId] + pair3 + [myExp]
-
-    def visitConst_declare(self, ctx: D96Parser.Const_declareContext):
-        return self.visit(ctx.dec_and_init_list4())
-
-
-    def visitDec_and_init_list4(self, ctx: D96Parser.Dec_and_init_list4Context):
-        if ctx.NORMAL_ID():
-            firstId = Id(ctx.NORMAL_ID().getText())
-        lastExp = self.visit(ctx.exp())
-        pair4 = self.visit(ctx.pair4())
-        if len(pair4) == 1:
-            return [ConstDecl(firstId, pair4[0], lastExp)]
-        else:
-            typ = pair4[int(len(pair4) / 2)]
-            newPair = pair4[:int(len(pair4) / 2)] + pair4[int(len(pair4) / 2) + 1:]
-            # [Id, Id, Id, Id, Exp, Exp, Exp, Exp]
-            declList = [firstId] + newPair + [lastExp]
-                
-        return [ConstDecl(declList[idx], typ, declList[idx + int(len(declList) / 2)]) for idx in range(int(len(declList) / 2))]
-
-    def visitPair4(self, ctx: D96Parser.Pair4Context):
-        if ctx.COLON():
-            if ctx.BOOLEAN():
-                typ = BoolType()
-            elif ctx.INT_TYPE():
-                typ = IntType()
-            elif ctx.FLOAT_TYPE():
-                typ = FloatType()
-            elif ctx.STRING():
-                typ = StringType()
-            elif ctx.NORMAL_ID():
-                typ = ClassType(Id(ctx.NORMAL_ID().getText()))
-            elif ctx.array_type():
-                typ = self.visit(ctx.array_type())
-            return [typ]
-
-        if ctx.NORMAL_ID():
-            myId = Id(ctx.NORMAL_ID().getText())
-
-        pair4 = self.visit(ctx.pair4())
-        myExp = self.visit(ctx.exp())
-        return [myId] + pair4 + [myExp]
 
     def visitArray_type(self, ctx: D96Parser.Array_typeContext):
         sizeStr = ctx.ARRAY_SIZE().getText()
@@ -522,7 +453,6 @@ class ASTGeneration(D96Visitor):
         else:
             size = int(sizeStr, 10)
 
-        typ = ''
         if ctx.BOOLEAN():
             typ = BoolType()
 
@@ -538,24 +468,24 @@ class ASTGeneration(D96Visitor):
         elif ctx.STRING():
             typ = StringType()
 
-        return ArrayType(size, typ)
+        return ArrayType(IntLiteral(size), typ)
     def visitArray_literal(self, ctx: D96Parser.Array_literalContext):
-        return ArrayLiteral(self.visit(ctx.literal_list()))
+        return ArrayLiteral(self.visit(ctx.list_exp()))
 
 
-    def visitLiteral_list(self, ctx: D96Parser.Literal_listContext):
-        if ctx.getChildCount() == 0:
-            return []
-        return self.visit(ctx.literals())
+    # def visitLiteral_list(self, ctx: D96Parser.Literal_listContext):
+    #     if ctx.getChildCount() == 0:
+    #         return []
+    #     return self.visit(ctx.literals())
         
 
-    def visitLiterals(self, ctx: D96Parser.LiteralsContext):
-        if ctx.COMMA():
-            myExp = self.visit(ctx.exp())
-            myLiterals = self.visit(ctx.literals())
-            return [myExp] + myLiterals
-        else:
-            return [self.visit(ctx.exp())]
+    # def visitLiterals(self, ctx: D96Parser.LiteralsContext):
+    #     if ctx.COMMA():
+    #         myExp = self.visit(ctx.exp())
+    #         myLiterals = self.visit(ctx.literals())
+    #         return [myExp] + myLiterals
+    #     else:
+    #         return [self.visit(ctx.exp())]
 
     def visitExp(self, ctx: D96Parser.ExpContext):
         if ctx.getChildCount() == 3:
@@ -641,16 +571,21 @@ class ASTGeneration(D96Visitor):
         if ctx.SUB():
             operand = self.visit(ctx.exp5())
             return UnaryOp(ctx.SUB().getText(), operand)
-
         return self.visit(ctx.exp6())
 
     def visitExp6(self, ctx: D96Parser.Exp6Context):
         if ctx.exp6():
             myExp = self.visit(ctx.exp6())
-            idx = self.visit(ctx.exp())
-            return ArrayCell(myExp, [idx]) 
+            idx = self.visit(ctx.index_operators())
+            return ArrayCell(myExp, idx)
         
         return self.visit(ctx.exp7())
+    def visitIndex_operators(self, ctx: D96Parser.Index_operatorsContext):
+        if ctx.getChildCount() == 3:
+            return [self.visit(ctx.exp())]
+        nextIdxExp = self.visit(ctx.index_operators())
+        idxExp = self.visit(ctx.exp())
+        return nextIdxExp + [idxExp]
 
     def visitExp7(self, ctx: D96Parser.Exp7Context):
         if ctx.LP() and ctx.RP():
@@ -754,7 +689,7 @@ class ASTGeneration(D96Visitor):
 
     def visitId_list(self, ctx: D96Parser.Id_listContext):
         if ctx.COMMA():
-            nextIds = self.visit(ctx.normal_id_list())
+            nextIds = self.visit(ctx.id_list())
             if ctx.NORMAL_ID():
                 return [Id(ctx.NORMAL_ID().getText())] + nextIds
             if ctx.DOLLAR_ID():

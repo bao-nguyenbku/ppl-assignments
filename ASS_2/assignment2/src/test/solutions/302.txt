@@ -1,1 +1,1 @@
-Program([ClassDecl(Id(Dog),Id(Animal),[])])
+Program([ClassDecl(Id(Dog),[MethodDecl(Id(f),Instance,[],Block([AssignStmt(Id(a),ArrayCell(Id(b),[IntLit(0),IntLit(1),IntLit(2)]))]))])])
