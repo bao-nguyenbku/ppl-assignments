@@ -1,0 +1,37 @@
+
+            Class Grade {
+                grading() {
+                    Var i: Int;
+                    Var mark, sum, avg: Float;
+                    sum = 0;
+                    console.log("Enter Marks obtained in 5 Subjects: ");
+                    Foreach(i In 0 .. 5 By 1)
+                    {
+                        std.cin(mark);
+                        sum = sum + mark;
+                    }
+                    avg = sum / 5;
+                    std.cout("\nGrade = ");
+                    If((avg>=91) && (avg<=100))
+                    {    std.cout("A1"); }
+                    Elseif((avg>=81) && (avg<91))
+                    {    std.cout("A2"); }
+                    Elseif((avg>=71) && (avg<81))
+                    {    std.cout("B1"); }
+                    Elseif((avg>=61) && (avg<71))
+                    {    std.cout("B2"); }
+                    Elseif((avg>=51) && (avg<61))
+                    {    std.cout("C1"); }
+                    Elseif((avg>=41) && (avg<51))
+                    {    std.cout("C2"); }
+                    Elseif((avg>=33) && (avg<41))
+                    {    std.cout("D"); }
+                    Elseif((avg>=21) && (avg<33))
+                    {    std.cout("E1"); }
+                    Elseif((avg>=0) && (avg<21))
+                    {    std.cout("E2"); }
+                    Else
+                    {    std.cout("Invalid!"); }
+                }
+            }
+            

@@ -1,0 +1,12 @@
+
+            Class Program {
+                main() {
+
+                }
+            }
+            Class NotProgram {
+                main() {
+                    a[1 + 2][b.method()] = Name::$setName();
+                }
+            }
+            

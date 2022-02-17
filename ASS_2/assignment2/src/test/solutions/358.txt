@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(expr),[MethodDecl(Id(t),Instance,[],Block([Return(BinaryOp(||,BinaryOp(&&,BinaryOp(+,Id(a),BinaryOp(/,BinaryOp(*,Id(b),Id(d)),IntLit(1))),BinaryOp(>=,Id(t),IntLit(3))),BinaryOp(-,BinaryOp(+,Id(b),FloatLit(9.3)),ArrayCell(Id(a),[IntLit(2),BinaryOp(+,IntLit(7),IntLit(1))]))))]))])])

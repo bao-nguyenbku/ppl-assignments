@@ -1,0 +1,7 @@
+
+            Class build {
+                func() {
+                    build.func().func1().f2().f3();
+                }
+            }
+            

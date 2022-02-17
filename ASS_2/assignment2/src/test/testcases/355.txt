@@ -1,0 +1,22 @@
+
+            Class Program {
+                main() {
+                    console.log(NewProgram);
+                }
+            }
+            Class newClass {
+                Val a, b, c: Int = 0x7, 06, 0b1001;
+                $staticMethod() {
+                    If (a) {
+                        If (b) {
+                            If (c) { }
+                            Else { }
+                        }
+                        Else { }
+                        If (u == e) { }
+                        Elseif (f) { }
+                    }
+                    Elseif (t) { } Else { }
+                }
+            }
+            

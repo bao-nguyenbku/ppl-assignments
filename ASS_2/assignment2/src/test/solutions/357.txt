@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(checkArray),[AttributeDecl(Instance,ConstDecl(Id(b),ArrayType(113,ArrayType(13,FloatType)),None))]),ClassDecl(Id(check2),[MethodDecl(Id(f),Instance,[],Block([AssignStmt(Id(b),[BinaryOp(+.,StringLit(string 1),StringLit(string 2)),BinaryOp(+,IntLit(3),UnaryOp(!,IntLit(4))),BinaryOp(*,CallExpr(Self(),Id(a),[]),IntLit(6))])]))])])

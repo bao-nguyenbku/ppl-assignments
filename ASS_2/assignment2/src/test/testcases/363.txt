@@ -1,0 +1,19 @@
+
+            Class com {
+                Val b: Int = 0xAFFFF;
+            }
+            Class com2: com {
+                f() {
+                    Program.main(program.main);
+                }
+            }
+            Class com3: com2 {
+
+            }
+            Class Program {
+                main() {
+                    ## This is entry program ##
+                    com4.name = com3.f() * com.b;
+                }
+            }
+            

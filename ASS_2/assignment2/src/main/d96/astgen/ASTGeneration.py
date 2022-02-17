@@ -1,5 +1,3 @@
-from operator import index
-from unicodedata import name
 from D96Visitor import D96Visitor
 from D96Parser import D96Parser
 from AST import *
@@ -13,8 +11,7 @@ class ASTGeneration(D96Visitor):
                     if isinstance(mem, MethodDecl):
                         if mem.name.name == 'main' and len(mem.param) == 0:
                             mem.kind = Static()
-                            break
-                break
+        
         return Program(classDeclList)
 
     def visitClass_declares_list(self, ctx: D96Parser.Class_declares_listContext):
@@ -76,16 +73,16 @@ class ASTGeneration(D96Visitor):
 
     def visitMethod_declare(self, ctx: D96Parser.Method_declareContext):
         if ctx.NORMAL_ID():
-            methodName = Id(ctx.NORMAL_ID().getText())
+            methodName = ctx.NORMAL_ID().getText()
             kind = Instance()
         if ctx.DOLLAR_ID():
-            methodName = Id(ctx.DOLLAR_ID().getText())
+            methodName = ctx.DOLLAR_ID().getText()
             kind = Static()
         
         paramList = self.visit(ctx.param_list())
         blockStmt = self.visit(ctx.block_statements())
 
-        return MethodDecl(kind, methodName, paramList, blockStmt)
+        return MethodDecl(kind, Id(methodName), paramList, blockStmt)
 
     def visitParam_list(self, ctx: D96Parser.Param_listContext):
         if ctx.getChildCount() == 0:
@@ -467,8 +464,7 @@ class ASTGeneration(D96Visitor):
 
         elif ctx.STRING():
             typ = StringType()
-
-        return ArrayType(IntLiteral(size), typ)
+        return ArrayType(size, typ)
     def visitArray_literal(self, ctx: D96Parser.Array_literalContext):
         return ArrayLiteral(self.visit(ctx.list_exp()))
 

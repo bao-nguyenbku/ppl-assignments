@@ -1,0 +1,7 @@
+
+            Class checkAttr {
+                Val a, b: Float = .3e5, 3.e5;
+                Var c: String;
+                Val $e, t, $r: Boolean;
+            }
+            

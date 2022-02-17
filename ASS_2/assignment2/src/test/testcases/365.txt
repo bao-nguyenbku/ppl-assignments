@@ -1,0 +1,15 @@
+
+            Class A {
+                t() {
+                    r = 0x22;
+                    Var e: Float = .4e2;
+                    Break;
+                    Continue;
+                    classname::$staticmethod();
+                    t.instance().method().call();
+                    If ("This is" +. "expression") { }
+                    Foreach (b In -4 .. -0x244 By -1) { }
+                    Return !t + y || r;
+                }
+            }
+            

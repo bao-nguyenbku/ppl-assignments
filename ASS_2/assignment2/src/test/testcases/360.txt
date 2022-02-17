@@ -1,0 +1,21 @@
+
+            Class Room {
+                Var length: Float;
+                Var breadth: Float;
+                Var height: Float;   
+
+                Constructor(len, bre, height: Float) {
+                    Self.length = len;
+                }
+                Destructor() {
+                    os.RemoveAll();
+                }
+                calculateArea(){   
+                    Return length * breadth;
+                }
+
+                calculateVolume(){   
+                    Return length * breadth * height;
+                }
+            };
+            

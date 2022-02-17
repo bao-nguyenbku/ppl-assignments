@@ -1,0 +1,19 @@
+
+            Class Program {
+                function() {
+                    If (a) {
+                        If (b) { }
+                        Elseif (r) { } Else { }
+                    }
+                    Else { }
+                    If (t) {
+                        Self.func();
+                    }
+                    Elseif (y) { }
+                }
+                f2 (t, g: Int; r, e: Array[Int, 0b11]) {}
+                f3() { }
+                Val f: String;
+                Val b, $e: Int = 1, 3;
+            }
+            

@@ -1,0 +1,46 @@
+
+            Class favor {
+                f() {
+                    If(noOfDigit<2)
+                    {
+                        std.out("\nIt is a Single-digit Number!");
+                        std.out("\nTry again with a Number with Two or More Digits!");
+                    }
+                    Elseif(noOfDigit==2)
+                    {
+                        temp = num;
+                        std.out("\nFirst and Last Digit Interchanged Successfully!");
+                        std.out("\n\nNew Number = ");
+                    }
+                    Else
+                    {
+                        temp = num;
+                        revNum = rev;
+                        rev = 0;
+                        temp = num;
+                        noOfDigitTemp = noOfDigit;
+                        Foreach(temp In 0 .. Infinity By 10)
+                        {
+                            remTemp = revNum%10;
+                            If(noOfDigitTemp==noOfDigit)
+                            {
+                                rem = temp%10;
+                                rev = (rev*10)+rem;
+                            }
+                            Elseif(noOfDigitTemp==1)
+                            {
+                                rem = temp%10;
+                                rev = (rev*10)+rem;
+                            }
+                            Else
+                            {
+                                rev = (rev*10)+remTemp;
+                            }
+                            temp = temp/10;
+                            revNum = revNum/10;
+                            noOfDigitTemp = noOfDigitTemp - 1;
+                        }
+                    }
+                }
+            }
+            

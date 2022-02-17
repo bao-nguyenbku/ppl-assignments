@@ -1,0 +1,31 @@
+
+            Class Program {
+                main(a, b, c, d: Int) {
+                    Var str: Array[String, 200];
+                    Var wrd: Array[String, 20];
+                    Var i, j, strLen, wrdLen, tmp: Int;
+                    Var chk: Int = 0;
+                    std.gets(str);
+                    strLen = std.strlen(str);
+                    wrdLen = std.strlen(wrd);
+                    Foreach (i In 0 .. strLen) {
+                        tmp = i;
+                        Foreach (j In 0 .. wrdLen) {
+                            If(str[i]==wrd[j]) {
+                                i = i + 1;
+                            }
+                        }
+                        chk = i-tmp;
+                        If(chk==wrdLen)
+                        {
+                            i = tmp;
+                            Foreach(j In i .. (strLen-wrdLen)) {
+                                str[j] = str[j+wrdLen];
+                            }
+                            strLen = strLen-wrdLen;
+                            str[j] = "\\0";
+                        }
+                    }
+                }
+            }
+            
