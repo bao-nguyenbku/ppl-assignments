@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(thisName),[MethodDecl(Id(Destructor),Instance,[],Block([Return(BinaryOp(||,FieldAccess(Self(),Id(name)),FieldAccess(Self(),Id(age))))]))])])

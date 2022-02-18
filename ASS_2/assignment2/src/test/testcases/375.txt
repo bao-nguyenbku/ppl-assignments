@@ -1,0 +1,13 @@
+
+            Class test75 {
+                t() {
+                    Foreach (t In 0 .. -1203 By -99) {
+                        Foreach (j In t .. Inf) {
+                            If (a) {
+                                r[t][r][s] = t[r];
+                            }
+                        }
+                    }
+                }
+            }
+            

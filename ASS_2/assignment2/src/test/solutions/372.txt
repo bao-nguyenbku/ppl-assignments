@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(expr),[MethodDecl(Id(t),Instance,[],Block([AssignStmt(FieldAccess(Self(),Id(a)),BinaryOp(-,BinaryOp(+,FieldAccess(Self(),Id(b)),FieldAccess(Self(),Id(c))),BinaryOp(*,CallExpr(Id(Name),Id($method),[]),BinaryOp(||,BinaryOp(>=,Id(r),IntLit(6)),Id(e)))))]))])])

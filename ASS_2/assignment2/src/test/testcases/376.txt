@@ -1,0 +1,10 @@
+
+            Class test76 {
+                $method(r, t, w, r, w: Int) {
+                    If (w) {
+                        Foreach (r In 1 .. 0x123 + 0523) { }
+                    }
+                    Elseif (q) { Return statement; }
+                }
+            }
+            

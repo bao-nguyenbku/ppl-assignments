@@ -1,0 +1,29 @@
+
+            Class complement {
+                convert() {
+                    Var i, fail: Int;
+                    Var binary, comp: Array[String, 7];
+                    binary = IO.input(" Input a bit binary number: ");
+
+                    Foreach (i In 0 .. size) {
+                        If (binary[i] == "1") {
+                            comp[i] = "0";
+                        }
+
+                        Elseif (binary[i] == "0") {
+                            comp[i] = "1";
+                        } 
+                        Else {
+                            fail = 1;
+                            Break;
+                        }
+
+                    }
+                    comp[size] = "\\0";
+                    If (fail == 0) {
+                        IO.output("The original binary number = " + binary);
+                        IO.output("Ones complement the number = " + comp);
+                    }
+                }
+            }
+            

@@ -1,0 +1,21 @@
+
+            Class smallestMissing {
+                smallest_missing(arr: Array[Int, 1000]; start: Int; end: Int){
+                    If (start > end) {
+                        Return end + 1;
+                    }
+
+                    If (start != arr[start]) {
+                        Return start;
+                    }
+
+                    Var mid: Int = (start + end) / 2;
+
+                    If (arr[mid] == mid) {
+                        Return Self.smallest_missing(arr, mid + 1, end);
+                    }
+
+                    Return Self.smallest_missing(arr, start, mid);
+                }
+            }
+            

@@ -1,0 +1,8 @@
+
+            Class check {
+                Val r: Int;
+                Val t: Float = 3e4;
+                Val r, t, e, w: Boolean;
+                Var e: Int;
+            }
+            

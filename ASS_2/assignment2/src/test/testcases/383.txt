@@ -1,0 +1,5 @@
+
+            Class A: Program {
+                Val r: Program = New Program(main);
+            }
+            

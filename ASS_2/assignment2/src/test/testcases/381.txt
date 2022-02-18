@@ -1,0 +1,24 @@
+
+            Class RemoveSpace
+            {
+                main()
+                {
+                    Var inp: Scanner = New Scanner(System.in);
+                    System.out.print("\n Enter String: ");
+                    Var s: String = inp.nextLine();
+                    Var k: Int = s.length();
+                    Var i: Int;
+                    Var z: String = "";
+                    Var c: String;
+
+                    Foreach(i In 0 .. k By 1)
+                    {
+                        c = s.charAt(i);
+                        If(c!=32) {
+                            z=z+c;
+                        }
+                    }
+                    System.out.println("String After Removing Spaces: "+z);
+                }
+            }
+            

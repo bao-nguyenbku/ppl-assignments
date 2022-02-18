@@ -1,0 +1,12 @@
+
+            Class nthFibo {
+                fib(n: Int)
+                {
+                    If (n <= 1)	## stopping condition ##
+                    {    Return n; }
+
+                    Else	## recursive part ##
+                    { Return (nthFibo.fib(n - 1) + nthFibo.fib(n - 2)); }
+                }
+            }
+            

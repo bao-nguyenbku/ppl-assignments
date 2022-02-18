@@ -1,0 +1,7 @@
+
+            Class expr {
+                t() {
+                    Self.a = Self.b + Self.c - Name::$method() * ((r >= 6) || e);
+                }
+            }
+            

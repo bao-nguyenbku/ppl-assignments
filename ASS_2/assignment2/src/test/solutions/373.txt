@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(test73),[AttributeDecl(Instance,ConstDecl(Id(r),ClassType(Id(tumLumType)),CallExpr(CallExpr(CallExpr(CallExpr(Id(ThisName),Id(r),[]),Id(t),[]),Id(ea),[]),Id(era),[])))])])

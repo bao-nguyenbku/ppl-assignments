@@ -1,0 +1,8 @@
+
+            Class test70 {
+                method() { }
+                method2() { }
+                main() { }
+                main(a,b: Int) { }
+            }
+            

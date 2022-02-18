@@ -1,0 +1,7 @@
+
+            Class thisName {
+                Destructor () {
+                    Return Self.name || Self.age;
+                }
+            }
+            

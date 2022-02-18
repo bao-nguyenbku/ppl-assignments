@@ -1,0 +1,9 @@
+
+            Class test71 {
+                main() {
+                    Val r, t, s, r, w, q: Int;
+                    Val a: Float = 1203;
+                    Var e: Boolean = "String" ==. "Char";
+                }
+            }
+            

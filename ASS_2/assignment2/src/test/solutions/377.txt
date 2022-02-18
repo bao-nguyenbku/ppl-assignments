@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(checkConstr),[MethodDecl(Id(Constructor),Instance,[param(Id(a),FloatType),param(Id(r),FloatType),param(Id(t),FloatType),param(Id(w),FloatType)],Block([AssignStmt(FieldAccess(Self(),Id(constr)),BinaryOp(+,BinaryOp(+,Id(a),Id(r)),BinaryOp(*,Id(t),Id(w))))]))])])

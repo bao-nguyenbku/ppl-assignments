@@ -1,0 +1,5 @@
+
+            Class test73 {
+                Val r: tumLumType = ThisName.r().t().ea().era();
+            }
+            

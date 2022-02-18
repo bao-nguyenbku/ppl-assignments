@@ -17,5 +17,5 @@
                 calculateVolume(){   
                     Return length * breadth * height;
                 }
-            };
+            }
             

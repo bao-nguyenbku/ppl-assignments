@@ -1,0 +1,21 @@
+
+            Class ConsVowel
+            {
+                main()
+                {
+
+                    If((z=="A") || (z=="E") || (z=="I") || (z=="O") || (z=="U")) {
+                        System.out.println(c+" is a Vowel.");
+                    } ## Checking if Vowel ##
+                    Else
+                    {
+                        If(((c>=65) && (c<=90)) || ((c>=97) && (c<=122))) {
+                            System.out.println(c+" is a Consonant.");
+                        } ## Checking if character is special character. ##
+                        Else {
+                            System.out.println(c+" is a Special Character.");
+                        }
+                    }
+                }
+            }
+            

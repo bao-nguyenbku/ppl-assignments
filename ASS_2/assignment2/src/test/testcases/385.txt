@@ -1,0 +1,11 @@
+
+            Class CharString {
+                main(args: Array[String, 0x1111111]) {
+                    Var ch: String = "c";
+                    Var st: String = Character.toString(ch);
+                    ## Alternatively ##
+                    ## st = String.valueOf(ch); ##
+                    System.out.println("The string is: " + st);
+                }
+            }
+            

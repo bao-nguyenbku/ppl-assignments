@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(CharString),[MethodDecl(Id(main),Instance,[param(Id(args),ArrayType(17895697,StringType))],Block([VarDecl(Id(ch),StringType,StringLit(c)),VarDecl(Id(st),StringType,CallExpr(Id(Character),Id(toString),[Id(ch)])),Call(FieldAccess(Id(System),Id(out)),Id(println),[BinaryOp(+,StringLit(The string is: ),Id(st))])]))])])

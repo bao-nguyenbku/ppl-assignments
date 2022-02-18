@@ -212,7 +212,6 @@ class ASTGeneration(D96Visitor):
     def visitElse_stmt(self, ctx: D96Parser.Else_stmtContext):
         return None if ctx.getChildCount() == 0 else self.visit(ctx.block_statements())
 
-    # TODO: visit foreach statement
     def visitForeach_statement(self, ctx: D96Parser.Foreach_statementContext):
         if ctx.NORMAL_ID():
             myId = Id(ctx.NORMAL_ID().getText())
@@ -221,7 +220,6 @@ class ASTGeneration(D96Visitor):
             myId = self.visit(ctx.static_attr_call()).fieldname
         if ctx.instance_attr_call():
             myId = self.visit(ctx.instance_attr_call()).fieldname
-
         exp1 = self.visit(ctx.exp(0))
         exp2 = self.visit(ctx.exp(1))
         exp3 = self.visit(ctx.increment())
