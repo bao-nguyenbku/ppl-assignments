@@ -1,0 +1,10 @@
+
+            Class function: object {
+                Var JSON: String;
+                func() {
+                    JSON.string("New Sting");
+                    a = 23.e2;
+                    b = 5.4e-321;
+                }
+            }
+            

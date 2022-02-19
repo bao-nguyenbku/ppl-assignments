@@ -223,6 +223,8 @@ class ASTGeneration(D96Visitor):
         exp1 = self.visit(ctx.exp(0))
         exp2 = self.visit(ctx.exp(1))
         exp3 = self.visit(ctx.increment())
+        if exp3 is None:
+            exp3 = IntLiteral(1)
         blockStmt = self.visit(ctx.block_statements())
         return For(myId, exp1, exp2, blockStmt, exp3)
 

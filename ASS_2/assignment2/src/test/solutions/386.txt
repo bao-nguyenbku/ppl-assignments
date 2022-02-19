@@ -1,0 +1,1 @@
+Program([ClassDecl(Id(function),Id(object),[AttributeDecl(Instance,VarDecl(Id(JSON),StringType)),MethodDecl(Id(func),Instance,[],Block([Call(Id(JSON),Id(string),[StringLit(New Sting)]),AssignStmt(Id(a),FloatLit(2300.0)),AssignStmt(Id(b),FloatLit(5.4e-321))]))])])

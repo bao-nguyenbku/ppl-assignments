@@ -1,1 +1,1 @@
-Program([ClassDecl(Id(test75),[MethodDecl(Id(t),Instance,[],Block([For(Id(t),IntLit(0),UnaryOp(-,IntLit(1203)),UnaryOp(-,IntLit(99)),Block([For(Id(j),Id(t),Id(Inf),Block([If(Id(a),Block([AssignStmt(ArrayCell(Id(r),[Id(t),Id(r),Id(s)]),ArrayCell(Id(t),[Id(r)]))]))])])])])]))])])
+Program([ClassDecl(Id(test75),[MethodDecl(Id(t),Instance,[],Block([For(Id(t),IntLit(0),UnaryOp(-,IntLit(1203)),UnaryOp(-,IntLit(99)),Block([For(Id(j),Id(t),Id(Inf),IntLit(1),Block([If(Id(a),Block([AssignStmt(ArrayCell(Id(r),[Id(t),Id(r),Id(s)]),ArrayCell(Id(t),[Id(r)]))]))])])])])]))])])

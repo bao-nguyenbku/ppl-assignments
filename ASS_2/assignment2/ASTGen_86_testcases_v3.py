@@ -364,7 +364,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(MeowMeow),Id(Dog),[AttributeDecl(Instance,VarDecl(Id(b),IntType)),AttributeDecl(Static,VarDecl(Id($a),FloatType,FloatLit(0.0))),AttributeDecl(Instance,VarDecl(Id(c),FloatType,FloatLit(2.0))),AttributeDecl(Instance,VarDecl(Id(d),FloatType,FloatLit(78.9))),AttributeDecl(Instance,VarDecl(Id(a),ArrayType(5,FloatType),[FloatLit(1.2),FloatLit(3.6),FloatLit(3400000.0),FloatLit(230000.0),FloatLit(127000.0)])),MethodDecl(Id(function),Instance,[param(Id(a),IntType),param(Id(b),IntType),param(Id(c),IntType)],Block([For(Id(a),Id(b),BinaryOp(+,Id(c),IntLit(1)),IntLit(1),Block([Return(BinaryOp(+,CallExpr(Self(),Id(method),[]),ArrayCell(Id(a),[Id(b)])))])])]))])])"""
+        expect = """Program([ClassDecl(Id(MeowMeow),Id(Dog),[AttributeDecl(Instance,VarDecl(Id(b),IntType)),AttributeDecl(Static,VarDecl(Id($a),FloatType,FloatLit(0.0))),AttributeDecl(Instance,VarDecl(Id(c),FloatType,FloatLit(2.0))),AttributeDecl(Instance,VarDecl(Id(d),FloatType,FloatLit(78.9))),AttributeDecl(Instance,VarDecl(Id(a),ArrayType(5,FloatType),[FloatLit(1.2),FloatLit(3.6),FloatLit(3400000.0),FloatLit(230000.0),FloatLit(127000.0)])),MethodDecl(Id(function),Instance,[param(Id(a),IntType),param(Id(b),IntType),param(Id(c),IntType)],Block([For(Id(a),Id(b),BinaryOp(+,Id(c),IntLit(1)),Block([Return(BinaryOp(+,CallExpr(Self(),Id(method),[]),ArrayCell(Id(a),[Id(b)])))])])]))])])"""
         self.assertTrue(TestAST.test(input,expect,325))
 
     def test26(self):
@@ -626,7 +626,7 @@ class ASTGenSuite(unittest.TestCase):
                 Return 0;
             }
         }"""
-        expect = """Program([ClassDecl(Id(QuickSort),Id(Sort),[MethodDecl(Id($partition),Static,[param(Id(arr),ArrayType(10,IntType)),param(Id(start),IntType),param(Id(end),IntType)],Block([VarDecl(Id(pivot),IntType,ArrayCell(Id(arr),[Id(start)])),VarDecl(Id(count),IntType,IntLit(0)),For(Id(i),BinaryOp(+,Id(start),IntLit(1)),BinaryOp(+,Id(end),IntLit(1)),IntLit(1),Block([If(BinaryOp(<=,ArrayCell(Id(arr),[Id(i)]),Id(pivot)),Block([AssignStmt(Id(count),BinaryOp(+,Id(count),IntLit(1)))]))])]),VarDecl(Id(pivotIndex),IntType,BinaryOp(+,Id(start),Id(count))),Call(Id(Swap),Id($swap),[ArrayCell(Id(arr),[Id(pivotIndex)]),ArrayCell(Id(arr),[Id(start)])]),VarDecl(Id(i),IntType,Id(start)),VarDecl(Id(j),IntType,Id(end)),For(Id(k),IntLit(1),IntLit(100),IntLit(1),Block([If(BinaryOp(<=,ArrayCell(Id(arr),[Id(i)]),Id(pivot)),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1)))])),If(BinaryOp(>,ArrayCell(Id(arr),[Id(j)]),Id(pivot)),Block([AssignStmt(Id(j),BinaryOp(-,Id(j),IntLit(1)))])),If(UnaryOp(!,BinaryOp(&&,BinaryOp(<,Id(i),Id(pivotIndex)),BinaryOp(>,Id(j),Id(pivotIndex)))),Block([Break]),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1))),AssignStmt(Id(j),BinaryOp(-,Id(j),IntLit(1))),Call(Id(Swap),Id($swap),[ArrayCell(Id(arr),[Id(i)]),ArrayCell(Id(arr),[Id(j)])])]))])]),Return(Id(pivotIndex))])),MethodDecl(Id($quickSort),Static,[param(Id(arr),ArrayType(10,IntType)),param(Id(start),IntType),param(Id(end),IntType)],Block([If(BinaryOp(>=,Id(start),Id(end)),Block([Return()])),VarDecl(Id(p),IntType,CallExpr(Id(QuickSort),Id($partition),[Id(arr),Id(start),Id(end)])),Call(Id(QuickSort),Id($quickSort),[Id(arr),Id(start),BinaryOp(-,Id(p),IntLit(1))]),Call(Id(QuickSort),Id($quickSort),[Id(arr),BinaryOp(+,Id(p),IntLit(1)),Id(end)])])),MethodDecl(Id($print),Static,[],Block([VarDecl(Id(arr),ArrayType(10,IntType),[IntLit(9),IntLit(3),IntLit(4),IntLit(2),IntLit(1),IntLit(8),IntLit(4),IntLit(9),IntLit(5),IntLit(6)]),VarDecl(Id(n),IntType,IntLit(6)),Call(Id(QuickSort),Id($quickSort),[Id(arr),IntLit(0),BinaryOp(-,Id(n),IntLit(1))]),For(Id(i),IntLit(0),Id(n),IntLit(1),Block([Call(Id(System),Id($print),[ArrayCell(Id(arr),[Id(i)])])])]),Return(IntLit(0))]))])])"""
+        expect = """Program([ClassDecl(Id(QuickSort),Id(Sort),[MethodDecl(Id($partition),Static,[param(Id(arr),ArrayType(10,IntType)),param(Id(start),IntType),param(Id(end),IntType)],Block([VarDecl(Id(pivot),IntType,ArrayCell(Id(arr),[Id(start)])),VarDecl(Id(count),IntType,IntLit(0)),For(Id(i),BinaryOp(+,Id(start),IntLit(1)),BinaryOp(+,Id(end),IntLit(1)),IntLit(1),Block([If(BinaryOp(<=,ArrayCell(Id(arr),[Id(i)]),Id(pivot)),Block([AssignStmt(Id(count),BinaryOp(+,Id(count),IntLit(1)))]))])]),VarDecl(Id(pivotIndex),IntType,BinaryOp(+,Id(start),Id(count))),Call(Id(Swap),Id($swap),[ArrayCell(Id(arr),[Id(pivotIndex)]),ArrayCell(Id(arr),[Id(start)])]),VarDecl(Id(i),IntType,Id(start)),VarDecl(Id(j),IntType,Id(end)),For(Id(k),IntLit(1),IntLit(100),Block([If(BinaryOp(<=,ArrayCell(Id(arr),[Id(i)]),Id(pivot)),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1)))])),If(BinaryOp(>,ArrayCell(Id(arr),[Id(j)]),Id(pivot)),Block([AssignStmt(Id(j),BinaryOp(-,Id(j),IntLit(1)))])),If(UnaryOp(!,BinaryOp(&&,BinaryOp(<,Id(i),Id(pivotIndex)),BinaryOp(>,Id(j),Id(pivotIndex)))),Block([Break]),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1))),AssignStmt(Id(j),BinaryOp(-,Id(j),IntLit(1))),Call(Id(Swap),Id($swap),[ArrayCell(Id(arr),[Id(i)]),ArrayCell(Id(arr),[Id(j)])])]))])]),Return(Id(pivotIndex))])),MethodDecl(Id($quickSort),Static,[param(Id(arr),ArrayType(10,IntType)),param(Id(start),IntType),param(Id(end),IntType)],Block([If(BinaryOp(>=,Id(start),Id(end)),Block([Return()])),VarDecl(Id(p),IntType,CallExpr(Id(QuickSort),Id($partition),[Id(arr),Id(start),Id(end)])),Call(Id(QuickSort),Id($quickSort),[Id(arr),Id(start),BinaryOp(-,Id(p),IntLit(1))]),Call(Id(QuickSort),Id($quickSort),[Id(arr),BinaryOp(+,Id(p),IntLit(1)),Id(end)])])),MethodDecl(Id($print),Static,[],Block([VarDecl(Id(arr),ArrayType(10,IntType),[IntLit(9),IntLit(3),IntLit(4),IntLit(2),IntLit(1),IntLit(8),IntLit(4),IntLit(9),IntLit(5),IntLit(6)]),VarDecl(Id(n),IntType,IntLit(6)),Call(Id(QuickSort),Id($quickSort),[Id(arr),IntLit(0),BinaryOp(-,Id(n),IntLit(1))]),For(Id(i),IntLit(0),Id(n),IntLit(1),Block([Call(Id(System),Id($print),[ArrayCell(Id(arr),[Id(i)])])])]),Return(IntLit(0))]))])])"""
         self.assertTrue(TestAST.test(input,expect,338))
     def test39(self):
         input = """
@@ -700,7 +700,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Roman),[MethodDecl(Id(convertToRoman),Instance,[param(Id(num),IntType)],Block([VarDecl(Id(lookup),ArrayType(16,ArrayType(2,IntType)),[[Id(M),IntLit(1000)],[Id(CM),IntLit(900)],[Id(D),IntLit(500)],[Id(CD),IntLit(400)],[Id(C),IntLit(100)],[Id(XC),IntLit(90)],[Id(L),IntLit(50)],[Id(XL),IntLit(40)],[Id(X),IntLit(10)],[Id(IX),IntLit(9)],[Id(V),IntLit(5)],[Id(IV),IntLit(4)],[Id(I),IntLit(1)]]),VarDecl(Id(roman),StringType),For(Id(i),IntLit(0),CallExpr(Id(lookup),Id(length),[]),IntLit(1),Block([For(Id(num),ArrayCell(Id(lookup),[Id(i)]),IntLit(0),IntLit(1),Block([AssignStmt(Id(roman),BinaryOp(+,Id(roman),Id(i))),AssignStmt(Id(num),BinaryOp(-,Id(num),ArrayCell(Id(lookup),[Id(i)])))])])])]),Return(Id(roman))]))])])"""
+        expect = """Program([ClassDecl(Id(Roman),[MethodDecl(Id(convertToRoman),Instance,[param(Id(num),IntType)],Block([VarDecl(Id(lookup),ArrayType(16,ArrayType(2,IntType)),[[Id(M),IntLit(1000)],[Id(CM),IntLit(900)],[Id(D),IntLit(500)],[Id(CD),IntLit(400)],[Id(C),IntLit(100)],[Id(XC),IntLit(90)],[Id(L),IntLit(50)],[Id(XL),IntLit(40)],[Id(X),IntLit(10)],[Id(IX),IntLit(9)],[Id(V),IntLit(5)],[Id(IV),IntLit(4)],[Id(I),IntLit(1)]]),VarDecl(Id(roman),StringType),For(Id(i),IntLit(0),CallExpr(Id(lookup),Id(length),[]),Block([For(Id(num),ArrayCell(Id(lookup),[Id(i)]),IntLit(0),Block([AssignStmt(Id(roman),BinaryOp(+,Id(roman),Id(i))),AssignStmt(Id(num),BinaryOp(-,Id(num),ArrayCell(Id(lookup),[Id(i)])))])])])]),Return(Id(roman))]))])])"""
         self.assertTrue(TestAST.test(input,expect,341))
     def test42(self):
         input = """
@@ -747,7 +747,7 @@ class ASTGenSuite(unittest.TestCase):
             Return -1;
         }
     }"""
-        expect = """Program([ClassDecl(Id(JumpSearch),[MethodDecl(Id(jumpSearch),Instance,[param(Id(arr),ArrayType(171,IntType)),param(Id(x),IntType),param(Id(n),IntType)],Block([VarDecl(Id(step),FloatType,CallExpr(Id(Math),Id(sqrt),[Id(n)])),VarDecl(Id(prev),IntType,IntLit(0)),For(Id(i),IntLit(1),IntLit(100),IntLit(1),Block([If(BinaryOp(<,ArrayCell(Id(arr),[BinaryOp(-,CallExpr(Id(STD),Id(min),[Id(step),Id(n)]),IntLit(1))]),Id(x)),Block([AssignStmt(Id(prev),Id(step)),AssignStmt(Id(step),BinaryOp(+,Id(step),CallExpr(Id(Math),Id(sqrt),[Id(n)]))),If(BinaryOp(>=,Id(prev),Id(n)),Block([Return(UnaryOp(-,IntLit(1)))]))]))])]),For(Id(i),IntLit(0),Id(x),IntLit(1),Block([AssignStmt(Id(prev),BinaryOp(+,Id(prev),IntLit(1))),If(BinaryOp(==,Id(prev),CallExpr(Id(STD),Id(min),[Id(step),Id(n)])),Block([Return(UnaryOp(-,IntLit(1)))]))])]),If(BinaryOp(==,ArrayCell(Id(arr),[Id(prev)]),Id(x)),Block([Return(Id(prev))])),Return(UnaryOp(-,IntLit(1)))]))])])"""
+        expect = """Program([ClassDecl(Id(JumpSearch),[MethodDecl(Id(jumpSearch),Instance,[param(Id(arr),ArrayType(171,IntType)),param(Id(x),IntType),param(Id(n),IntType)],Block([VarDecl(Id(step),FloatType,CallExpr(Id(Math),Id(sqrt),[Id(n)])),VarDecl(Id(prev),IntType,IntLit(0)),For(Id(i),IntLit(1),IntLit(100),Block([If(BinaryOp(<,ArrayCell(Id(arr),[BinaryOp(-,CallExpr(Id(STD),Id(min),[Id(step),Id(n)]),IntLit(1))]),Id(x)),Block([AssignStmt(Id(prev),Id(step)),AssignStmt(Id(step),BinaryOp(+,Id(step),CallExpr(Id(Math),Id(sqrt),[Id(n)]))),If(BinaryOp(>=,Id(prev),Id(n)),Block([Return(UnaryOp(-,IntLit(1)))]))]))])]),For(Id(i),IntLit(0),Id(x),Block([AssignStmt(Id(prev),BinaryOp(+,Id(prev),IntLit(1))),If(BinaryOp(==,Id(prev),CallExpr(Id(STD),Id(min),[Id(step),Id(n)])),Block([Return(UnaryOp(-,IntLit(1)))]))])]),If(BinaryOp(==,ArrayCell(Id(arr),[Id(prev)]),Id(x)),Block([Return(Id(prev))])),Return(UnaryOp(-,IntLit(1)))]))])])"""
         self.assertTrue(TestAST.test(input,expect,343))
     def test44(self):
         input = """
@@ -780,7 +780,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Reverse),[MethodDecl(Id(reverse),Instance,[],Block([Call(Id(IO),Id(input),[StringLit(Enter an integer: )]),For(Id(n),Id(n),IntLit(0),IntLit(1),Block([AssignStmt(Id(remainder),BinaryOp(%,Id(n),IntLit(10))),AssignStmt(Id(reversed_number),BinaryOp(+,BinaryOp(*,Id(reversed_number),IntLit(10)),Id(remainder))),AssignStmt(Id(n),BinaryOp(/,Id(n),IntLit(10)))])])])),AttributeDecl(Instance,VarDecl(Id(n),IntType)),AttributeDecl(Instance,VarDecl(Id(reminder),IntType)),AttributeDecl(Instance,VarDecl(Id(reversed_number),IntType,IntLit(0))),MethodDecl(Id(get),Instance,[],Block([Return(FieldAccess(Self(),Id(reversed_number)))]))])])"""
+        expect = """Program([ClassDecl(Id(Reverse),[MethodDecl(Id(reverse),Instance,[],Block([Call(Id(IO),Id(input),[StringLit(Enter an integer: )]),For(Id(n),Id(n),IntLit(0),Block([AssignStmt(Id(remainder),BinaryOp(%,Id(n),IntLit(10))),AssignStmt(Id(reversed_number),BinaryOp(+,BinaryOp(*,Id(reversed_number),IntLit(10)),Id(remainder))),AssignStmt(Id(n),BinaryOp(/,Id(n),IntLit(10)))])])])),AttributeDecl(Instance,VarDecl(Id(n),IntType)),AttributeDecl(Instance,VarDecl(Id(reminder),IntType)),AttributeDecl(Instance,VarDecl(Id(reversed_number),IntType,IntLit(0))),MethodDecl(Id(get),Instance,[],Block([Return(FieldAccess(Self(),Id(reversed_number)))]))])])"""
         self.assertTrue(TestAST.test(input,expect,345))
     def test46(self):
         input = """
@@ -803,7 +803,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Max),[MethodDecl(Id(findMax),Instance,[param(Id(arr),ArrayType(100,IntType))],Block([VarDecl(Id(maxElement),IntType,ArrayCell(Id(arr),[IntLit(1)])),For(Id(i),IntLit(2),CallExpr(Id(arr),Id(length),[]),IntLit(1),Block([If(BinaryOp(<,Id(maxElement),ArrayCell(Id(arr),[Id(i)])),Block([AssignStmt(Id(maxElement),ArrayCell(Id(arr),[Id(i)]))]))])]),Return(Id(maxElement))]))]),ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(arr),CallExpr(Id(IO),Id(input),[StringLit(Your array: )])),AssignStmt(Id(max),NewExpr(Id(Max),[])),Call(Id(Console),Id(print),[CallExpr(Id(max),Id(findMax),[Id(arr)])])]))])])"""
+        expect = """Program([ClassDecl(Id(Max),[MethodDecl(Id(findMax),Instance,[param(Id(arr),ArrayType(100,IntType))],Block([VarDecl(Id(maxElement),IntType,ArrayCell(Id(arr),[IntLit(1)])),For(Id(i),IntLit(2),CallExpr(Id(arr),Id(length),[]),Block([If(BinaryOp(<,Id(maxElement),ArrayCell(Id(arr),[Id(i)])),Block([AssignStmt(Id(maxElement),ArrayCell(Id(arr),[Id(i)]))]))])]),Return(Id(maxElement))]))]),ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(arr),CallExpr(Id(IO),Id(input),[StringLit(Your array: )])),AssignStmt(Id(max),NewExpr(Id(Max),[])),Call(Id(Console),Id(print),[CallExpr(Id(max),Id(findMax),[Id(arr)])])]))])])"""
         self.assertTrue(TestAST.test(input,expect,346))
     def test47(self):
         input = """
@@ -833,7 +833,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Prime),[AttributeDecl(Instance,VarDecl(Id(i),IntType)),AttributeDecl(Instance,VarDecl(Id(n),IntType)),AttributeDecl(Instance,VarDecl(Id(is_prime),BoolType,BooleanLit(True))),MethodDecl(Id(checkPrime),Instance,[param(Id(num),IntType)],Block([If(BinaryOp(||,BinaryOp(==,Id(n),IntLit(0)),BinaryOp(==,Id(n),IntLit(1))),Block([AssignStmt(Id(is_prime),BooleanLit(False))])),For(Id(i),IntLit(2),BinaryOp(/,Id(n),IntLit(2)),IntLit(1),Block([If(BinaryOp(==,BinaryOp(%,Id(n),Id(i)),IntLit(0)),Block([AssignStmt(Id(is_prime),Id(false)),Break]))])]),If(Id(is_prime),Block([Return(BooleanLit(True))]),Block([Return(BooleanLit(False))]))]))])])"""
+        expect = """Program([ClassDecl(Id(Prime),[AttributeDecl(Instance,VarDecl(Id(i),IntType)),AttributeDecl(Instance,VarDecl(Id(n),IntType)),AttributeDecl(Instance,VarDecl(Id(is_prime),BoolType,BooleanLit(True))),MethodDecl(Id(checkPrime),Instance,[param(Id(num),IntType)],Block([If(BinaryOp(||,BinaryOp(==,Id(n),IntLit(0)),BinaryOp(==,Id(n),IntLit(1))),Block([AssignStmt(Id(is_prime),BooleanLit(False))])),For(Id(i),IntLit(2),BinaryOp(/,Id(n),IntLit(2)),Block([If(BinaryOp(==,BinaryOp(%,Id(n),Id(i)),IntLit(0)),Block([AssignStmt(Id(is_prime),Id(false)),Break]))])]),If(Id(is_prime),Block([Return(BooleanLit(True))]),Block([Return(BooleanLit(False))]))]))])])"""
         self.assertTrue(TestAST.test(input,expect,347))
     def test48(self):
         input = """
@@ -854,7 +854,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Fibonacci),[MethodDecl(Id($fibo),Static,[],Block([ConstDecl(Id(number),IntType,CallExpr(Id(Lib),Id(parseInt),[StringLit(Enter the number of terms: )])),VarDecl(Id(n1),IntType,IntLit(0)),VarDecl(Id(n2),IntType,IntLit(1)),VarDecl(Id(nextTerm),IntType),Call(Id(console),Id(log),[StringLit(Fibonacci Series:)]),For(Id(i),IntLit(1),Id(number),IntLit(1),Block([Call(Id(console),Id(log),[Id(n1)]),AssignStmt(Id(nextTerm),BinaryOp(+,Id(n1),Id(n2))),AssignStmt(Id(n1),Id(n2)),AssignStmt(Id(n2),Id(nextTerm))])])]))])])"""
+        expect = """Program([ClassDecl(Id(Fibonacci),[MethodDecl(Id($fibo),Static,[],Block([ConstDecl(Id(number),IntType,CallExpr(Id(Lib),Id(parseInt),[StringLit(Enter the number of terms: )])),VarDecl(Id(n1),IntType,IntLit(0)),VarDecl(Id(n2),IntType,IntLit(1)),VarDecl(Id(nextTerm),IntType),Call(Id(console),Id(log),[StringLit(Fibonacci Series:)]),For(Id(i),IntLit(1),Id(number),Block([Call(Id(console),Id(log),[Id(n1)]),AssignStmt(Id(nextTerm),BinaryOp(+,Id(n1),Id(n2))),AssignStmt(Id(n1),Id(n2)),AssignStmt(Id(n2),Id(nextTerm))])])]))])])"""
         self.assertTrue(TestAST.test(input,expect,348))
     def test49(self):
         input = """
@@ -906,7 +906,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(BubbleSort),[AttributeDecl(Instance,VarDecl(Id(arr),ArrayType(1000000,IntType))),MethodDecl(Id($sort),Static,[],Block([VarDecl(Id(i),IntType),VarDecl(Id(j),IntType),For(Id(i),IntLit(0),BinaryOp(-,Id(n),IntLit(1)),IntLit(1),Block([For(Id(j),IntLit(0),BinaryOp(-,BinaryOp(-,Id(n),Id(i)),IntLit(1)),IntLit(1),Block([If(BinaryOp(>,ArrayCell(Id(arr),[Id(j)]),ArrayCell(Id(arr),[BinaryOp(+,Id(j),IntLit(1))])),Block([Call(Id(Std),Id(swap),[ArrayCell(Id(arr),[Id(j)]),ArrayCell(Id(arr),[BinaryOp(+,Id(j),IntLit(1))])])]))])])])])])),MethodDecl(Id(set),Instance,[param(Id(arr),ArrayType(1000000,IntType))],Block([AssignStmt(FieldAccess(Self(),Id(arr)),Id(arr))]))])])"""
+        expect = """Program([ClassDecl(Id(BubbleSort),[AttributeDecl(Instance,VarDecl(Id(arr),ArrayType(1000000,IntType))),MethodDecl(Id($sort),Static,[],Block([VarDecl(Id(i),IntType),VarDecl(Id(j),IntType),For(Id(i),IntLit(0),BinaryOp(-,Id(n),IntLit(1)),Block([For(Id(j),IntLit(0),BinaryOp(-,BinaryOp(-,Id(n),Id(i)),IntLit(1)),Block([If(BinaryOp(>,ArrayCell(Id(arr),[Id(j)]),ArrayCell(Id(arr),[BinaryOp(+,Id(j),IntLit(1))])),Block([Call(Id(Std),Id(swap),[ArrayCell(Id(arr),[Id(j)]),ArrayCell(Id(arr),[BinaryOp(+,Id(j),IntLit(1))])])]))])])])])])),MethodDecl(Id(set),Instance,[param(Id(arr),ArrayType(1000000,IntType))],Block([AssignStmt(FieldAccess(Self(),Id(arr)),Id(arr))]))])])"""
         self.assertTrue(TestAST.test(input,expect,350))
     def test51(self):
         input = """
@@ -955,7 +955,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Instance,[param(Id(a),IntType),param(Id(b),IntType),param(Id(c),IntType),param(Id(d),IntType)],Block([VarDecl(Id(str),ArrayType(200,StringType)),VarDecl(Id(wrd),ArrayType(20,StringType)),VarDecl(Id(i),IntType),VarDecl(Id(j),IntType),VarDecl(Id(strLen),IntType),VarDecl(Id(wrdLen),IntType),VarDecl(Id(tmp),IntType),VarDecl(Id(chk),IntType,IntLit(0)),Call(Id(std),Id(gets),[Id(str)]),AssignStmt(Id(strLen),CallExpr(Id(std),Id(strlen),[Id(str)])),AssignStmt(Id(wrdLen),CallExpr(Id(std),Id(strlen),[Id(wrd)])),For(Id(i),IntLit(0),Id(strLen),IntLit(1),Block([AssignStmt(Id(tmp),Id(i)),For(Id(j),IntLit(0),Id(wrdLen),IntLit(1),Block([If(BinaryOp(==,ArrayCell(Id(str),[Id(i)]),ArrayCell(Id(wrd),[Id(j)])),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1)))]))])]),AssignStmt(Id(chk),BinaryOp(-,Id(i),Id(tmp))),If(BinaryOp(==,Id(chk),Id(wrdLen)),Block([AssignStmt(Id(i),Id(tmp)),For(Id(j),Id(i),BinaryOp(-,Id(strLen),Id(wrdLen)),IntLit(1),Block([AssignStmt(ArrayCell(Id(str),[Id(j)]),ArrayCell(Id(str),[BinaryOp(+,Id(j),Id(wrdLen))]))])]),AssignStmt(Id(strLen),BinaryOp(-,Id(strLen),Id(wrdLen))),AssignStmt(ArrayCell(Id(str),[Id(j)]),StringLit(\\\\0))]))])])]))])])"""
+        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Instance,[param(Id(a),IntType),param(Id(b),IntType),param(Id(c),IntType),param(Id(d),IntType)],Block([VarDecl(Id(str),ArrayType(200,StringType)),VarDecl(Id(wrd),ArrayType(20,StringType)),VarDecl(Id(i),IntType),VarDecl(Id(j),IntType),VarDecl(Id(strLen),IntType),VarDecl(Id(wrdLen),IntType),VarDecl(Id(tmp),IntType),VarDecl(Id(chk),IntType,IntLit(0)),Call(Id(std),Id(gets),[Id(str)]),AssignStmt(Id(strLen),CallExpr(Id(std),Id(strlen),[Id(str)])),AssignStmt(Id(wrdLen),CallExpr(Id(std),Id(strlen),[Id(wrd)])),For(Id(i),IntLit(0),Id(strLen),Block([AssignStmt(Id(tmp),Id(i)),For(Id(j),IntLit(0),Id(wrdLen),Block([If(BinaryOp(==,ArrayCell(Id(str),[Id(i)]),ArrayCell(Id(wrd),[Id(j)])),Block([AssignStmt(Id(i),BinaryOp(+,Id(i),IntLit(1)))]))])]),AssignStmt(Id(chk),BinaryOp(-,Id(i),Id(tmp))),If(BinaryOp(==,Id(chk),Id(wrdLen)),Block([AssignStmt(Id(i),Id(tmp)),For(Id(j),Id(i),BinaryOp(-,Id(strLen),Id(wrdLen)),Block([AssignStmt(ArrayCell(Id(str),[Id(j)]),ArrayCell(Id(str),[BinaryOp(+,Id(j),Id(wrdLen))]))])]),AssignStmt(Id(strLen),BinaryOp(-,Id(strLen),Id(wrdLen))),AssignStmt(ArrayCell(Id(str),[Id(j)]),StringLit(\\\\0))]))])])]))])])"""
         self.assertTrue(TestAST.test(input,expect,352))
     def test53(self):
         input = """
@@ -1297,7 +1297,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(complement),[MethodDecl(Id(convert),Instance,[],Block([VarDecl(Id(i),IntType),VarDecl(Id(fail),IntType),VarDecl(Id(binary),ArrayType(7,StringType)),VarDecl(Id(comp),ArrayType(7,StringType)),AssignStmt(Id(binary),CallExpr(Id(IO),Id(input),[StringLit( Input a bit binary number: )])),For(Id(i),IntLit(0),Id(size),IntLit(1),Block([If(BinaryOp(==,ArrayCell(Id(binary),[Id(i)]),StringLit(1)),Block([AssignStmt(ArrayCell(Id(comp),[Id(i)]),StringLit(0))]),If(BinaryOp(==,ArrayCell(Id(binary),[Id(i)]),StringLit(0)),Block([AssignStmt(ArrayCell(Id(comp),[Id(i)]),StringLit(1))]),Block([AssignStmt(Id(fail),IntLit(1)),Break])))])]),AssignStmt(ArrayCell(Id(comp),[Id(size)]),StringLit(\\\\0)),If(BinaryOp(==,Id(fail),IntLit(0)),Block([Call(Id(IO),Id(output),[BinaryOp(+,StringLit(The original binary number = ),Id(binary))]),Call(Id(IO),Id(output),[BinaryOp(+,StringLit(Ones complement the number = ),Id(comp))])]))]))])])"""
+        expect = """Program([ClassDecl(Id(complement),[MethodDecl(Id(convert),Instance,[],Block([VarDecl(Id(i),IntType),VarDecl(Id(fail),IntType),VarDecl(Id(binary),ArrayType(7,StringType)),VarDecl(Id(comp),ArrayType(7,StringType)),AssignStmt(Id(binary),CallExpr(Id(IO),Id(input),[StringLit( Input a bit binary number: )])),For(Id(i),IntLit(0),Id(size),Block([If(BinaryOp(==,ArrayCell(Id(binary),[Id(i)]),StringLit(1)),Block([AssignStmt(ArrayCell(Id(comp),[Id(i)]),StringLit(0))]),If(BinaryOp(==,ArrayCell(Id(binary),[Id(i)]),StringLit(0)),Block([AssignStmt(ArrayCell(Id(comp),[Id(i)]),StringLit(1))]),Block([AssignStmt(Id(fail),IntLit(1)),Break])))])]),AssignStmt(ArrayCell(Id(comp),[Id(size)]),StringLit(\\\\0)),If(BinaryOp(==,Id(fail),IntLit(0)),Block([Call(Id(IO),Id(output),[BinaryOp(+,StringLit(The original binary number = ),Id(binary))]),Call(Id(IO),Id(output),[BinaryOp(+,StringLit(Ones complement the number = ),Id(comp))])]))]))])])"""
         self.assertTrue(TestAST.test(input,expect,369))
     def test70(self):
         input = """
@@ -1370,7 +1370,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(test75),[MethodDecl(Id(t),Instance,[],Block([For(Id(t),IntLit(0),UnaryOp(-,IntLit(1203)),UnaryOp(-,IntLit(99)),Block([For(Id(j),Id(t),Id(Inf),IntLit(1),Block([If(Id(a),Block([AssignStmt(ArrayCell(Id(r),[Id(t),Id(r),Id(s)]),ArrayCell(Id(t),[Id(r)]))]))])])])])]))])])"""
+        expect = """Program([ClassDecl(Id(test75),[MethodDecl(Id(t),Instance,[],Block([For(Id(t),IntLit(0),UnaryOp(-,IntLit(1203)),UnaryOp(-,IntLit(99)),Block([For(Id(j),Id(t),Id(Inf),Block([If(Id(a),Block([AssignStmt(ArrayCell(Id(r),[Id(t),Id(r),Id(s)]),ArrayCell(Id(t),[Id(r)]))]))])])])])]))])])"""
         self.assertTrue(TestAST.test(input,expect,375))
     def test76(self):
         input = """
@@ -1383,7 +1383,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(test76),[MethodDecl(Id($method),Static,[param(Id(r),IntType),param(Id(t),IntType),param(Id(w),IntType),param(Id(r),IntType),param(Id(w),IntType)],Block([If(Id(w),Block([For(Id(r),IntLit(1),BinaryOp(+,IntLit(291),IntLit(339)),IntLit(1),Block([])])]),If(Id(q),Block([Return(Id(statement))])))]))])])"""
+        expect = """Program([ClassDecl(Id(test76),[MethodDecl(Id($method),Static,[param(Id(r),IntType),param(Id(t),IntType),param(Id(w),IntType),param(Id(r),IntType),param(Id(w),IntType)],Block([If(Id(w),Block([For(Id(r),IntLit(1),BinaryOp(+,IntLit(291),IntLit(339)),Block([])])]),If(Id(q),Block([Return(Id(statement))])))]))])])"""
         self.assertTrue(TestAST.test(input,expect,376))
     def test77(self):
         input = """
@@ -1519,7 +1519,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Largest),[MethodDecl(Id($main),Static,[param(Id(args),ArrayType(10000,StringType))],Block([VarDecl(Id(numArray),ArrayType(10000,FloatType),[FloatLit(23.4),UnaryOp(-,FloatLit(34.5)),FloatLit(50.0),FloatLit(33.5),FloatLit(55.5),FloatLit(43.7),FloatLit(5.7),UnaryOp(-,FloatLit(66.5))]),VarDecl(Id(largest),FloatType,ArrayCell(Id(numArray),[IntLit(0)])),For(Id(num),IntLit(0),FieldAccess(Id(numArray),Id(length)),IntLit(1),Block([If(BinaryOp(<,Id(largest),Id(num)),Block([AssignStmt(Id(largest),Id(num))]))])]),Call(FieldAccess(Id(System),Id(out)),Id(format),[StringLit(Largest element = %.2f),Id(largest)])]))])])"""
+        expect = """Program([ClassDecl(Id(Largest),[MethodDecl(Id($main),Static,[param(Id(args),ArrayType(10000,StringType))],Block([VarDecl(Id(numArray),ArrayType(10000,FloatType),[FloatLit(23.4),UnaryOp(-,FloatLit(34.5)),FloatLit(50.0),FloatLit(33.5),FloatLit(55.5),FloatLit(43.7),FloatLit(5.7),UnaryOp(-,FloatLit(66.5))]),VarDecl(Id(largest),FloatType,ArrayCell(Id(numArray),[IntLit(0)])),For(Id(num),IntLit(0),FieldAccess(Id(numArray),Id(length)),Block([If(BinaryOp(<,Id(largest),Id(num)),Block([AssignStmt(Id(largest),Id(num))]))])]),Call(FieldAccess(Id(System),Id(out)),Id(format),[StringLit(Largest element = %.2f),Id(largest)])]))])])"""
         self.assertTrue(TestAST.test(input,expect,384))
     def test85(self):
         input = """
@@ -1535,181 +1535,34 @@ class ASTGenSuite(unittest.TestCase):
             """
         expect = """Program([ClassDecl(Id(CharString),[MethodDecl(Id(main),Instance,[param(Id(args),ArrayType(17895697,StringType))],Block([VarDecl(Id(ch),StringType,StringLit(c)),VarDecl(Id(st),StringType,CallExpr(Id(Character),Id(toString),[Id(ch)])),Call(FieldAccess(Id(System),Id(out)),Id(println),[BinaryOp(+,StringLit(The string is: ),Id(st))])]))])])"""
         self.assertTrue(TestAST.test(input,expect,385))
-    def test86(self):
-        input = """
-            Class function: object {
-                Var JSON: String;
-                func() {
-                    JSON.string("New Sting");
-                    a = 23.e2;
-                    b = 5.4e-321;
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(function),Id(object),[AttributeDecl(Instance,VarDecl(Id(JSON),StringType)),MethodDecl(Id(func),Instance,[],Block([Call(Id(JSON),Id(string),[StringLit(New Sting)]),AssignStmt(Id(a),FloatLit(2300.0)),AssignStmt(Id(b),FloatLit(5.4e-321))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,386))
-    def test87(self):
-        input = """
-            Class Name {
-                Constructor(name: String; age: Int) {
-                    Self.name = name;
-                    Self.age = age;
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Name),[MethodDecl(Id(Constructor),Instance,[param(Id(name),StringType),param(Id(age),IntType)],Block([AssignStmt(FieldAccess(Self(),Id(name)),Id(name)),AssignStmt(FieldAccess(Self(),Id(age)),Id(age))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,387))
-    def test88(self):
-        input = """
-            Class B: C {
-                he() {
-                    wall = smoke + he.explore();
-                }
-            }
-            Class Program {
-                main(a: Int) {
-                    Return a * b;
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(B),Id(C),[MethodDecl(Id(he),Instance,[],Block([AssignStmt(Id(wall),BinaryOp(+,Id(smoke),CallExpr(Id(he),Id(explore),[])))]))]),ClassDecl(Id(Program),[MethodDecl(Id(main),Instance,[param(Id(a),IntType)],Block([Return(BinaryOp(*,Id(a),Id(b)))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,388))
-    def test89(self):
-        input = """
-            Class Func {
-                f() {
-                    Foreach (a In b - 1 .. c By 2) {
-                        Foreach (b In c - 1 .. d) {
-
-                        }
-                    }
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Func),[MethodDecl(Id(f),Instance,[],Block([For(Id(a),BinaryOp(-,Id(b),IntLit(1)),Id(c),IntLit(2),Block([For(Id(b),BinaryOp(-,Id(c),IntLit(1)),Id(d),IntLit(1),Block([])])])])]))])])"""
-        self.assertTrue(TestAST.test(input,expect,389))
-    def test90(self):
-        input = """
-            Class For {
-                Val count: Int = 0;
-                f() { Return For.f(); }
-            }
-            """
-        expect = """Program([ClassDecl(Id(For),[AttributeDecl(Instance,ConstDecl(Id(count),IntType,IntLit(0))),MethodDecl(Id(f),Instance,[],Block([Return(CallExpr(Id(For),Id(f),[]))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,390))
-    def test91(self):
-        input = """
-            Class MeowMeow: Dog {
-                Var b: Int;
-                Var $a, c, d: Float = .e4, 2., 78.9;
-                Var a: Array[Float, 5] = Array(1.2, 3.6, 34e5, 23e4, 12.7e4);
-            }
-            """
-        expect = """Program([ClassDecl(Id(MeowMeow),Id(Dog),[AttributeDecl(Instance,VarDecl(Id(b),IntType)),AttributeDecl(Static,VarDecl(Id($a),FloatType,FloatLit(0.0))),AttributeDecl(Instance,VarDecl(Id(c),FloatType,FloatLit(2.0))),AttributeDecl(Instance,VarDecl(Id(d),FloatType,FloatLit(78.9))),AttributeDecl(Instance,VarDecl(Id(a),ArrayType(5,FloatType),[FloatLit(1.2),FloatLit(3.6),FloatLit(3400000.0),FloatLit(230000.0),FloatLit(127000.0)]))])])"""
-        self.assertTrue(TestAST.test(input,expect,391))
-    def test92(self):
-        input = """
-            Class Program {
-                main(){
-
-                }
-            }
-            Class Des {
-                Destructor() {
-                    Stand.Delete().All(0);
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([]))]),ClassDecl(Id(Des),[MethodDecl(Id(Destructor),Instance,[],Block([Call(CallExpr(Id(Stand),Id(Delete),[]),Id(All),[IntLit(0)])]))])])"""
-        self.assertTrue(TestAST.test(input,expect,392))
-    def test93(self):
-        input = """
-            Class Pro {
-                MainMenu(a: Int; b: Int) {
-                    Self.arr[4] = b.getName() + a.exp();
-                }
-            }
-            Class ProMax {
-                iPhone13(){
-                    Return 40000000;
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Pro),[MethodDecl(Id(MainMenu),Instance,[param(Id(a),IntType),param(Id(b),IntType)],Block([AssignStmt(ArrayCell(FieldAccess(Self(),Id(arr)),[IntLit(4)]),BinaryOp(+,CallExpr(Id(b),Id(getName),[]),CallExpr(Id(a),Id(exp),[])))]))]),ClassDecl(Id(ProMax),[MethodDecl(Id(iPhone13),Instance,[],Block([Return(IntLit(40000000))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,393))
-    def test94(self):
-        input = """
-            Class Program {
-                main() {
-                    a[1][2][3][4] = b.c(d[1][2+4][0x5 * 0b1]);
-                }
-                method () { }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(ArrayCell(Id(a),[IntLit(1),IntLit(2),IntLit(3),IntLit(4)]),CallExpr(Id(b),Id(c),[ArrayCell(Id(d),[IntLit(1),BinaryOp(+,IntLit(2),IntLit(4)),BinaryOp(*,IntLit(5),IntLit(1))])]))])),MethodDecl(Id(method),Instance,[],Block([]))])])"""
-        self.assertTrue(TestAST.test(input,expect,394))
-    def test95(self):
-        input = """
-            Class E {
-                method() {
-                    Return a[1][2][3] + className.b()[4];
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(E),[MethodDecl(Id(method),Instance,[],Block([Return(BinaryOp(+,ArrayCell(Id(a),[IntLit(1),IntLit(2),IntLit(3)]),ArrayCell(CallExpr(Id(className),Id(b),[]),[IntLit(4)])))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,395))
-    def test96(self):
-        input = """
-            Class _R {
-                Val $y: Int = 12;
-                _F() {
-                    Val _, _, _: String = 3, 4, 5;
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(_R),[AttributeDecl(Static,ConstDecl(Id($y),IntType,IntLit(12))),MethodDecl(Id(_F),Instance,[],Block([ConstDecl(Id(_),StringType,IntLit(3)),ConstDecl(Id(_),StringType,IntLit(4)),ConstDecl(Id(_),StringType,IntLit(5))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,396))
-    def test97(self):
-        input = """
-            Class test {
-                Var t, y: Int = 1, 2;
-                method(a,b,c:Int; r:Func) {
-                    If (a + b > 0) {
-                        Foreach(i In 1 .. 12 By r) {
-                            If (2 + 5) {
-                                If (f >= t) {
-                                    Continue;
-                                }
-                            }
-                        }
-                    }
-                    Elseif (t * 7) {
-                        If (34) { }
-                        Else { Return; }
-                    }
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(test),[AttributeDecl(Instance,VarDecl(Id(t),IntType,IntLit(1))),AttributeDecl(Instance,VarDecl(Id(y),IntType,IntLit(2))),MethodDecl(Id(method),Instance,[param(Id(a),IntType),param(Id(b),IntType),param(Id(c),IntType),param(Id(r),ClassType(Id(Func)))],Block([If(BinaryOp(>,BinaryOp(+,Id(a),Id(b)),IntLit(0)),Block([For(Id(i),IntLit(1),IntLit(12),Id(r),Block([If(BinaryOp(+,IntLit(2),IntLit(5)),Block([If(BinaryOp(>=,Id(f),Id(t)),Block([Continue]))]))])])]),If(BinaryOp(*,Id(t),IntLit(7)),Block([If(IntLit(34),Block([]),Block([Return()]))])))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,397))
-    def test98(self):
-        input = """
-            Class B {
-                Val b: Int = 0;
-                Val a: Float = Self.a.b.c().t[1];
-            }
-            """
-        expect = """Program([ClassDecl(Id(B),[AttributeDecl(Instance,ConstDecl(Id(b),IntType,IntLit(0))),AttributeDecl(Instance,ConstDecl(Id(a),FloatType,ArrayCell(FieldAccess(CallExpr(FieldAccess(FieldAccess(Self(),Id(a)),Id(b)),Id(c),[]),Id(t)),[IntLit(1)])))])])"""
-        self.assertTrue(TestAST.test(input,expect,398))
-    def test99(self):
-        input = """
-            Class Program {
-                main() {
-                    b = Main::$get()[1];
-                    a = Main.get()[3][5][67];
-                }
-            }
-            """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(b),ArrayCell(CallExpr(Id(Main),Id($get),[]),[IntLit(1)])),AssignStmt(Id(a),ArrayCell(CallExpr(Id(Main),Id(get),[]),[IntLit(3),IntLit(5),IntLit(67)]))]))])])"""
-        self.assertTrue(TestAST.test(input,expect,399))
+    # def test86(self):
+    #     input = """
+            
+    #         """
+    #     expect = """"""
+    #     self.assertTrue(TestAST.test(input,expect,386))
+    # def test87(self):
+    #     input = """
+            
+    #         """
+    #     expect = """"""
+    #     self.assertTrue(TestAST.test(input,expect,387))
+    # def test88(self):
+    #     input = """
+            
+    #         """
+    #     expect = """"""
+    #     self.assertTrue(TestAST.test(input,expect,388))
+    # def test89(self):
+    #     input = """
+            
+    #         """
+    #     expect = """"""
+    #     self.assertTrue(TestAST.test(input,expect,389))
+    # def test90(self):
+    #     input = """
+            
+    #         """
+    #     expect = """"""
+    #     self.assertTrue(TestAST.test(input,expect,390))
     
