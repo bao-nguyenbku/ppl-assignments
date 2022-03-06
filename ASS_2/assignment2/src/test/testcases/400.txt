@@ -1,1 +1,25 @@
-int main() {foo();}
+
+        Class ABC {
+        }
+        Class LetABC {
+            foo() { 
+                If (a) {
+                    a = 10;
+                }
+                Elseif (b) {
+                    a = 3;
+                    Continue;
+                }
+                Elseif (a == bb) {
+                    r = 1;
+                    pi = 0.3;
+                }
+                Elseif (100 || a[3]) {
+                    r = 6;
+                }
+                Else {
+                    d::$F = 100;
+                }
+            }
+        }
+        

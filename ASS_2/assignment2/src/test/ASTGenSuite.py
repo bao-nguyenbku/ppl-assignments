@@ -1,3 +1,5 @@
+# 1912683
+# Nguyen Thien Bao
 import unittest
 from TestUtils import TestAST
 from AST import *
@@ -1704,12 +1706,13 @@ class ASTGenSuite(unittest.TestCase):
     def test99(self):
         input = """
             Class Program {
+                Var a: Program = New Program(1);
+                Val b: Main;
                 main() {
                     b = Main::$get()[1];
                     a = Main.get()[3][5][67];
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(b),ArrayCell(CallExpr(Id(Main),Id($get),[]),[IntLit(1)])),AssignStmt(Id(a),ArrayCell(CallExpr(Id(Main),Id(get),[]),[IntLit(3),IntLit(5),IntLit(67)]))]))])])"""
+        expect = """Program([ClassDecl(Id(Program),[AttributeDecl(Instance,VarDecl(Id(a),ClassType(Id(Program)),NewExpr(Id(Program),[IntLit(1)]))),AttributeDecl(Instance,ConstDecl(Id(b),ClassType(Id(Main)),None)),MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(b),ArrayCell(CallExpr(Id(Main),Id($get),[]),[IntLit(1)])),AssignStmt(Id(a),ArrayCell(CallExpr(Id(Main),Id(get),[]),[IntLit(3),IntLit(5),IntLit(67)]))]))])])"""
         self.assertTrue(TestAST.test(input,expect,399))
-    

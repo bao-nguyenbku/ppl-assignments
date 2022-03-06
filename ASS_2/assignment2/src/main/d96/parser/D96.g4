@@ -71,7 +71,7 @@ else_stmt: ELSE block_statements | ;
 foreach_statement: FOREACH LP (NORMAL_ID | static_attr_call | instance_attr_call) IN exp DOTDOT exp increment RP block_statements;
 increment: BY exp | ;
 // lhs stand for "left hand side"
-lhs: NORMAL_ID | exp6 | static_attr_call | instance_attr_call;
+lhs: NORMAL_ID | exp6 index_operators | static_attr_call | instance_attr_call;
 
 // Class member access-------------------------------------
 static_attr_call: NORMAL_ID SCOPE DOLLAR_ID;

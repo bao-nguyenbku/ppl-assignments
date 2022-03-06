@@ -1,0 +1,8 @@
+
+        Class A {
+            Val b: def;
+            f() {
+                Var a: ABC;
+            }
+        }
+        

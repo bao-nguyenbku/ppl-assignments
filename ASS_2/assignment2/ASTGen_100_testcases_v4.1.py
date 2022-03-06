@@ -1158,7 +1158,7 @@ class ASTGenSuite(unittest.TestCase):
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Laptop),Id(PC),[AttributeDecl(Instance,ConstDecl(Id(mainboard),ClassType(Id(board)),None)),AttributeDecl(Instance,ConstDecl(Id(RAM),ClassType(Id(ram)),None)),MethodDecl(Id(start_up),Instance,[],Block([Return(BinaryOp(+,BinaryOp(+,StringLit(Hi),FieldAccess(Id(pc),Id(name))),StringLit(Windows is booting)))]))])])"""
+        expect = """Program([ClassDecl(Id(Laptop),Id(PC),[AttributeDecl(Instance,ConstDecl(Id(mainboard),ClassType(Id(board)),NullLiteral())),AttributeDecl(Instance,ConstDecl(Id(RAM),ClassType(Id(ram)),NullLiteral())),MethodDecl(Id(start_up),Instance,[],Block([Return(BinaryOp(+,BinaryOp(+,StringLit(Hi),FieldAccess(Id(pc),Id(name))),StringLit(Windows is booting)))]))])])"""
         self.assertTrue(TestAST.test(input,expect,362))
     def test63(self):
         input = """
@@ -1704,12 +1704,14 @@ class ASTGenSuite(unittest.TestCase):
     def test99(self):
         input = """
             Class Program {
+                Var a: Program = New Program(1);
+                Val b: Main;
                 main() {
                     b = Main::$get()[1];
                     a = Main.get()[3][5][67];
                 }
             }
             """
-        expect = """Program([ClassDecl(Id(Program),[MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(b),ArrayCell(CallExpr(Id(Main),Id($get),[]),[IntLit(1)])),AssignStmt(Id(a),ArrayCell(CallExpr(Id(Main),Id(get),[]),[IntLit(3),IntLit(5),IntLit(67)]))]))])])"""
+        expect = """Program([ClassDecl(Id(Program),[AttributeDecl(Instance,VarDecl(Id(a),ClassType(Id(Program)),NewExpr(Id(Program),[IntLit(1)]))),AttributeDecl(Instance,ConstDecl(Id(b),ClassType(Id(Main)),NullLiteral())),MethodDecl(Id(main),Static,[],Block([AssignStmt(Id(b),ArrayCell(CallExpr(Id(Main),Id($get),[]),[IntLit(1)])),AssignStmt(Id(a),ArrayCell(CallExpr(Id(Main),Id(get),[]),[IntLit(3),IntLit(5),IntLit(67)]))]))])])"""
         self.assertTrue(TestAST.test(input,expect,399))
     

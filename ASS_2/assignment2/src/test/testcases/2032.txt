@@ -1,6 +1,8 @@
 
             Class obj {
-                Val obj1, $obj2: Int = 10, 2;
+                f() {
+                    a[2] = a + b;
+                }
             }
             Class Test {
             }

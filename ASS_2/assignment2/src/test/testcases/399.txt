@@ -1,5 +1,7 @@
 
             Class Program {
+                Var a: Program = New Program(1);
+                Val b: Main;
                 main() {
                     b = Main::$get()[1];
                     a = Main.get()[3][5][67];

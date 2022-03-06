@@ -1,1 +1,1 @@
-Undeclared Function: foo
+Program([ClassDecl(Id(ABC),[]),ClassDecl(Id(LetABC),[MethodDecl(Id(foo),Instance,[],Block([If(Id(a),Block([AssignStmt(Id(a),IntLit(10))]),If(Id(b),Block([AssignStmt(Id(a),IntLit(3)),Continue]),If(BinaryOp(==,Id(a),Id(bb)),Block([AssignStmt(Id(r),IntLit(1)),AssignStmt(Id(pi),FloatLit(0.3))]),If(BinaryOp(||,IntLit(100),ArrayCell(Id(a),[IntLit(3)])),Block([AssignStmt(Id(r),IntLit(6))]),Block([AssignStmt(FieldAccess(Id(d),Id($F)),IntLit(100))])))))]))])])
