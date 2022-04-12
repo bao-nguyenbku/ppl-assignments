@@ -29,7 +29,7 @@ class Data(Enum):
 
 class GlobalChecker(BaseVisitor, Utils):
     def visitProgram(self, ast, param):
-        param={}
+        print(ast)
         return param
     
     def visitClassDecl(self, ast, param):
@@ -130,8 +130,9 @@ class StaticChecker(BaseVisitor,Utils):
         return self.visit(self.ast,StaticChecker.global_envi)
 
     def visitProgram(self,ast, c): 
-        print(ast, c)
-        return None
+        c = {}
+        param = GlobalChecker().visit(ast, c)
+        return param
 
     def visitClassDecl(self, ast, c):
         return None
