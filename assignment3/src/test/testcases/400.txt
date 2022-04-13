@@ -1,3 +1,5 @@
 
-        Class Dog : Animal { main(){} }
+        Class Dog : Animal { 
+            Var $a: Int;
+        }
         

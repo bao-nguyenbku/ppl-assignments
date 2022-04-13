@@ -26,25 +26,96 @@ class Data(Enum):
     NULL = 6
     ARRAY = 7
     SELF = 8
+    CLASS = ID
+    VOID = 0
 
 class GlobalChecker(BaseVisitor, Utils):
     def visitProgram(self, ast, param):
-        print(ast)
-        return param
-    
+        '''
+        //** Param structure for global scope **//
+            param = {
+                'Dog': {
+                    'type': CLASS,
+                    'parent': 'Animal',
+                    'attribute': {
+                        '$a': {
+                            'kind': 'static',
+                            'type': 'int',
+                            'const': false // if this attribute is a constant, flag will be true
+                        }
+                    },
+                    'method': {
+                        '$get': {
+                            'kind': 'static',
+                            'type': 'method',
+                            'param': [], // list of parameter
+                            'field': [] // list dict of var declare inside method (use for method and block scope)
+                        }
+                    }
+                }
+                ...
+            }
+        '''
+        for element in ast.decl:
+            self.visit(element, param)
+        return list(param.items())
+    # classname: Id,  memlist: List[MemDecl],  parentname: Id = None
+    # MemDecl include MethodDecl and AttributeDecl
     def visitClassDecl(self, ast, param):
+        if ast.classname.name in param:
+            raise Redeclared(Class(), ast.classname)
+        param[ast.classname.name] = {
+            'type': Data.CLASS,
+            'parent': ast.parentname.name if ast.parentname else None,
+            'attribute': {},
+            'method': {}
+        }
+
+        for mem in ast.memlist:
+            self.visit(mem, param[ast.classname.name])
+
+    def visitMethodDecl(self, ast, param):
         return None
+
+    # kind: SIKind, decl: StoreDecl (VarDecl or ConstDecl)
+    def visitAttributeDecl(self, ast, param):
+        '''
+        param = {
+            'type':, 
+            'parent':, 
+            'attribute': {},
+            'method': {}
+        }
+        '''
+        self.visit(ast.decl, param['attribute'])
+
+    # variable: Id, varType: Type, varInit: Expr = None
+    def visitVarDecl(self, ast, param):
+        '''
+        {
+            '$a': {
+                'kind': 'static',
+                'type': 'int',
+                'const': False
+                'init':
+            }
+        }
+        '''
+        if ast.variable.name in param:
+            raise Redeclared(Attribute(), ast.variable.name)
+        
+        param[ast.variable.name] = {
+            'kind': 'static' if ast.variable.name.startswith('$') else 'instance',
+            'type': self.visit(ast.varType, param),
+            'const': False,
+            'init': None
+        }
 
     def visitConstDecl(self, ast, param):
         return None
         
-    def visitVarDecl(self, ast, param):
-        return None
-    def visitMethodDecl(self, ast, param):
-        return None
 
-    def visitAttributeDecl(self, ast, param):
-        return None
+    
 
     def visitId(self, ast, param):
         return None
@@ -99,20 +170,22 @@ class GlobalChecker(BaseVisitor, Utils):
         return None
     def visitArrayLiteral(self, ast, param):
         return None
+
+    ''' DATA TYPE'''
     def visitIntType(self, ast, param):
-        return None
+        return Data.INT
     def visitFloatType(self, ast, param):
-        return None
+        return Data.FLOAT
     def visitBoolType(self, ast, param):
-        return None
+        return Data.BOOL
     def visitStringType(self, ast, param):
-        return None
+        return Data.STRING
     def visitArrayType(self, ast, param):
-        return None
+        return Data.ARRAY
     def visitClassType(self, ast, param):
-        return None
+        return Data.CLASS
     def visitVoidType(self, ast, param):
-        return None
+        return Data.VOID
 
 
 class StaticChecker(BaseVisitor,Utils):
@@ -136,24 +209,4 @@ class StaticChecker(BaseVisitor,Utils):
 
     def visitClassDecl(self, ast, c):
         return None
-    # def visitFuncDecl(self,ast, c): 
-    # return list(map(lambda x: self.visit(x,(c,True)),ast.body.stmt)) 
-
-    def visitCallExpr(self, ast, c): 
-        at = [self.visit(x,(c[0],False)) for x in ast.param]
-        
-        res = self.lookup(ast.method.name,c[0],lambda x: x.name)
-        if res is None or not type(res.mtype) is MType:
-            raise Undeclared(Function(),ast.method.name)
-        elif len(res.mtype.partype) != len(at):
-            if c[1]:
-                raise TypeMismatchInStatement(ast)
-            else:
-                raise TypeMismatchInExpression(ast)
-        else:
-            return res.mtype.rettype
-
-    # def visitIntLiteral(self,ast, c): 
-    #     return IntType()
-    
 

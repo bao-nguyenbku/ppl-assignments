@@ -6,10 +6,7 @@ class CheckerSuite(unittest.TestCase):
     def test_undeclared_function(self):
         input = """
         Class Dog : Animal { 
-            main(){ } 
-        }
-        Class B {
-            e() { }
+            Var $a: Int;
         }
         """
         expect = "[]"

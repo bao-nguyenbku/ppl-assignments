@@ -1,0 +1,13 @@
+Kind: Variable/Constant/Atrribute/Class/Method/Parameter
+
+Scope: Global, Class, Method, Block
+
+1. GLOBAL:
+    Classname, static attribute and method name
+2. CLASS:
+    Instance attribute of class,
+    Subclass can access instance attribute of superclass
+3. METHOD:
+    parameter, variable declared in body of method
+4. BLOCK
+    variable declared in block
