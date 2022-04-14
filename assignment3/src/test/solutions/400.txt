@@ -1,1 +1,1 @@
-[('Dog', {'type': <Data.ID: 1>, 'parent': 'Animal', 'attribute': {'$a': {'kind': 'static', 'type': <Data.INT: 2>, 'const': False, 'init': None}}, 'method': {}})]
+[]

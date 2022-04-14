@@ -1,5 +1,10 @@
 
-        Class Dog : Animal { 
-            Var $a: Int;
+        Class Dog : Animal {
+            Val $a : Int = 2;
+            $getDog() { }
+        }
+        Class Meow {
+            Val $b: Int = Dog::$a;
+            $set() { }
         }
         

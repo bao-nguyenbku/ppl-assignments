@@ -5,8 +5,13 @@ from AST import *
 class CheckerSuite(unittest.TestCase):
     def test_undeclared_function(self):
         input = """
-        Class Dog : Animal { 
-            Var $a: Int;
+        Class Dog : Animal {
+            Val $a : Int = 2;
+            $getDog() { }
+        }
+        Class Meow {
+            Val $b: Int = Dog::$a;
+            $set() { }
         }
         """
         expect = "[]"
