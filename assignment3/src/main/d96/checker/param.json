@@ -2,39 +2,27 @@
     "Dog": {
         "type": "<CLASS>",
         "parent": "Animal",
-        "attribute": {
-            "$a": {
-                "kind": "<STATIC>",
-                "type": "<INT>",
-                "const": true,
-                "init": "<INT>"
-            }
-        },
+        "attribute": {},
         "method": {
-            "$getDog": {
-                "kind": "<STATIC>",
+            "get": {
+                "kind": "<INSTANCE>",
                 "type": "<METHOD>",
-                "param": [],
-                "body": []
-            }
-        }
-    },
-    "Meow": {
-        "type": "<CLASS>",
-        "parent": null,
-        "attribute": {
-            "$b": {
-                "kind": "<STATIC>",
-                "type": "<INT>",
-                "const": true,
-                "init": "<INT>"
-            }
-        },
-        "method": {
-            "$set": {
-                "kind": "<STATIC>",
-                "type": "<METHOD>",
-                "param": [],
+                "param": [
+                    {
+                        "name": "a",
+                        "kind": "<INSTANCE>",
+                        "type": "<INT>",
+                        "const": false,
+                        "init": null
+                    },
+                    {
+                        "name": "b",
+                        "kind": "<INSTANCE>",
+                        "type": "<FLOAT>",
+                        "const": false,
+                        "init": null
+                    }
+                ],
                 "body": []
             }
         }

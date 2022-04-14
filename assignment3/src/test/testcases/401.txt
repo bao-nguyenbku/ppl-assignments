@@ -1,0 +1,8 @@
+
+        Class A {
+            Var $a: Int;
+        }
+        Class A {
+            Val $b: Float;
+        }
+        

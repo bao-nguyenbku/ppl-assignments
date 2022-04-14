@@ -7,7 +7,9 @@ class ASTGenSuite(unittest.TestCase):
        
         input = """
         Class A {
-            Var a: A;
+            method(a: Int) {
+                
+            }
         }
         """
         expect = ""

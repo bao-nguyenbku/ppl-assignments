@@ -1,10 +1,6 @@
 
         Class Dog : Animal {
-            Val $a : Int = 2;
-            $getDog() { }
+            get(a: Int; b: Float) { }
         }
-        Class Meow {
-            Val $b: Int = Dog::$a;
-            $set() { }
-        }
+        
         

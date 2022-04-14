@@ -1,0 +1,8 @@
+
+        Class A {
+            Val $a: Int = 3;
+        }
+        Class B {
+            Val $b: Float = A::$a;
+        }
+        

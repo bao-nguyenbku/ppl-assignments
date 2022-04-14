@@ -1,6 +1,7 @@
 """
  * @author nhphung
 """
+from statistics import variance
 from AST import * 
 from Visitor import *
 from Utils import Utils
@@ -80,7 +81,6 @@ class GlobalChecker(BaseVisitor, Utils):
         '''
         for element in ast.decl:
             self.visit(element, param)
-            toJSONTerminal(param)
         return param
 
     # classname: Id,  memlist: List[MemDecl],  parentname: Id = None
@@ -95,39 +95,32 @@ class GlobalChecker(BaseVisitor, Utils):
             'method': {}
         }
         for mem in ast.memlist:
-            self.visit(mem, param)
-
+            self.visit(mem, [param, ast.classname.name, 'MemDecl'])
+    # kind: SIKind, name: Id, param: List[VarDecl], body: Block
     def visitMethodDecl(self, ast, param):
+        className = param[1]
+        if ast.name.name in param[0][className]['method']:
+            raise Redeclared(Method(), ast.name.name)
         '''
-        ** example param **
-        param = {
-            'type': <CLASS>, 
-            'parent':, 
-            'attribute': {},
-            'method': {}
+        ** example structure **
+        'method': {
+            '$get': {
+                'kind': 'static',
+                'type': '<METHOD>',
+                'param': [], // list of parameter
+                'body': [] // list dict of var declare inside method (use for method and block scope)
+            }
         }
         '''
-        className = list(param.keys())[-1]
-        if isinstance(ast.kind, Static):
-            if ast.name.name in param[className]['method']:
-                raise Redeclared(Method(), ast.name.name)
-            '''
-            ** example structure **
-            'method': {
-                '$get': {
-                    'kind': 'static',
-                    'type': '<METHOD>',
-                    'param': [], // list of parameter
-                    'body': [] // list dict of var declare inside method (use for method and block scope)
-                }
-            }
-            '''
-            param[className]['method'][ast.name.name] = {
-                'kind': Data.STATIC(),
-                'type': Data.METHOD(),
-                'param': [],
-                'body': []
-            }
+        
+        paramList = [self.visit(eachParam, [param[0], param[1], 'ParamDecl']) for eachParam in ast.param]
+
+        param[0][className]['method'][ast.name.name] = {
+            'kind': Data.STATIC() if isinstance(ast.kind, Static) else Data.INSTANCE(),
+            'type': Data.METHOD(),
+            'param': paramList,
+            'body': []
+        }
 
     # kind: SIKind, decl: StoreDecl (VarDecl or ConstDecl)
     def visitAttributeDecl(self, ast, param):
@@ -156,24 +149,34 @@ class GlobalChecker(BaseVisitor, Utils):
 
     # variable: Id, varType: Type, varInit: Expr = None
     def visitVarDecl(self, ast:VarDecl, param):
-        className = list(param.keys())[-1]
-        if ast.variable.name in param[className]['attribute']:
-            raise Redeclared(Attribute(), ast.variable.name)
-        if ast.variable.name.startswith('$'):
-            param[className]['attribute'][ast.variable.name] = {
-                'kind': Data.STATIC(),
-                'type': self.visit(ast.varType, param),
+        className = param[1]
+        if param[2] == 'MemDecl':
+            if ast.variable.name in param[0][className]['attribute']:
+                raise Redeclared(Attribute(), ast.variable.name)
+            if ast.variable.name.startswith('$'):
+                param[0][className]['attribute'][ast.variable.name] = {
+                    'kind': Data.STATIC(),
+                    'type': self.visit(ast.varType, param[0]),
+                    'const': False,
+                    'init': self.visit(ast.varInit, param[0]) if ast.varInit else Data.UNDEFINED()
+                }
+        elif param[2] == 'ParamDecl':
+            parameter = {
+                'name': ast.variable.name,
+                'kind': Data.INSTANCE(),
+                'type': self.visit(ast.varType, param[0]),
                 'const': False,
-                'init': self.visit(ast.varInit, param) if ast.varInit else Data.UNDEFINED()
+                'init': Data.UNDEFINED()
             }
+            return parameter
 
     # constant: ID,  constType: Type,   value: Expr = None
     def visitConstDecl(self, ast:ConstDecl, param):
-        className = list(param.keys())[-1]
-        if ast.constant.name in param[className]['attribute']:
+        className = param[1]
+        if ast.constant.name in param[0][className]['attribute']:
             raise Redeclared(Attribute(), ast.constant.name)
-        constType = self.visit(ast.constType, param)
-        initialType = self.visit(ast.value, param) if ast.value else None
+        constType = self.visit(ast.constType, param[0])
+        initialType = self.visit(ast.value, param[0]) if ast.value else None
 
         if isinstance(constType, dict):
             constType = constType['type']
@@ -183,11 +186,10 @@ class GlobalChecker(BaseVisitor, Utils):
         
         
         if constType != initialType:
-            print('From here', constType, initialType)
             raise IllegalConstantExpression(ast.value)
 
         if ast.constant.name.startswith('$'):
-            param[className]['attribute'][ast.constant.name] = {
+            param[0][className]['attribute'][ast.constant.name] = {
                 'kind': Data.STATIC(),
                 'type': constType,
                 'const': True,
