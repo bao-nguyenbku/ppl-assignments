@@ -1,48 +1,16 @@
 {
-    "Dog": {
-        "parent": "",
-        "attribute": {
-            "$r": {
-                "type": "<INT>",
-                "init": null,
-                "const": true,
-                "kind": "<STATIC>"
-            },
-            "a": {
-                "type": "<FLOAT>",
-                "init": null,
-                "const": false,
-                "kind": "<INSTANCE>"
-            }
-        },
-        "method": {
-            "get": {
-                "type": null,
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {
-                    "a": {
-                        "type": "<INT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    },
-                    "b": {
-                        "type": "<INT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    },
-                    "c": {
-                        "type": "<FLOAT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    }
+    "global": {
+        "A": {
+            "parent": "",
+            "attribute": {
+                "a": {
+                    "type": "[2][2]<INT>",
+                    "init": "[2][2]<INT>",
+                    "const": false,
+                    "kind": "<INSTANCE>"
                 }
-            }
+            },
+            "method": {}
         }
     }
 }

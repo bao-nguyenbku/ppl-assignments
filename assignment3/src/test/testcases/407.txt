@@ -1,0 +1,6 @@
+
+        Class A {
+            Var a: Int = 120;
+            Val $a: C = New C();
+        }
+        

@@ -1,0 +1,6 @@
+
+        Class B: A {
+            Var t: Float = 1.4 % 3; 
+            setA(a: Int) { }
+        }
+        

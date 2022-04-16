@@ -1,1 +1,1 @@
-Program([ClassDecl(Id(A),[AttributeDecl(Instance,VarDecl(Id(a),IntType,FieldAccess(Id(r),Id(t))))])])
+Program([ClassDecl(Id(A),[AttributeDecl(Instance,VarDecl(Id(a),ArrayType(2,IntType),[IntLit(1),IntLit(2)]))])])

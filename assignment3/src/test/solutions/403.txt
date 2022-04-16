@@ -1,1 +1,1 @@
-Illegal Constant Expression: FieldAccess(Id(A),Id($a))
+Undeclared Method: Constructor

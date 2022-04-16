@@ -1,1 +1,1 @@
-Illegal Constant Expression: BooleanLit(True)
+Type Mismatch In Expression: BinaryOp(+,IntLit(2),BooleanLit(True))

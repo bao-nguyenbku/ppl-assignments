@@ -1,1 +1,1 @@
-['Dog']
+Type Mismatch In Statement: ConstDecl(Id($a),IntType,FloatLit(3.2))

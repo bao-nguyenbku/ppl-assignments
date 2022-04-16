@@ -12,21 +12,5 @@ Scope: Global, Class, Method, Block
 4. BLOCK
     variable declared in block
 
-Traverse data structure
-MethoDecl: {
-    '<name>': {
-        'kind': 'static' of 'instance'
-        'type': '<METHOD>'
-        'param'" []
-        'body':
-    }
-}
-
-VarDecl and ConstDecl: {
-    'kind': 'static' or 'instance'
-    'type': <visit the Type>
-    'const': false or true (flag)
-    'init': Expr or None
-}
 
 

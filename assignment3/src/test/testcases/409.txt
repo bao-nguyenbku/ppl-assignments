@@ -1,0 +1,5 @@
+
+        Class B {
+            Val C: String;
+        }
+        

@@ -1,0 +1,7 @@
+
+        Class B: A {
+            Val $r :Int = 2 + 2 * 2.5;
+            Var a: Boolean = True;
+            setA(a: Int) { }
+        }
+        

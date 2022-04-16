@@ -1,5 +1,5 @@
 
         Class A {
-            Val $a: Int = True;
+            Val $a: Int = 2 + True;
         }
         
