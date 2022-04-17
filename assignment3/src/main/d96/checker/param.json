@@ -7,38 +7,31 @@
                 "init": null,
                 "const": false,
                 "kind": "<INSTANCE>"
-            },
-            "a": {
-                "type": "<CLASS>(A)",
-                "init": "<NULL>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "d": {
-                "type": "<CLASS>(A)",
-                "init": "<NULL>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "e": {
-                "type": "<CLASS>(A)",
-                "init": "<NULL>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "c": {
-                "type": "<CLASS>(A)",
-                "init": "<NULL>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "b": {
-                "type": "<INT>",
-                "init": "<INT>",
-                "const": false,
-                "kind": "<INSTANCE>"
             }
         },
-        "method": {}
+        "method": {
+            "getA": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {
+                        "a": {
+                            "type": "<INT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        }
+                    }
+                ],
+                "param": {
+                    "a": {
+                        "type": "<INT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    }
+                }
+            }
+        }
     }
 }

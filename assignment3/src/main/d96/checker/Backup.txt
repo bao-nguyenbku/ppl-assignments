@@ -1,0 +1,19 @@
+class GetReturnType(BaseVisitor):
+    def visitAssign(self, ast, o): pass
+    # expr: Expr,   thenStmt: Stmt, elseStmt: Stmt = None
+    def visitIf(self, ast, o):
+        self.visit(ast.thenStmt, o)
+        if ast.elseStmt is None: return
+        self.visit(ast.elseStmt, o)
+    def visitFor(self, ast, o):
+        self.visit(ast.loop, o)
+    def visitBreak(self, ast, o): pass
+    def visitContinue(self, ast, o): pass
+    # expr: Expr = None
+    def visitReturn(self, ast, o):
+        return ast.expr.accept(GetMethodBlockEnv(), o) if ast.expr else Data.VOID()
+    def visitCallStmt(self, ast, o): pass
+    def visitVarDecl(self, ast, o): pass
+    def visitBlock(self, ast, o):
+        for inst in ast.inst: 
+            print(self.visit(inst, o))

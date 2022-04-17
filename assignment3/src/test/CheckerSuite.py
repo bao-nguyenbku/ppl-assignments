@@ -7,9 +7,11 @@ class CheckerSuite(unittest.TestCase):
         input = """
         Class A {
             Var z: Int;
-            Var a, d, e: A;
-            Var c: A;
-            Var b: Int = A.c.a.d.e.z;
+            getA(a: Int) {
+                Foreach (a In 1 .. 10) { 
+                    
+                }
+            }
         }
         """
             # Var b: Int = A.c.a;
