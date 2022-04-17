@@ -20,6 +20,12 @@
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
+                        },
+                        "b": {
+                            "type": "<INT>",
+                            "kind": "<INSTANCE>",
+                            "const": false,
+                            "init": null
                         }
                     }
                 ],

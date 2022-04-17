@@ -1,10 +1,9 @@
 
-        Class A {
-            Var z: Int;
-            getA(a: Int) {
-                Foreach (a In 1 .. 10) { 
-                    
-                }
-            }
+        Class Dog : Animal {
+            Val $a : Int = 3.2;
+            $getDog() { }
+        }
+        Class Meow {
+            $set() { }
         }
         

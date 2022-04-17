@@ -1,0 +1,8 @@
+
+        Class A {
+            Var z: Int;
+            getA(a: Int) {
+                Foreach (b In 1 .. 10) { }
+            }
+        }
+        

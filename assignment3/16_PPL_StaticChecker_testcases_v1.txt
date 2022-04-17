@@ -109,3 +109,79 @@ def test10(self):
     """
     expect = "Type Mismatch In Expression: NewExpr(Id(A),[IntLit(1),FloatLit(3.2)])"
     self.assertTrue(TestChecker.test(input,expect,410))
+def test11(self):
+    input = """
+    Class A {
+        Var z: Int;
+        getA(a: Int) {
+            Var b: Int;
+            Foreach (b In 1 .. 10) { 
+                If (b > 4) { Var c: Float = 2; }
+            }
+        }
+    }
+    """
+        # Var b: Int = A.c.a;
+    expect = "Type Mismatch In Statement: VarDecl(Id(c),FloatType,IntLit(2))"
+    self.assertTrue(TestChecker.test(input,expect,411))
+def test12(self):
+    input = """
+    Class A {
+        Var z: Int;
+        getA(a: Int) {
+            Foreach (b In 1 .. 10) { }
+        }
+    }
+    """
+        # Var b: Int = A.c.a;
+    expect = "Undeclared Variable: b"
+    self.assertTrue(TestChecker.test(input,expect,412))
+def test13(self):
+    input = """
+    Class A {
+        Var z: Int;
+        getA(a: Int) {
+            Var b: Int;
+            Foreach (b In 1.2 .. 10.5) { }
+        }
+    }
+    """
+        # Var b: Int = A.c.a;
+    expect = "Type Mismatch In Statement: For(Id(b),FloatLit(1.2),FloatLit(10.5),IntLit(1),Block([])])"
+    self.assertTrue(TestChecker.test(input,expect,413))
+def test14(self):
+    input = """
+    Class A {
+        Var z: Int;
+        getA(a: Int) {
+            Var b: Int;
+            Foreach (b In 1 .. 100) {
+                If (b + 4) { }
+                Else { Var e: String; }
+            }
+        }
+    }
+    """
+        # Var b: Int = A.c.a;
+    expect = "Type Mismatch In Statement: If(BinaryOp(+,Id(b),IntLit(4)),Block([]),Block([VarDecl(Id(e),StringType)]))"
+    self.assertTrue(TestChecker.test(input,expect,414))
+def test15(self):
+    input = """
+    Class A {
+        Var z: Int;
+        getA(a: Int) {
+            Var b: Int;
+            Foreach (b In 1 .. 100) {
+                If (b > 6) { 
+                    If (b < 120) { }
+                    Elseif (a > 10) { }
+                    Elseif (a * 10) { }
+                }
+                Else { Var e: String; }
+            }
+        }
+    }
+    """
+        # Var b: Int = A.c.a;
+    expect = "Type Mismatch In Statement: If(BinaryOp(*,Id(a),IntLit(10)),Block([]))"
+    self.assertTrue(TestChecker.test(input,expect,415))

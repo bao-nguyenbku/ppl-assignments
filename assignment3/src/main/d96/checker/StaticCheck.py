@@ -576,7 +576,7 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
                 'method': {}
             },
             'method': {} <- current scope
-            'block': {} <- current scope
+            'block': [{}] <- current scope
         }
         '''
         name = ast.variable.name
@@ -594,7 +594,6 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
             'const': False,
             'init': init
         }
-
     # constant: ID,  constType: Type,   value: Expr = None
     def visitConstDecl(self, ast:ConstDecl, o):
         '''
@@ -627,11 +626,63 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
         }
     
     # * STATEMENTS * #
-    def visitAssign(self, ast, o): pass
-    def visitIf(self, ast, o): pass
-    # id: Id, expr1: Expr, expr2: Expr, loop: Stmt, exp3: Expr = None
-    def visitFor(self, ast, o): pass
+
+    # lhs: Expr, exp: Expr
+    def visitAssign(self, ast, o):
+        lhs = self.visit(ast.lhs, o)
+        rhs = self.visit(ast.exp, o)
         
+    # expr: Expr,   thenStmt: Stmt, elseStmt: Stmt = None
+    def visitIf(self, ast, o):
+        expr = self.visit(ast.expr, o)
+        if expr != Data.BOOL():
+            raise TypeMismatchInStatement(ast)
+        
+        env = {
+            'global': o['global'],
+            'class': o['class'],
+            'method': o['method'],
+            'block': o['block']
+        }
+        env['block'] = [{}] + env['block']
+        self.visit(ast.thenStmt, env)
+
+        if not ast.elseStmt is None:
+            env = {
+                'global': o['global'],
+                'class': o['class'],
+                'method': o['method'],
+                'block': o['block']
+            }
+            env['block'] = [{}] + env['block']
+            self.visit(ast.elseStmt, env)
+    # id: Id, expr1: Expr, expr2: Expr, loop: Stmt, exp3: Expr = None
+    def visitFor(self, ast, o):
+        id_name = ast.id.name
+        id_dict = {}
+        for block in o['block']:
+            if id_name in block:
+                id_dict = block[id_name]
+        if id_dict == {}:
+            raise Undeclared(Variable(), id_name)
+        if id_dict['const'] == True:
+            raise CannotAssignToConstant(Assign(ast.id, ast.expr1))
+        
+        exp1 = self.visit(ast.expr1, o)
+        exp2 = self.visit(ast.expr2, o)
+        if id_dict['type'] != Data.INT() or exp1 != Data.INT() or exp2 != Data.INT():
+            raise TypeMismatchInStatement(ast)
+        
+        env = {
+            'global': o['global'],
+            'class': o['class'],
+            'method': o['method'],
+            'block': o['block']
+        }
+
+        env['block'] = [{ id_name: id_dict }] + env['block']
+        self.visit(ast.loop, env)
+
     def visitBreak(self, ast, o): pass
     def visitContinue(self, ast, o): pass
     # expr: Expr = None
@@ -639,6 +690,7 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
         return_type = self.visit(ast.expr, o) if ast.expr else Data.VOID()
         o['method']['type'] = return_type
     def visitCallStmt(self, ast, o): pass
+
     def visitBlock(self, ast, o):
         for inst in ast.inst:
             self.visit(inst, o)
@@ -646,7 +698,13 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     # * EXPRESSION * #
     #name: str
     def visitId(self, ast, o):
-        return ast.name
+        name = ast.name
+        if 'block' in o:
+            for block in o['block']:
+                if name in block:
+                    return block[name]['type']
+        
+        raise Undeclared(Identifier(), name)
     # op: str,  left: Expr,     right: Expr
     def visitBinaryOp(self, ast, o):
         left = self.visit(ast.left, o)
