@@ -1,16 +1,44 @@
 {
-    "global": {
-        "A": {
-            "parent": "",
-            "attribute": {
-                "a": {
-                    "type": "[2][2]<INT>",
-                    "init": "[2][2]<INT>",
-                    "const": false,
-                    "kind": "<INSTANCE>"
-                }
+    "A": {
+        "parent": "",
+        "attribute": {
+            "z": {
+                "type": "<INT>",
+                "init": null,
+                "const": false,
+                "kind": "<INSTANCE>"
             },
-            "method": {}
-        }
+            "a": {
+                "type": "<CLASS>(A)",
+                "init": "<NULL>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "d": {
+                "type": "<CLASS>(A)",
+                "init": "<NULL>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "e": {
+                "type": "<CLASS>(A)",
+                "init": "<NULL>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "c": {
+                "type": "<CLASS>(A)",
+                "init": "<NULL>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "b": {
+                "type": "<INT>",
+                "init": "<INT>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            }
+        },
+        "method": {}
     }
 }
