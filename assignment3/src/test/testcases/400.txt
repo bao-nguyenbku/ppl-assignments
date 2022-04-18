@@ -1,9 +1,12 @@
 
-        Class Dog : Animal {
-            Val $a : Int = 3.2;
-            $getDog() { }
+        Class super {
+            Var $s: Float = 2.4;
         }
-        Class Meow {
-            $set() { }
+        Class A {
+            Var z: Int = 2;
+            getA(a: Int) {
+                Var t: super;
+                Var b: Float = 2 + super::$r;
+            }
         }
         

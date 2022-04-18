@@ -1,6 +1,7 @@
 """
  * @author nhphung
 """
+from dataclasses import field
 from statistics import variance
 from AST import *
 from Visitor import *
@@ -631,6 +632,14 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     def visitAssign(self, ast, o):
         lhs = self.visit(ast.lhs, o)
         rhs = self.visit(ast.exp, o)
+        lhs_type = ''
+        rhs_type = ''
+        if isinstance(lhs, dict):
+            lhs_type = lhs['type']
+        if isinstance(rhs, dict):
+            rhs_type = rhs['type']
+        
+        
         
     # expr: Expr,   thenStmt: Stmt, elseStmt: Stmt = None
     def visitIf(self, ast, o):
@@ -689,8 +698,14 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     def visitReturn(self, ast, o):
         return_type = self.visit(ast.expr, o) if ast.expr else Data.VOID()
         o['method']['type'] = return_type
-    def visitCallStmt(self, ast, o): pass
-
+    
+    # obj: Expr, method: Id, param: List[Expr]
+    def visitCallStmt(self, ast, o):
+        obj = self.visit(ast.obj, o)
+        if isinstance(obj, dict):
+            if not obj['type'].startswith('<CLASS>'):
+                raise TypeMismatchInStatement(ast)
+            
     def visitBlock(self, ast, o):
         for inst in ast.inst:
             self.visit(inst, o)
@@ -702,13 +717,21 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
         if 'block' in o:
             for block in o['block']:
                 if name in block:
-                    return block[name]['type']
+                    return block[name]
+                    # 'name': {
+                    #   'type', 'kind', 'init', 'const'
+                    # }
         
         raise Undeclared(Identifier(), name)
     # op: str,  left: Expr,     right: Expr
     def visitBinaryOp(self, ast, o):
         left = self.visit(ast.left, o)
         right = self.visit(ast.right, o)
+        if isinstance(left, dict):
+            left = left['type']
+        if isinstance(right, dict):
+            right = right['type']
+        
         op = ast.op
         if op in ['%']:
             if left == Data.INT() and right == Data.INT():
@@ -739,6 +762,8 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     # # op: str,  body: Expr
     def visitUnaryOp(self, ast, o):
         body = self.visit(ast.body, o)
+        if isinstance(body, dict):
+            body = body['type']
         op = ast.op
         if op == '!' and body == Data.BOOL():
             return Data.BOOL()
@@ -748,7 +773,60 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
         raise TypeMismatchInExpression(ast)
                      
     # # obj: Expr,    method: Id, param: List[Expr]
-    def visitCallExpr(self, ast, param): pass
+    def visitCallExpr(self, ast, o):
+        # ast.obj now is a Identifier
+        obj = ''
+        if hasattr(ast.obj, 'name'):
+            name = ast.obj.name
+            if 'block' in o:
+                for block in o['block']:
+                    if name in block:
+                        obj = block[name]['type']
+            
+            if obj == '' and name in o['global']:
+                obj = Data.CLASS(name)
+            if obj == '':
+                raise Undeclared(Identifier(), name)
+
+        else: obj = self.visit(ast.obj, o)
+
+        if not obj.startswith('<CLASS>') or obj[0] == '[':
+            raise TypeMismatchInExpression(ast)
+        
+        if obj.startswith('<CLASS>'):
+            if not obj[8:-1] in o['global']:
+                raise Undeclared(Class(), obj[8:-1])
+        
+        field_name = ast.fieldname.name
+        env = o['global'][obj[8:-1]]
+
+        # Instance access, that mean, obj is a object of class, not a class name
+        current_class = o['class']
+        # A subclass is able to access attribute of superclass
+        while current_class != env:
+            parent = current_class['parent']
+            if parent == '': 
+                Undeclared(Attribute(), field_name)
+            current_class = o['global'][parent]
+
+        # If kind is 'Static', that mean field_name may be a static attribute, so I must check all static attribute in global scope
+        if field_name.startswith('$'):
+            for global_class_name in o['global']:
+                if field_name in o['global'][global_class_name]['attribute']:
+                    if o['global'][global_class_name]['attribute'][field_name]['kind'] == Data.STATIC():
+                        return o['global'][global_class_name]['attribute'][field_name]['type']
+            raise Undeclared(Attribute(), field_name)
+        
+        parent = obj[8:-1]
+        while True:
+            #field: s
+            if field_name in env['attribute']:
+                return env['attribute'][field_name]['type']
+            
+            parent = o['global'][parent]['parent']
+            if parent == '': raise Undeclared(Attribute(), field_name)
+            env = o['global'][parent]
+
     
     # classname: Id,    param: List[Expr]
     def visitNewExpr(self, ast, o):
@@ -774,6 +852,9 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
         list_param_type = [param_env[par_name]['type'] for par_name in param_env]
         
         argument_type = [self.visit(arg, o) for arg in ast.param]
+
+        argument_type = list(map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, argument_type))
+
         if len(argument_type) != len(param_env):
             raise TypeMismatchInExpression(ast)
         
@@ -785,7 +866,10 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     # arr: Expr,    idx: List[Expr]
     def visitArrayCell(self, ast, o):
         arr = self.visit(ast.arr, o)
+        if isinstance(arr, dict):
+            arr = arr['type']
         list_idx = [self.visit(idx, o) for idx in ast.idx]
+        list_idx = list(map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_idx))
         #  array type example: [1][2]<INT>
         if arr[0] != '[':
             raise TypeMismatchInExpression(ast)
@@ -799,33 +883,61 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
 
     # obj: Expr,    fieldname: Id
     def visitFieldAccess(self, ast, o):
-        obj_type = self.visit(ast.obj, o)
-        # Check if obj is class name for static access
-        obj_name = obj_type
-        if obj_type.startswith('<CLASS>'):
-            obj_name = obj_type[-2:-1]
-        if (obj_name[0] == '<' and obj_name[-1] == '>') or obj_name[0] == '[':
-            raise IllegalMemberAccess(ast)
-        
-        if not obj_name in o['global']:
-            raise Undeclared(Class(), obj_name)
-        
-        attr = ast.fieldname.name
-        if not attr in o['global'][obj_name]['attribute']:
-            raise Undeclared(Attribute(), attr)
-        
-        # If attr is instance member, check this attr is in curent class or its superclass
-        if attr in o['global'][obj_name]['attribute'] and o['global'][obj_name]['attribute'][attr]['kind'] == Data.INSTANCE():
-            # Check inside class first
-            if not attr in o['class']['attribute']:
-                parent = o['global'][obj_name]['parent']
-                if parent in o['global']:
-                    if not attr in o['global'][parent]['attribute']:
-                        raise Undeclared(Attribute(), attr)
-                    return o['global'][parent]['attribute']
-            else:
-                return o['class']['attribute'][attr]['type']  
+        # ast.obj now is a Identifier
+        obj = ''
+        # FieldAccess(A, s)
+        if hasattr(ast.obj, 'name'):
+            name = ast.obj.name
+            if 'block' in o:
+                for block in o['block']:
+                    if name in block:
+                        obj = block[name]['type']
+            if obj == '' and name in o['global']:
+                obj = Data.CLASS(name)
+            if obj == '':
+                raise Undeclared(Identifier(), name)
 
+        else: obj = self.visit(ast.obj, o)
+
+        if not obj.startswith('<CLASS>') or obj[0] == '[':
+            raise TypeMismatchInExpression(ast)
+        
+        if obj.startswith('<CLASS>'):
+            if not obj[8:-1] in o['global']:
+                raise Undeclared(Class(), obj[8:-1])
+        
+        field_name = ast.fieldname.name
+        
+        # If kind is 'Static', that mean field_name may be a static attribute, so I must check all static attribute in global scope
+        if field_name.startswith('$'):
+            for global_class_name in o['global']:
+                if field_name in o['global'][global_class_name]['attribute']:
+                    if o['global'][global_class_name]['attribute'][field_name]['kind'] == Data.STATIC():
+                        return o['global'][global_class_name]['attribute'][field_name]['type']
+            raise Undeclared(Attribute(), field_name)
+
+        # Instance access, that mean, obj is a object of class, not a class name
+        env = o['global'][obj[8:-1]]
+        current_class = o['class']
+        # A subclass is able to access attribute of superclass
+        while current_class != env:
+            parent = current_class['parent']
+            if parent == '': 
+                Undeclared(Attribute(), field_name)
+            current_class = o['global'][parent]
+
+        
+        
+        parent = obj[8:-1]
+        while True:
+            #field: s
+            if field_name in env['attribute']:
+                return env['attribute'][field_name]['type']
+            
+            parent = o['global'][parent]['parent']
+            if parent == '': raise Undeclared(Attribute(), field_name)
+            env = o['global'][parent]
+ 
     def visitInstance(self, ast, o):
         return Data.INSTANCE()
     def visitStatic(self, ast, o):
@@ -847,6 +959,7 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     # value: List[Expr]
     def visitArrayLiteral(self, ast, o):
         list_type = [self.visit(ele, o) for ele in ast.value]
+        list_type = list(map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_type))
         example_type = ''
         if len(list_type) != 0:
             example_type = list_type[0]
@@ -867,7 +980,7 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
     def visitArrayType(self, ast, o):
         return Data.ARRAY(ast.size, self.visit(ast.eleType, o))
     def visitClassType(self, ast, o):
-        return Data.CLASS(self.visit(ast.classname, o))
+        return Data.CLASS(ast.classname.name)
     def visitVoidType(self, ast, o):
         return Data.VOID()
 

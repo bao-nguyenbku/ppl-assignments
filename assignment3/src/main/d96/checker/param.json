@@ -1,10 +1,22 @@
 {
+    "super": {
+        "parent": "",
+        "attribute": {
+            "$s": {
+                "type": "<FLOAT>",
+                "init": "<FLOAT>",
+                "const": false,
+                "kind": "<STATIC>"
+            }
+        },
+        "method": {}
+    },
     "A": {
         "parent": "",
         "attribute": {
             "z": {
                 "type": "<INT>",
-                "init": null,
+                "init": "<INT>",
                 "const": false,
                 "kind": "<INSTANCE>"
             }
@@ -21,11 +33,17 @@
                             "init": null,
                             "const": false
                         },
-                        "b": {
-                            "type": "<INT>",
+                        "t": {
+                            "type": "<CLASS>(super)",
                             "kind": "<INSTANCE>",
                             "const": false,
-                            "init": null
+                            "init": "<NULL>"
+                        },
+                        "b": {
+                            "type": "<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "const": false,
+                            "init": "<FLOAT>"
                         }
                     }
                 ],
