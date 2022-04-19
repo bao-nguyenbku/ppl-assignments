@@ -5,14 +5,19 @@ from AST import *
 class CheckerSuite(unittest.TestCase):
     def test(self):
         input = """
-        Class super {
-            Var $s: Float = 2.4;
+        Class C {
+            Var c: Float;
+        }
+        Class B {
+            getName(a: Int; b: Float) { 
+                Var c: C;
+                Return c;
+            }
         }
         Class A {
             Var z: Int = 2;
             getA(a: Int) {
-                Var t: super;
-                Var b: Float = 2 + super::$r;
+                Var b: Float = B.getName(3, 4.3).c;
             }
         }
         """

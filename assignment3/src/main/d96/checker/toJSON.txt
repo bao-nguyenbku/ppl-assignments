@@ -1,0 +1,14 @@
+def toJSON(data, typ = None):
+    if typ == 't':
+        try:
+            print(json.dumps(data, sort_keys=False, indent=4))
+        except Exception as e:
+            print(e)
+    else:
+        f = open('./main/d96/checker/param.json', 'w', encoding='utf-8')
+        try:
+            f.write(json.dumps(data, sort_keys=False, indent=4))
+        except Exception as e:
+            f.write(e)
+        finally:
+            f.close()

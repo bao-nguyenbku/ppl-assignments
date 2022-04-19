@@ -1,15 +1,43 @@
 {
-    "super": {
+    "B": {
         "parent": "",
-        "attribute": {
-            "$s": {
+        "attribute": {},
+        "method": {
+            "getName": {
                 "type": "<FLOAT>",
-                "init": "<FLOAT>",
-                "const": false,
-                "kind": "<STATIC>"
+                "kind": "<INSTANCE>",
+                "body": [
+                    {
+                        "a": {
+                            "type": "<INT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "b": {
+                            "type": "<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        }
+                    }
+                ],
+                "param": {
+                    "a": {
+                        "type": "<INT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    },
+                    "b": {
+                        "type": "<FLOAT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    }
+                }
             }
-        },
-        "method": {}
+        }
     },
     "A": {
         "parent": "",
@@ -32,12 +60,6 @@
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
-                        },
-                        "t": {
-                            "type": "<CLASS>(super)",
-                            "kind": "<INSTANCE>",
-                            "const": false,
-                            "init": "<NULL>"
                         },
                         "b": {
                             "type": "<FLOAT>",
