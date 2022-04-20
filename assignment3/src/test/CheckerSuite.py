@@ -6,22 +6,18 @@ class CheckerSuite(unittest.TestCase):
     def test(self):
         input = """
         Class C {
-            Var c: Float;
-        }
-        Class B {
-            getName(a: Int; b: Float) { 
-                Var c: C;
-                Return c;
-            }
+            Var $c: Int = 2;
+            get() { }
+            Constructor(a: Float; b: String) { }
         }
         Class A {
-            Var z: Int = 2;
-            getA(a: Int) {
-                Var b: Float = B.getName(3, 4.3).c;
+            Var b: Array[Int, 3];
+            getA(a: Float) {
+                Var a: Array[Int, 3];
+                a = Array(4,5,6.7);
             }
         }
         """
-            # Var b: Int = A.c.a;
         expect = "[]"
         self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
@@ -229,3 +225,61 @@ class CheckerSuite(unittest.TestCase):
     #         # Var b: Int = A.c.a;
     #     expect = "[]"
     #     self.assertTrue(TestChecker.test(input,expect,416))
+    # def test17(self):
+    #     input = """
+    #     Class D {
+    #         Var d : Int = 2 + 4 + 6 * 7;
+    #     }
+    #     Class C {
+    #         Var c: Float = 5.2;
+    #         Constructor(t: Float; c: String) {
+
+    #         }
+    #     }
+    #     Class A {
+    #         Var b: Float = 3.4;
+    #         getA(a: Float) {
+    #             Var Cobj: C = New C(3.4, "Hello");
+    #             a = Self.b + Cobj.c * D.d;
+    #         }
+    #     }
+    #     """
+    #         # Var b: Int = A.c.a;
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,417))
+    # def test18(self):
+    #     # input = Program([ClassDecl(Id('C'),[AttributeDecl(Static(),VarDecl(Id('$c'),IntType(),IntLiteral(2))),MethodDecl(Instance(),Id('get'),[],Block([])),MethodDecl(Instance(),Id('Constructor'),[VarDecl(Id('a'),FloatType()),VarDecl(Id('b'),StringType())],Block([]))]),ClassDecl(Id('A'),[AttributeDecl(Instance(),VarDecl(Id('b'),ArrayType(3,IntType()))),MethodDecl(Instance(),Id('getA'),[VarDecl(Id('a'),FloatType())],Block([VarDecl(Id('b'),IntType()),VarDecl(Id('Cobj'),ClassType(Id('C')),NewExpr(Id('C'),[FloatLiteral(3.4),StringLiteral('Hello')])),Assign(Id('b'),FieldAccess(Id('Cobj'),Id('$c')))]))])])
+    #     input = """
+    #     Class C {
+    #         Var $c: Int = 2;
+    #         get() { }
+    #         Constructor(a: Float; b: String) { }
+    #     }
+    #     Class A {
+    #         Var b: Array[Int, 3];
+    #         getA(a: Float) {
+    #             Var b: Int;
+    #             Var Cobj: C = New C(3.4, "Hello");
+    #             b = Cobj::$c;
+    #         }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,418))
+    # def test19(self):
+    #     input = """
+    #     Class C {
+    #         Var $c: Int = 2;
+    #         get() { }
+    #         Constructor(a: Float; b: String) { }
+    #     }
+    #     Class A {
+    #         Var b: Array[Int, 3];
+    #         getA(a: Float) {
+    #             Var a: Array[Int, 3];
+    #             a = Array(4,5,6.7);
+    #         }
+    #     }
+    #     """
+    #     expect = "Illegal Array Literal: [IntLit(4),IntLit(5),FloatLit(6.7)]"
+    #     self.assertTrue(TestChecker.test(input,expect,419))

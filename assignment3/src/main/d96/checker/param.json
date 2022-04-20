@@ -1,21 +1,36 @@
 {
-    "B": {
+    "C": {
         "parent": "",
-        "attribute": {},
+        "attribute": {
+            "$c": {
+                "type": "<INT>",
+                "init": "<INT>",
+                "const": false,
+                "kind": "<STATIC>"
+            }
+        },
         "method": {
-            "getName": {
-                "type": "<FLOAT>",
+            "get": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            },
+            "Constructor": {
+                "type": "<VOID>",
                 "kind": "<INSTANCE>",
                 "body": [
                     {
                         "a": {
-                            "type": "<INT>",
+                            "type": "<FLOAT>",
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
                         },
                         "b": {
-                            "type": "<FLOAT>",
+                            "type": "<STRING>",
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
@@ -24,13 +39,13 @@
                 ],
                 "param": {
                     "a": {
-                        "type": "<INT>",
+                        "type": "<FLOAT>",
                         "kind": "<INSTANCE>",
                         "init": null,
                         "const": false
                     },
                     "b": {
-                        "type": "<FLOAT>",
+                        "type": "<STRING>",
                         "kind": "<INSTANCE>",
                         "init": null,
                         "const": false
@@ -42,9 +57,9 @@
     "A": {
         "parent": "",
         "attribute": {
-            "z": {
-                "type": "<INT>",
-                "init": "<INT>",
+            "b": {
+                "type": "[3]<INT>",
+                "init": null,
                 "const": false,
                 "kind": "<INSTANCE>"
             }
@@ -56,22 +71,16 @@
                 "body": [
                     {
                         "a": {
-                            "type": "<INT>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        },
-                        "b": {
-                            "type": "<FLOAT>",
+                            "type": "[3]<INT>",
                             "kind": "<INSTANCE>",
                             "const": false,
-                            "init": "<FLOAT>"
+                            "init": "[3]<INT>"
                         }
                     }
                 ],
                 "param": {
                     "a": {
-                        "type": "<INT>",
+                        "type": "<FLOAT>",
                         "kind": "<INSTANCE>",
                         "init": null,
                         "const": false
