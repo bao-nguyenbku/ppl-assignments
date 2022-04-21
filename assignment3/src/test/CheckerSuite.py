@@ -4,20 +4,59 @@ from AST import *
 
 class CheckerSuite(unittest.TestCase):
     def test(self):
+        # Class A {
+        #     Constructor() { }
+        # }
         input = """
-        Class C {
-            Var $c: Int = 2;
-            get() { }
-            Constructor(a: Float; b: String) { }
+        Class Animal{
+            Var $name : String = "aaaaa";
+            Var sex : String = "Male";
+            Constructor () { }
+            Destructor () { }
         }
-        Class A {
-            Var b: Array[Int, 3];
-            getA(a: Float) {
-                Var a: Array[Int, 3];
-                a = Array(4,5,6.7);
+        Class Dog : Animal{
+            Var $a : Int = 5 + 6 - 7 * 8;
+            Var $b : Float = 5.6 * 9;
+            Var $c : Int = Dog::$a - 8;
+            Var $d : Float = Dog::$a * Dog::$b;
+            Var $e : String = Animal::$name;
+            Var d : String = "Hello";
+            Var e : String = Self.d;
+            Var meomeo : Int = (Meo::$e - 89) * 9600;
+            Bark(a, b, c : String; d, e, f : Float)
+            {
+                
             }
+            Constructor () { }
+            Destructor () { }
+        }
+        Class Meo : Animal{
+            Var $e : Int = 6;
+            MeowMeow(a : Float)
+            {
+                
+            }
+            Constructor () { }
+            Destructor () { }
+        }
+        Class Program {
+            main() { }
         }
         """
+        # input = """
+        # Class Program {
+        #     main() { }
+        #     Constructor () { }
+        #     Destructor () { }
+        # }
+        # Class A {
+        #     Var a: Int;
+        #     Constructor (a: Int; b: Float) { 
+        #         a = 4;
+        #     }
+        #     Destructor () { }
+        # }
+        # """
         expect = "[]"
         self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
@@ -283,3 +322,82 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "Illegal Array Literal: [IntLit(4),IntLit(5),FloatLit(6.7)]"
     #     self.assertTrue(TestChecker.test(input,expect,419))
+    # def test20(self):
+    #     input = """
+    #     Class A {
+    #         Var b: Array[Int, 3];
+    #         getA(a: Float) {
+    #             Var a: Array[Array[Int, 2], 3];
+    #             a = Array(4,5,6);
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: AssignStmt(Id(a),[IntLit(4),IntLit(5),IntLit(6)])"
+    #     self.assertTrue(TestChecker.test(input,expect,420))
+    # def test21(self):
+    #     input = """
+    #     Class A {
+    #         Var b: Array[Int, 3];
+    #         getA(a: Float) {
+    #             Var b: Float = 12.5;
+    #             Var a: Array[Array[Int, 2], 2];
+    #             a = Array(
+    #                 Array(2,3),
+    #                 Array(b,6)
+    #             );
+    #         }
+    #     }
+    #     """
+    #     expect = "Illegal Array Literal: [Id(b),IntLit(6)]"
+    #     self.assertTrue(TestChecker.test(input,expect,421))
+    # def test22(self):
+    #     input = """
+    #     Class C {
+    #         getC(a: Int; b: Float) { }
+    #     }
+    #     Class A {
+    #         method() {
+    #             Var c: C;
+    #             Var b: Int;
+    #             b = c.getC(1,2.4);
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Expression: CallExpr(Id(c),Id(getC),[IntLit(1),FloatLit(2.4)])"
+    #     self.assertTrue(TestChecker.test(input,expect,422))
+    # def test23(self):
+    #     input = """
+    #     Class D {getD(a, b: Int) { Return "Hello From D"; }}
+    #     Class C : D {getC(a: Int; b: Float) {Return 3;}}
+    #     Class A {method() {
+    #             Var c: C;
+    #             Var b: Int;
+    #             b = c.getD(1,2);}}
+    #     """
+    #     expect = "Type Mismatch In Statement: AssignStmt(Id(b),CallExpr(Id(c),Id(getD),[IntLit(1),IntLit(2)]))"
+    #     self.assertTrue(TestChecker.test(input,expect,423))
+    # def test24(self):
+    #     input = """
+    #     Class D {
+    #         getD2() {
+    #             Return 2.4 / 5;
+    #         }
+    #         getD(a, b: Int) { 
+    #             Return Self.getD2();
+    #         }
+    #     }
+    #     Class C : D {
+    #         getC(a: Int; b: Float) {
+    #             Return 3;
+    #         }
+    #     }
+    #     Class A {
+    #         method() {
+    #             Var c: C;
+    #             Var b: Int;
+    #             b = c.getD(1,2);
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: AssignStmt(Id(b),CallExpr(Id(c),Id(getD),[IntLit(1),IntLit(2)]))"
+    #     self.assertTrue(TestChecker.test(input,expect,424))

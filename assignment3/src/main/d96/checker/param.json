@@ -1,16 +1,22 @@
 {
-    "C": {
+    "Animal": {
         "parent": "",
         "attribute": {
-            "$c": {
-                "type": "<INT>",
-                "init": "<INT>",
+            "$name": {
+                "type": "<STRING>",
+                "init": "<STRING>",
                 "const": false,
                 "kind": "<STATIC>"
+            },
+            "sex": {
+                "type": "<STRING>",
+                "init": "<STRING>",
+                "const": false,
+                "kind": "<INSTANCE>"
             }
         },
         "method": {
-            "get": {
+            "Constructor": {
                 "type": "<VOID>",
                 "kind": "<INSTANCE>",
                 "body": [
@@ -18,13 +24,76 @@
                 ],
                 "param": {}
             },
-            "Constructor": {
+            "Destructor": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            }
+        }
+    },
+    "Dog": {
+        "parent": "Animal",
+        "attribute": {
+            "$a": {
+                "type": "<INT>",
+                "init": "<INT>",
+                "const": false,
+                "kind": "<STATIC>"
+            },
+            "$b": {
+                "type": "<FLOAT>",
+                "init": "<FLOAT>",
+                "const": false,
+                "kind": "<STATIC>"
+            },
+            "$c": {
+                "type": "<INT>",
+                "init": "<INT>",
+                "const": false,
+                "kind": "<STATIC>"
+            },
+            "$d": {
+                "type": "<FLOAT>",
+                "init": "<FLOAT>",
+                "const": false,
+                "kind": "<STATIC>"
+            },
+            "$e": {
+                "type": "<STRING>",
+                "init": "<STRING>",
+                "const": false,
+                "kind": "<STATIC>"
+            },
+            "d": {
+                "type": "<STRING>",
+                "init": "<STRING>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "e": {
+                "type": "<STRING>",
+                "init": "<STRING>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "meomeo": {
+                "type": "<INT>",
+                "init": "<INT>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            }
+        },
+        "method": {
+            "Bark": {
                 "type": "<VOID>",
                 "kind": "<INSTANCE>",
                 "body": [
                     {
                         "a": {
-                            "type": "<FLOAT>",
+                            "type": "<STRING>",
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
@@ -34,12 +103,36 @@
                             "kind": "<INSTANCE>",
                             "init": null,
                             "const": false
+                        },
+                        "c": {
+                            "type": "<STRING>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "d": {
+                            "type": "<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "e": {
+                            "type": "<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "f": {
+                            "type": "<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
                         }
                     }
                 ],
                 "param": {
                     "a": {
-                        "type": "<FLOAT>",
+                        "type": "<STRING>",
                         "kind": "<INSTANCE>",
                         "init": null,
                         "const": false
@@ -49,32 +142,72 @@
                         "kind": "<INSTANCE>",
                         "init": null,
                         "const": false
+                    },
+                    "c": {
+                        "type": "<STRING>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    },
+                    "d": {
+                        "type": "<FLOAT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    },
+                    "e": {
+                        "type": "<FLOAT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    },
+                    "f": {
+                        "type": "<FLOAT>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
                     }
                 }
+            },
+            "Constructor": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            },
+            "Destructor": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
             }
         }
     },
-    "A": {
-        "parent": "",
+    "Meo": {
+        "parent": "Animal",
         "attribute": {
-            "b": {
-                "type": "[3]<INT>",
-                "init": null,
+            "$e": {
+                "type": "<INT>",
+                "init": "<INT>",
                 "const": false,
-                "kind": "<INSTANCE>"
+                "kind": "<STATIC>"
             }
         },
         "method": {
-            "getA": {
+            "MeowMeow": {
                 "type": "<VOID>",
                 "kind": "<INSTANCE>",
                 "body": [
                     {
                         "a": {
-                            "type": "[3]<INT>",
+                            "type": "<FLOAT>",
                             "kind": "<INSTANCE>",
-                            "const": false,
-                            "init": "[3]<INT>"
+                            "init": null,
+                            "const": false
                         }
                     }
                 ],
@@ -86,6 +219,36 @@
                         "const": false
                     }
                 }
+            },
+            "Constructor": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            },
+            "Destructor": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            }
+        }
+    },
+    "Program": {
+        "parent": "",
+        "attribute": {},
+        "method": {
+            "main": {
+                "type": "<VOID>",
+                "kind": "<STATIC>",
+                "body": [
+                    {}
+                ],
+                "param": {}
             }
         }
     }
