@@ -1,4 +1,5 @@
 
+        Class Program {main(){}}
         Class A {
             Var z: Int;
             getA(a: Int) {
@@ -12,5 +13,7 @@
                     Else { Var e: String; }
                 }
             }
+            Constructor () { }
+            Destructor () { }
         }
         

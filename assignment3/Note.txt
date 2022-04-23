@@ -13,4 +13,7 @@ Scope: Global, Class, Method, Block
     variable declared in block
 
 
-
+Hỏi forum
+1. Class có bắt buộc có Constructor/Destructor hay không
+2. Khi khởi tạo một attribute có expression là lời gọi hàm, tuy nhiên lúc này chưa biết kiểu trả về của hàm
+    (kiểu trả về của hàm được lấy khi chạy chương trình theo câu lệnh return) thì có bị lỗi gì hay không?

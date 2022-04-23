@@ -1,8 +1,13 @@
 
         Class A {
             Val $a: Int = 3;
+            Constructor () { }
+            Destructor () { }
         }
+        Class Program {main(){}}
         Class B {
             Val $b: A = New A();
+            Constructor () { }
+            Destructor () { }
         }
         
