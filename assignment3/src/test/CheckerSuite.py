@@ -4,24 +4,21 @@ from AST import *
 
 class CheckerSuite(unittest.TestCase):
     '''!Warning: when method has not been visited, how to get return type?'''
-    def test(self):
-        input = """
-        Class Program {
-            main() { }
-        }
-        Class Animal {
-            Constructor () { }
-            Destructor () { }
-        }
-        Class Dog {
-            Val a: Animal = New Dog();
-            Constructor () { }
-            Destructor () { }
-        }
+    # def test(self):
+    #     input = """
+    #     Class Program {
+    #         main() { }
+    #     }
+    #     Class Animal {
+    #         Var a: Array[Array[Int, 2], 2];
+    #         Var b : Array[Int, 2] = Self.a[0];
+    #         Constructor () { }
+    #         Destructor () { }
+    #     }
         
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,400))
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
     #     input = """
     #     Class Dog : Animal {
@@ -493,108 +490,143 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "[]"
     #     self.assertTrue(TestChecker.test(input,expect,425))
-    def test26(self):
-        input = """
-        Class Program{
+    # def test26(self):
+    #     input = """
+    #     Class Program{
             
-        }
-        Class Program{
+    #     }
+    #     Class Program{
             
-        }
-        """
-        expect = "Redeclared Class: Program"
-        self.assertTrue(TestChecker.test(input,expect,426))
-    def test27(self):
-        input = """
-        Class Animal{
-            Var $name : String = "aaaaa";
-            Var sex : String = "Male";
-            Constructor(name : String) {
+    #     }
+    #     """
+    #     expect = "Redeclared Class: Program"
+    #     self.assertTrue(TestChecker.test(input,expect,426))
+    # def test27(self):
+    #     input = """
+    #     Class Animal{
+    #         Var $name : String = "aaaaa";
+    #         Var sex : String = "Male";
+    #         Constructor(name : String) {
                 
-            }
-            Destructor() { }
-        }
-        Class Dog : Animal{
-            Var $meo : Meo = New Meo(5.6, 7);
-            Var $a : Int = 5 + 6 - 7 * 8;
-            Var $b : Float = Dog::$a;
-            Var $c : Int = Dog::$a - 8;
-            Var $d : Float = Dog::$a * Dog::$b;
-            Var $e : String = Animal::$name;
-            Var d : String = "Hello";
-            Var e : String = Self.d;
-            Var meomeo : Int = (Meo::$e - 89) * 9600;
-            Var $arr : Array[Int, 5];
-            Var $arr2 : Array[Int, 6] = Array(1, 2, 3, 4, 5, 6);
-            Constructor(name : String) { }
-            Bark(a, b, c : String; d, e, f : Float) { }
-            Destructor() { }
-            Val $ffff : Meo = New Animal("Cat");
-        }
-        Class Meo : Animal{
-            Var $e : Int = 6;
-            Constructor (a : Float; b : Int) { }
-            Destructor() { }
-        }
-        Class Program {
-            main () { }
-        }
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,427))
-    def test28(self):
+    #         }
+    #         Destructor() { }
+    #     }
+    #     Class Dog : Animal{
+    #         Var $meo : Meo = New Meo(5.6, 7);
+    #         Var $a : Int = 5 + 6 - 7 * 8;
+    #         Var $b : Float = Dog::$a;
+    #         Var $c : Int = Dog::$a - 8;
+    #         Var $d : Float = Dog::$a * Dog::$b;
+    #         Var $e : String = Animal::$name;
+    #         Var d : String = "Hello";
+    #         Var e : String = Self.d;
+    #         Var meomeo : Int = (Meo::$e - 89) * 9600;
+    #         Var $arr : Array[Int, 5];
+    #         Var $arr2 : Array[Int, 6] = Array(1, 2, 3, 4, 5, 6);
+    #         Constructor(name : String) { }
+    #         Bark(a, b, c : String; d, e, f : Float) { }
+    #         Destructor() { }
+    #         Val $ffff : Meo = New Animal("Cat");
+    #     }
+    #     Class Meo : Animal{
+    #         Var $e : Int = 6;
+    #         Constructor (a : Float; b : Int) { }
+    #         Destructor() { }
+    #     }
+    #     Class Program {
+    #         main () { }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,427))
+    # def test28(self):
+    #     input = """
+    #     Class Program{
+    #         Var $a : Array[Array[Int, 1],2] = Array(Array(1), Array(2.3));
+    #         main() { }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,428))
+    # def test29(self):
+    #     input = """
+    #     Class Program : Animal{
+    #         Var a : Program = New Animal(Array(Array(1, 2), Array(3, 4)));
+    #         main () { }
+    #     }
+    #     Class Animal {
+    #         Constructor (a : Array[Array[Int, 2], 2]){ }
+    #         Destructor() { }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,429))
+    # def test30(self):
+    #     input = """
+    #     Class Unit 
+    #     {
+    #         Constructor (a : Int; b : String){ }
+    #         Destructor () { }
+    #     }
+    #     Class Character : Unit
+    #     {
+    #         Constructor () { }
+    #         Destructor () { }
+    #     }
+    #     Class Player : Character
+    #     {
+    #         Constructor (a : Array[Int, 7]; b : Float; c : String){}
+    #         Destructor(){}
+    #     }
+    #     Class Health : Player
+    #     {
+    #         Constructor ()
+    #         {}
+    #         Destructor(){}
+    #     }
+    #     Class Program
+    #     {
+    #         Var a : Health = New Unit(2, "Hieu");
+    #         Val $b : Character = New Character();
+    #         Var player : Health = New Player(Array(1, 4, 5, 3, 5, 6, 6), 6.5, "Henry");
+    #         main () { }
+    #         Destructor(){}
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,430))
+    def test31(self):
         input = """
-        Class Program{
-            Var $a : Array[Array[Int, 1],2] = Array(Array(1), Array(2.3));
-            main() { }
-        }
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,428))
-    def test29(self):
-        input = """
-        Class Program : Animal{
-            Var a : Program = New Animal(Array(Array(1, 2), Array(3, 4)));
-            main () { }
-        }
-        Class Animal {
-            Constructor (a : Array[Array[Int, 2], 2]){ }
-            Destructor() { }
-        }
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,429))
-    def test30(self):
-        input = """
-        Class Unit 
-        {
-            Constructor (a : Int; b : String){ }
-            Destructor () { }
-        }
-        Class Character : Unit
-        {
-            Constructor () { }
-            Destructor () { }
-        }
-        Class Player : Character
-        {
-            Constructor (a : Array[Int, 7]; b : Float; c : String){}
-            Destructor(){}
-        }
-        Class Health : Player
-        {
-            Constructor ()
-            {}
-            Destructor(){}
-        }
         Class Program
         {
-            Var a : Health = New Unit(2, "Hieu");
-            Val $b : Character = New Character();
-            Var player : Health = New Player(Array(1, 4, 5, 3, 5, 6, 6), 6.5, "Henry");
+            Var a : Array[Array[Array[Int, 5], 2], 3] = 
+                Array(
+                    Array(
+                        Array(1, 2, 3, 4, 5), 
+                        Array(6, 7, 8, 9, 10)
+                    ), 
+                    Array(
+                        Array(1, 2, 3, 4, 5),
+                        Array(6, 7, 8, 9, 10)
+                    ), 
+                    Array(
+                        Array(1, 2, 3, 4, 5), 
+                        Array(6, 7, 8, 9, 10)
+                    )
+            );
+            Var b : Array[Int, 5] = Self.a[1][0];
+            Var c : Array[Array[Int, 5], 2] = Self.a[2];
+            Var d : Array[Array[Array[Int, 5], 2], 3] = Self.a;
+            Constructor ()
+            {
+                
+            }
+            Destructor() 
+            {
+                
+            }
             main () { }
-            Destructor(){}
         }
         """
         expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,430))
+        self.assertTrue(TestChecker.test(input,expect,431))

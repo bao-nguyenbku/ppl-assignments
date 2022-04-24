@@ -3,11 +3,8 @@
             main() { }
         }
         Class Animal {
-            Constructor () { }
-            Destructor () { }
-        }
-        Class Dog {
-            Val a: Animal = New Dog();
+            Var a: Array[Array[Int, 2], 2];
+            Var b : Array[Int, 2] = Self.a[0];
             Constructor () { }
             Destructor () { }
         }

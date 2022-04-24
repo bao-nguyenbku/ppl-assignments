@@ -1,182 +1,36 @@
 {
-    "Unit": {
-        "parent": "",
-        "attribute": {},
-        "method": {
-            "Constructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {
-                        "a": {
-                            "type": "<INT>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        },
-                        "b": {
-                            "type": "<STRING>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        }
-                    }
-                ],
-                "param": {
-                    "a": {
-                        "type": "<INT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    },
-                    "b": {
-                        "type": "<STRING>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    }
-                }
-            },
-            "Destructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            }
-        }
-    },
-    "Character": {
-        "parent": "Unit",
-        "attribute": {},
-        "method": {
-            "Constructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            },
-            "Destructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            }
-        }
-    },
-    "Player": {
-        "parent": "Character",
-        "attribute": {},
-        "method": {
-            "Constructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {
-                        "a": {
-                            "type": "[7]<INT>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        },
-                        "b": {
-                            "type": "<FLOAT>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        },
-                        "c": {
-                            "type": "<STRING>",
-                            "kind": "<INSTANCE>",
-                            "init": null,
-                            "const": false
-                        }
-                    }
-                ],
-                "param": {
-                    "a": {
-                        "type": "[7]<INT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    },
-                    "b": {
-                        "type": "<FLOAT>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    },
-                    "c": {
-                        "type": "<STRING>",
-                        "kind": "<INSTANCE>",
-                        "init": null,
-                        "const": false
-                    }
-                }
-            },
-            "Destructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            }
-        }
-    },
-    "Health": {
-        "parent": "Player",
-        "attribute": {},
-        "method": {
-            "Constructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            },
-            "Destructor": {
-                "type": "<VOID>",
-                "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            }
-        }
-    },
     "Program": {
         "parent": "",
         "attribute": {
             "a": {
-                "type": "<CLASS>(Health)",
-                "init": "<CLASS>(Unit)",
+                "type": "[3][2][5]<INT>",
+                "init": "[3][2][5]<INT>",
                 "const": false,
                 "kind": "<INSTANCE>"
             },
-            "$b": {
-                "type": "<CLASS>(Character)",
-                "init": "<CLASS>(Character)",
-                "const": true,
-                "kind": "<STATIC>"
+            "b": {
+                "type": "[5]<INT>",
+                "init": "[5]<INT>",
+                "const": false,
+                "kind": "<INSTANCE>"
             },
-            "player": {
-                "type": "<CLASS>(Health)",
-                "init": "<CLASS>(Player)",
+            "c": {
+                "type": "[2][5]<INT>",
+                "init": "[2][5]<INT>",
+                "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "d": {
+                "type": "[3][2][5]<INT>",
+                "init": "[3][2][5]<INT>",
                 "const": false,
                 "kind": "<INSTANCE>"
             }
         },
         "method": {
-            "main": {
+            "Constructor": {
                 "type": "<VOID>",
-                "kind": "<STATIC>",
+                "kind": "<INSTANCE>",
                 "body": [
                     {}
                 ],
@@ -185,6 +39,14 @@
             "Destructor": {
                 "type": "<VOID>",
                 "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            },
+            "main": {
+                "type": "<VOID>",
+                "kind": "<STATIC>",
                 "body": [
                     {}
                 ],

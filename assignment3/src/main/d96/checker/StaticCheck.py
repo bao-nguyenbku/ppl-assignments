@@ -671,10 +671,14 @@ class GetClassExprType(BaseVisitor, Utils):
         for idx in list_idx:
             if idx != Data.INT():
                 raise TypeMismatchInExpression(ast)
+                # [2][5]<INT>
 
-        while arr[0] != ']':
+        '''Get type of element in array base on list of index access'''
+        for _ in list_idx:
+            while arr[0] != ']':
+                arr = arr[1:]
             arr = arr[1:]
-        return arr[1:]
+        return arr
 
     # obj: Expr,    fieldname: Id
     def visitFieldAccess(self, ast, o):
@@ -750,8 +754,8 @@ class GetClassExprType(BaseVisitor, Utils):
     def visitReturn(self, ast, o): pass
     def visitCallStmt(self, ast, o): pass
     def visitBlock(self, ast, o): pass
-    '''LITERALS'''
 
+    '''LITERALS'''
     def visitInstance(self, ast, o):
         return Data.INSTANCE()
 
@@ -893,9 +897,9 @@ class GetTypeConstant(BaseVisitor, Utils):
                 list_param_type[i] = list_argument_type[i]
             if list_param_type[i] != list_argument_type[i]:
                 raise TypeMismatchInExpression(ast)
-    # # obj: Expr,    method: Id, param: List[Expr]
+    
+    # obj: Expr,    method: Id, param: List[Expr]
     # !WARNING: Check CallExpr and FieldAcess scope later
-
     def visitCallExpr(self, ast, o):
         obj = ''
         kind = Data.INSTANCE()
@@ -1085,7 +1089,6 @@ class GetTypeConstant(BaseVisitor, Utils):
         return Data.ARRAY()
 
     ''' DATA TYPE'''
-
     def visitIntType(self, ast, o):
         return Data.INT()
 
