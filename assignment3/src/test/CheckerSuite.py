@@ -6,18 +6,13 @@ class CheckerSuite(unittest.TestCase):
     '''!Warning: when method has not been visited, how to get return type?'''
     def test(self):
         input = """
-        Class Program {
-            main() { }
-        }
+        
         Class Animal {
-            Var d: Int = Self.a;
-            Val a: Array[Int, 2] = Array(1,2);
-            Constructor () { }
-            Destructor () { }
-        }
-        Class Dog {
-            Constructor () { }
-            Destructor () { }
+            getD() { 
+                Var b: Int = 2;
+                Var a: Int = b;
+            }
+            Val a: Int = 2;
         }
         
         """
