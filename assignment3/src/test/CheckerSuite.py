@@ -4,21 +4,25 @@ from AST import *
 
 class CheckerSuite(unittest.TestCase):
     '''!Warning: when method has not been visited, how to get return type?'''
-    # def test(self):
-    #     input = """
-    #     Class Program {
-    #         main() { }
-    #     }
-    #     Class Animal {
-    #         Var a: Array[Array[Int, 2], 2];
-    #         Var b : Array[Int, 2] = Self.a[0];
-    #         Constructor () { }
-    #         Destructor () { }
-    #     }
+    def test(self):
+        input = """
+        Class Program {
+            main() { }
+        }
+        Class Animal {
+            Var d: Int = Self.a;
+            Val a: Array[Int, 2] = Array(1,2);
+            Constructor () { }
+            Destructor () { }
+        }
+        Class Dog {
+            Constructor () { }
+            Destructor () { }
+        }
         
-    #     """
-    #     expect = "[]"
-    #     self.assertTrue(TestChecker.test(input,expect,400))
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
     #     input = """
     #     Class Dog : Animal {
@@ -595,38 +599,56 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "[]"
     #     self.assertTrue(TestChecker.test(input,expect,430))
-    def test31(self):
-        input = """
-        Class Program
-        {
-            Var a : Array[Array[Array[Int, 5], 2], 3] = 
-                Array(
-                    Array(
-                        Array(1, 2, 3, 4, 5), 
-                        Array(6, 7, 8, 9, 10)
-                    ), 
-                    Array(
-                        Array(1, 2, 3, 4, 5),
-                        Array(6, 7, 8, 9, 10)
-                    ), 
-                    Array(
-                        Array(1, 2, 3, 4, 5), 
-                        Array(6, 7, 8, 9, 10)
-                    )
-            );
-            Var b : Array[Int, 5] = Self.a[1][0];
-            Var c : Array[Array[Int, 5], 2] = Self.a[2];
-            Var d : Array[Array[Array[Int, 5], 2], 3] = Self.a;
-            Constructor ()
-            {
+    # def test31(self):
+    #     input = """
+    #     Class Program
+    #     {
+    #         Var a : Array[Array[Array[Int, 5], 2], 3] = 
+    #             Array(
+    #                 Array(
+    #                     Array(1, 2, 3, 4, 5), 
+    #                     Array(6, 7, 8, 9, 10)
+    #                 ), 
+    #                 Array(
+    #                     Array(1, 2, 3, 4, 5),
+    #                     Array(6, 7, 8, 9, 10)
+    #                 ), 
+    #                 Array(
+    #                     Array(1, 2, 3, 4, 5), 
+    #                     Array(6, 7, 8, 9, 10)
+    #                 )
+    #         );
+    #         Var b : Array[Int, 5] = Self.a[1][0];
+    #         Var c : Array[Array[Int, 5], 2] = Self.a[2];
+    #         Var d : Array[Array[Array[Int, 5], 2], 3] = Self.a;
+    #         Constructor ()
+    #         {
                 
-            }
-            Destructor() 
-            {
+    #         }
+    #         Destructor() 
+    #         {
                 
-            }
-            main () { }
-        }
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,431))
+    #         }
+    #         main () { }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,431))
+    # def test32(self):
+    #     input = """
+    #     Class Program {
+    #         main() { }
+    #     }
+    #     Class Animal {
+    #         Var d: String = "Hello" +. " World";
+    #         Var e: Boolean = (2 > 4) && !(2 < 9);
+    #         Var a: Animal;
+    #         Var b: Int = 2 + 5 * 7;
+    #         Var c: Float = 2 * 7 + 4.5 - e4;
+    #         Constructor () { }
+    #         Destructor () { }
+    #     }
+        
+    #     """
+    #     expect = "Undeclared Identifier: e4"
+    #     self.assertTrue(TestChecker.test(input,expect,432))

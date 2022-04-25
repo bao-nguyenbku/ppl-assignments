@@ -1,29 +1,90 @@
 {
-    "Program": {
+    "global": {
+        "Program": {
+            "parent": "",
+            "attribute": {},
+            "method": {
+                "main": {
+                    "type": "<VOID>",
+                    "kind": "<STATIC>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        },
+        "Animal": {
+            "parent": "",
+            "attribute": {
+                "d": {
+                    "type": "<INT>",
+                    "init": null,
+                    "const": false,
+                    "kind": "<INSTANCE>"
+                },
+                "a": {
+                    "type": "[2]<INT>",
+                    "init": null,
+                    "const": true,
+                    "kind": "<INSTANCE>"
+                }
+            },
+            "method": {
+                "Constructor": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                },
+                "Destructor": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        },
+        "Dog": {
+            "parent": "",
+            "attribute": {},
+            "method": {
+                "Constructor": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                },
+                "Destructor": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        }
+    },
+    "class": {
         "parent": "",
         "attribute": {
-            "a": {
-                "type": "[3][2][5]<INT>",
-                "init": "[3][2][5]<INT>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "b": {
-                "type": "[5]<INT>",
-                "init": "[5]<INT>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
-            "c": {
-                "type": "[2][5]<INT>",
-                "init": "[2][5]<INT>",
-                "const": false,
-                "kind": "<INSTANCE>"
-            },
             "d": {
-                "type": "[3][2][5]<INT>",
-                "init": "[3][2][5]<INT>",
+                "type": "<INT>",
+                "init": null,
                 "const": false,
+                "kind": "<INSTANCE>"
+            },
+            "a": {
+                "type": "[2]<INT>",
+                "init": null,
+                "const": true,
                 "kind": "<INSTANCE>"
             }
         },
@@ -39,14 +100,6 @@
             "Destructor": {
                 "type": "<VOID>",
                 "kind": "<INSTANCE>",
-                "body": [
-                    {}
-                ],
-                "param": {}
-            },
-            "main": {
-                "type": "<VOID>",
-                "kind": "<STATIC>",
                 "body": [
                     {}
                 ],

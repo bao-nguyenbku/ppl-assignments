@@ -3,8 +3,12 @@
             main() { }
         }
         Class Animal {
-            Var a: Array[Array[Int, 2], 2];
-            Var b : Array[Int, 2] = Self.a[0];
+            Var d: Int = Self.a;
+            Val a: Array[Int, 2] = Array(1,2);
+            Constructor () { }
+            Destructor () { }
+        }
+        Class Dog {
             Constructor () { }
             Destructor () { }
         }
