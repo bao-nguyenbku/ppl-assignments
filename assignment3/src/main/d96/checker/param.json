@@ -1,5 +1,60 @@
 {
-    "parent": "",
-    "attribute": {},
-    "method": {}
+    "global": {
+        "B": {
+            "parent": "",
+            "attribute": {},
+            "method": {
+                "Constructor": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        },
+        "A": {
+            "parent": "B",
+            "attribute": {
+                "arr": {
+                    "kind": "<INSTANCE>",
+                    "type": "[2][2]<INT>",
+                    "init": null,
+                    "const": false
+                }
+            },
+            "method": {
+                "getA": {
+                    "type": "<VOID>",
+                    "kind": "<INSTANCE>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        }
+    },
+    "class": {
+        "parent": "B",
+        "attribute": {
+            "arr": {
+                "kind": "<INSTANCE>",
+                "type": "[2][2]<INT>",
+                "init": null,
+                "const": false
+            }
+        },
+        "method": {
+            "getA": {
+                "type": "<VOID>",
+                "kind": "<INSTANCE>",
+                "body": [
+                    {}
+                ],
+                "param": {}
+            }
+        }
+    }
 }

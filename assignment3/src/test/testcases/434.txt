@@ -1,18 +1,12 @@
 
         Class sieuSuper {
             Var s: Float = 2;
-            getD() { 
-                Var a: Int = 4 + 6;
-                Self.s = a;
-                Return Self.s;
-            }
         }
         Class super : sieuSuper {
-            Var a: Int = 2;
+            Var a: sieuSuper;
             Var $a: Int = 4;
+            getSuper() {
+                Self.a.s = 5.6;
+            }
         }
-        Class child : super {
-            Var b: Int = Self.getD();
-        }
-        
         
