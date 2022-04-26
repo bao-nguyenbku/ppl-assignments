@@ -4,23 +4,23 @@ from AST import *
 
 class CheckerSuite(unittest.TestCase):
     '''!Warning: when method has not been visited, how to get return type?'''
-    def test(self):
-        input = """
-        Class B { 
-            Constructor() { }
-        }
-        Class A : B {
-            Val c: Float = 4.3;
-            Val b: Float = 5 + Self.c;
-            Val a: Float = Self.b + 5; 
-        }
+    # def test(self):
+    #     input = """
+    #     Class B { 
+    #         Constructor() { }
+    #     }
+    #     Class A : B {
+    #         Val c: Float = 4.3;
+    #         Val b: Float = 5 + Self.c;
+    #         Val a: Float = Self.b + 5; 
+    #     }
         
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,400))
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
     #     input = """
-    #     Class Dog : Animal {
+    #     Class Dog {
     #         Val $a : Int = 3.2;
     #         $getDog() { }
     #         Constructor () { }
@@ -33,7 +33,7 @@ class CheckerSuite(unittest.TestCase):
     #     }
     #     Class Program {main(){}}
     #     """
-    #     expect = "Type Mismatch In Statement: ConstDecl(Id($a),IntType,FloatLit(3.2))"
+    #     expect = "Type Mismatch In Constant Declaration: ConstDecl(Id($a),IntType,FloatLit(3.2))"
     #     self.assertTrue(TestChecker.test(input,expect,400))
     # def test1(self):
     #     input = """
@@ -83,6 +83,7 @@ class CheckerSuite(unittest.TestCase):
     # def test4(self):
     #     input = """
     #     Class Program {main(){}}
+    #     Class A { }
     #     Class B: A {
     #         Val $r :Int = 2 + 2 * 2.5;
     #         Var a: Boolean = True;
@@ -91,11 +92,13 @@ class CheckerSuite(unittest.TestCase):
     #         Destructor () { }
     #     }
     #     """
-    #     expect = "Type Mismatch In Statement: ConstDecl(Id($r),IntType,BinaryOp(+,IntLit(2),BinaryOp(*,IntLit(2),FloatLit(2.5))))"
+        
+    #     expect = "Type Mismatch In Constant Declaration: ConstDecl(Id($r),IntType,BinaryOp(+,IntLit(2),BinaryOp(*,IntLit(2),FloatLit(2.5))))"
     #     self.assertTrue(TestChecker.test(input,expect,404))
     # def test5(self):
     #     input = """
     #     Class Program {main(){}}
+    #     Class A { }
     #     Class B: A {
     #         Var t: Float = 1.4 % 3; 
     #         setA(a: Int) { }
@@ -308,7 +311,7 @@ class CheckerSuite(unittest.TestCase):
     #     }
     #     """
     #         # Var b: Int = A.c.a;
-    #     expect = "Illegal Member Access: FieldAccess(Id(Cobj),Id(c))"
+    #     expect = "Illegal Member Access: FieldAccess(Id(D),Id(d))"
     #     self.assertTrue(TestChecker.test(input,expect,417))
     # def test18(self):
     #     # input = Program([ClassDecl(Id('C'),[AttributeDecl(Static(),VarDecl(Id('$c'),IntType(),IntLiteral(2))),MethodDecl(Instance(),Id('get'),[],Block([])),MethodDecl(Instance(),Id('Constructor'),[VarDecl(Id('a'),FloatType()),VarDecl(Id('b'),StringType())],Block([]))]),ClassDecl(Id('A'),[AttributeDecl(Instance(),VarDecl(Id('b'),ArrayType(3,IntType()))),MethodDecl(Instance(),Id('getA'),[VarDecl(Id('a'),FloatType())],Block([VarDecl(Id('b'),IntType()),VarDecl(Id('Cobj'),ClassType(Id('C')),NewExpr(Id('C'),[FloatLiteral(3.4),StringLiteral('Hello')])),Assign(Id('b'),FieldAccess(Id('Cobj'),Id('$c')))]))])])
@@ -487,7 +490,7 @@ class CheckerSuite(unittest.TestCase):
     #         Destructor () { }
     #     }
     #     """
-    #     expect = "[]"
+    #     expect = "Undeclared Identifier: Meo"
     #     self.assertTrue(TestChecker.test(input,expect,425))
     # def test26(self):
     #     input = """
@@ -510,6 +513,11 @@ class CheckerSuite(unittest.TestCase):
     #         }
     #         Destructor() { }
     #     }
+    #     Class Meo : Animal{
+    #         Var $e : Int = 6;
+    #         Constructor (a : Float; b : Int) { }
+    #         Destructor() { }
+    #     }
     #     Class Dog : Animal{
     #         Var $meo : Meo = New Meo(5.6, 7);
     #         Var $a : Int = 5 + 6 - 7 * 8;
@@ -527,11 +535,7 @@ class CheckerSuite(unittest.TestCase):
     #         Destructor() { }
     #         Val $ffff : Meo = New Animal("Cat");
     #     }
-    #     Class Meo : Animal{
-    #         Var $e : Int = 6;
-    #         Constructor (a : Float; b : Int) { }
-    #         Destructor() { }
-    #     }
+        
     #     Class Program {
     #         main () { }
     #     }
@@ -541,24 +545,27 @@ class CheckerSuite(unittest.TestCase):
     # def test28(self):
     #     input = """
     #     Class Program{
-    #         Var $a : Array[Array[Int, 1],2] = Array(Array(1), Array(2.3));
+    #         Var $a : Array[Array[Int, 1],2] = Array(
+    #             Array(1), 
+    #             Array(2.3)
+    #             );
     #         main() { }
     #     }
     #     """
-    #     expect = "[]"
+    #     expect = "Illegal Array Literal: [[IntLit(1)],[FloatLit(2.3)]]"
     #     self.assertTrue(TestChecker.test(input,expect,428))
     # def test29(self):
     #     input = """
-    #     Class Program : Animal{
-    #         Var a : Program = New Animal(Array(Array(1, 2), Array(3, 4)));
-    #         main () { }
-    #     }
     #     Class Animal {
     #         Constructor (a : Array[Array[Int, 2], 2]){ }
     #         Destructor() { }
     #     }
+    #     Class Program : Animal{
+    #         Var a : Program = New Animal(Array(Array(1, 2), Array(3, 4)));
+    #         main () { }
+    #     }
     #     """
-    #     expect = "[]"
+    #     expect = "Type Mismatch In Statement: VarDecl(Id(a),ClassType(Id(Program)),NewExpr(Id(Animal),[[[IntLit(1),IntLit(2)],[IntLit(3),IntLit(4)]]]))"
     #     self.assertTrue(TestChecker.test(input,expect,429))
     # def test30(self):
     #     input = """
@@ -585,9 +592,9 @@ class CheckerSuite(unittest.TestCase):
     #     }
     #     Class Program
     #     {
-    #         Var a : Health = New Unit(2, "Hieu");
+    #         Var a : Unit = New Unit(2, "Hieu");
     #         Val $b : Character = New Character();
-    #         Var player : Health = New Player(Array(1, 4, 5, 3, 5, 6, 6), 6.5, "Henry");
+    #         Var player :Player  = New Health();
     #         main () { }
     #         Destructor(){}
     #     }
@@ -664,3 +671,24 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "[]"
     #     self.assertTrue(TestChecker.test(input,expect,433))
+    def test34(self):
+        input = """
+        Class sieuSuper {
+            Var s: Float = 2;
+            getD() { 
+                Var a: Int = 4 + 6;
+                Self.s = a;
+                Return Self.s;
+            }
+        }
+        Class super : sieuSuper {
+            Var a: Int = 2;
+            Var $a: Int = 4;
+        }
+        Class child : super {
+            Var b: Int = Self.getD();
+        }
+        
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,434))

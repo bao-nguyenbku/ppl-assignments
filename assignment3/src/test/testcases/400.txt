@@ -1,11 +1,14 @@
 
-        Class B { 
-            Constructor() { }
+        Class Dog {
+            Val $a : Int = 3.2;
+            $getDog() { }
+            Constructor () { }
+            Destructor () { }
         }
-        Class A : B {
-            Val c: Float = 4.3;
-            Val b: Float = 5 + Self.c;
-            Val a: Float = Self.b + 5; 
+        Class Meow {
+            $set() { }
+            Constructor () { }
+            Destructor () { }
         }
-        
+        Class Program {main(){}}
         

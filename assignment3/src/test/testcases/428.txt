@@ -1,6 +1,9 @@
 
         Class Program{
-            Var $a : Array[Array[Int, 1],2] = Array(Array(1), Array(2.3));
+            Var $a : Array[Array[Int, 1],2] = Array(
+                Array(1), 
+                Array(2.3)
+                );
             main() { }
         }
         

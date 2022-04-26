@@ -400,6 +400,7 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
 
     # * STATEMENTS * #
     # lhs: Expr, exp: Expr
+    # !TODO: when lhs is attribute access, its return type is a type of that attribute, check it again
     def visitAssign(self, ast, o):
         lhs = self.visit(ast.lhs, o)
         rhs = self.visit(ast.exp, o)
@@ -409,9 +410,9 @@ class GetMethodBlockEnv(BaseVisitor, Utils):
             lhs_type = lhs['type']
         if isinstance(rhs, dict):
             rhs_type = rhs['type']
+
         if lhs['const'] == True:
             raise CannotAssignToConstant(ast)
-
         # If lhs_type is Float, rhs_type can either Float or Int type
         if lhs_type == Data.FLOAT() and rhs_type in [Data.FLOAT(), Data.INT()]:
             lhs['init'] = rhs_type
@@ -870,7 +871,7 @@ class StaticChecker(BaseVisitor, Utils):
         }
         '''
         class_name = ast.classname.name
-        if class_name in o:
+        if class_name in o['global']:
             raise Redeclared(Class(), class_name)
         parent_name = ''
         if not ast.parentname is None:
@@ -974,18 +975,20 @@ class StaticChecker(BaseVisitor, Utils):
         typ = self.visit(ast.varType, o)
         init = self.visit(ast.varInit, o) if ast.varInit else Data.UNDEFINED()
         if typ.startswith('<CLASS>') and init.startswith('<CLASS>'):
+            
             if typ != init:
                 parent = o['global'][init[8:-1]]['parent']
                 while parent != typ[8:-1]:
                     if parent == '':
                         raise TypeMismatchInStatement(ast)
                     parent = o['global'][parent]['parent']
-
+        elif typ.startswith('<CLASS>') and init == Data.NULL(): pass
         elif init != Data.UNDEFINED():
             if typ == Data.FLOAT() and init in [Data.FLOAT(), Data.INT()]:
                 init = typ
             if typ != init:
                 raise TypeMismatchInStatement(ast)
+        
         
         o['class']['attribute'][name] = {
             'kind': Data.INSTANCE() if name.startswith('$') else Data.STATIC(),

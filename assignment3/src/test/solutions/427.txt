@@ -1,1 +1,1 @@
-Type Mismatch In Statement: VarDecl(Id($b),FloatType,FieldAccess(Id(Dog),Id($a)))
+Undeclared Class: Meo
