@@ -1,11 +1,11 @@
 
-        
-        Class Animal {
-            getD() { 
-                Var b: Int = 2;
-                Var a: Int = b;
-            }
-            Val a: Int = 2;
+        Class B { 
+            Constructor() { }
+        }
+        Class A : B {
+            Val c: Float = 4.3;
+            Val b: Float = 5 + Self.c;
+            Val a: Float = Self.b + 5; 
         }
         
         

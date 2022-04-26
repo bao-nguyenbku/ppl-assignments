@@ -6,13 +6,13 @@ class CheckerSuite(unittest.TestCase):
     '''!Warning: when method has not been visited, how to get return type?'''
     def test(self):
         input = """
-        
-        Class Animal {
-            getD() { 
-                Var b: Int = 2;
-                Var a: Int = b;
-            }
-            Val a: Int = 2;
+        Class B { 
+            Constructor() { }
+        }
+        Class A : B {
+            Val c: Float = 4.3;
+            Val b: Float = 5 + Self.c;
+            Val a: Float = Self.b + 5; 
         }
         
         """
@@ -647,3 +647,20 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "Undeclared Identifier: e4"
     #     self.assertTrue(TestChecker.test(input,expect,432))
+    # def test33(self):
+    #     input = """
+    #     Class sieuSuper {
+    #         Var s: Float = 2;
+    #         getD() { Return 2; }
+    #     }
+    #     Class super : sieuSuper {
+    #         Var a: Int = 2;
+    #         Var $a: Int = 4;
+    #     }
+    #     Class child : super {
+    #         Var b: Int = Self.getD();
+    #     }
+        
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,433))
