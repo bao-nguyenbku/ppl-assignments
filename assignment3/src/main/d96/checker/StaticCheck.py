@@ -267,7 +267,9 @@ class GetLHS(BaseVisitor):
                     raise IllegalMemberAccess(ast)
                 kind = Data.STATIC()
             if obj != '' and kind == Data.INSTANCE() and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
-            if obj == '': raise Undeclared(Identifier(), name)
+            if obj == '' and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
+            if obj == '' and ast.fieldname.name[0] != '$':
+                raise Undeclared(Identifier(), name)
 
         else: obj = self.visit(ast.obj, o)
         if isinstance(obj, dict):
@@ -523,7 +525,9 @@ class GetTypeConstant(BaseVisitor):
                     raise IllegalMemberAccess(ast)
                 kind = Data.STATIC()
             if obj != '' and kind == Data.INSTANCE() and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
-            if obj == '': raise Undeclared(Identifier(), name)
+            if obj == '' and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
+            if obj == '' and ast.fieldname.name[0] != '$':
+                raise Undeclared(Identifier(), name)
 
         else: obj = self.visit(ast.obj, o)
         if not obj.startswith('<CLASS>') or obj[0] == '[':
@@ -1007,7 +1011,9 @@ class GetMethodBlockEnv(BaseVisitor):
                     raise IllegalMemberAccess(ast)
                 kind = Data.STATIC()
             if obj != '' and kind == Data.INSTANCE() and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
-            if obj == '': raise Undeclared(Identifier(), name)
+            if obj == '' and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
+            if obj == '' and ast.fieldname.name[0] != '$':
+                raise Undeclared(Identifier(), name)
 
         else: obj = self.visit(ast.obj, o)
         if not obj.startswith('<CLASS>') or obj[0] == '[':
@@ -1088,28 +1094,30 @@ class StaticChecker(BaseVisitor):
     # decl: List[ClassDecl]
     def visitProgram(self, ast, o):
         '''
-        ** structure for global scope **
-            o = {
-                'Dog': {
+        ** Structure for global scope **
+            o = { 'global': {
+                'class_name': {
                     'type': CLASS,
                     'parent': 'Animal',
                     'attribute': {
-                        '$a': {
+                        'attr_name': {
                             'kind': 'static',
                             'type': 'int',
-                            'const': false // if this attribute is a constant, flag will be true
+                            'const': False or True
+                            'init': 
                         }
                     },
                     'method': {
-                        '$get': {
-                            'kind': 'static',
-                            'type': 'method',
-                            'param': [], // list of parameter
-                            'field': [] // list dict of var declare inside method (use for method and block scope)
+                        'method_name': {
+                            'kind': STATIC or INSTANCE,
+                            'type': RETURN TYPE,
+                            'param': {list of param}
+                            'body': [{}] // list dict of var declare inside method (use for method and block scope)
                         }
                     }
                 }
                 ...
+            }
             }
         '''
         o = {'global': {}}
@@ -1121,23 +1129,13 @@ class StaticChecker(BaseVisitor):
         #     raise NoEntryPoint()
         # if o['Program']['method']['main']['param'] or o['Program']['method']['main']['type'] != Data.VOID():
         #     raise NoEntryPoint()
-
-        # parent_list = []
-        # for key in o.keys():
-        #     if o[key]['parent'] != '':
-        #         parent_list.append(o[key]['parent'])
-
-        # for ele in parent_list:
-        #     if not ele in o:
-        #         raise Undeclared(Class(), ele)
         return []
 
     # classname: Id,  memlist: List[MemDecl],  parentname: Id = None
     # MemDecl include MethodDecl and AttributeDecl
     def visitClassDecl(self, ast, o):
         '''
-        o[class_name] = {
-            'type': <CLASS>
+        o['class'][class_name] = {
             'parent': parent_name,
             'attribute': {dict of attribute}
             'method': {dict of method}
@@ -1173,7 +1171,7 @@ class StaticChecker(BaseVisitor):
         '''
             o['method'][method_name] = {
                 'type'  : return type of method,
-                'kind'  : "instance" or "static"
+                'kind'  : INSTANCE or STATIC
                 'body' : [{}, {}] list dictionary {var decl}, use for method scope and block scope
                 'param' : {list parameter}
             }
@@ -1211,15 +1209,14 @@ class StaticChecker(BaseVisitor):
     # variable: Id, varType: Type, varInit: Expr = None
     def visitParam(self, ast: VarDecl, o):
         '''
-        o[var_name] = {
-            'kind': <INSTANCE> or <STATIC> // With global attribute, kind is <STATIC>
-            'type': type of this attribute (INT, FLOAT,...)
+        o[param_name] = {
+            'kind': <INSTANCE> or <STATIC>
+            'type': INT, FLOAT,...
             'init': UNDEFINED
             'const': False
         }
         '''
         name = ast.variable.name
-
         if name in o:
             raise Redeclared(Parameter(), name)
         typ = self.visit(ast.varType, o)
@@ -1237,7 +1234,7 @@ class StaticChecker(BaseVisitor):
     # variable: Id, varType: Type, varInit: Expr = None
     def visitVarDecl(self, ast: VarDecl, o):
         '''
-        o['attribute'][var_name] = {
+        o['class']['attribute'][var_name] = {
             'kind': INSTANCE or STATIC With global attribute, kind is <STATIC>
             'type': type of this attribute (INT, FLOAT,...)
             'init': initial type of this attribute, update later
@@ -1250,7 +1247,6 @@ class StaticChecker(BaseVisitor):
         typ = self.visit(ast.varType, o)
         init = self.visit(ast.varInit, o) if ast.varInit else Data.UNDEFINED()
         if typ.startswith('<CLASS>') and init.startswith('<CLASS>'):
-            
             if typ != init:
                 parent = o['global'][init[8:-1]]['parent']
                 while parent != typ[8:-1]:
@@ -1264,7 +1260,6 @@ class StaticChecker(BaseVisitor):
             if typ != init:
                 raise TypeMismatchInStatement(ast)
         
-        
         o['class']['attribute'][name] = {
             'kind': Data.STATIC() if name.startswith('$') else Data.INSTANCE(),
             'type': typ,
@@ -1275,7 +1270,7 @@ class StaticChecker(BaseVisitor):
     # constant: ID,  constType: Type,   value: Expr = None
     def visitConstDecl(self, ast: ConstDecl, o):
         '''
-        o['attribute'][const_name] = {
+        o['class']['attribute'][const_name] = {
             'kind': INSTANCE or STATIC With global attribute, kind is STATIC
             'type': type of this attribute (INT, FLOAT,...)
             'init': initial type of this attribute, update later
@@ -1496,8 +1491,9 @@ class StaticChecker(BaseVisitor):
                     raise IllegalMemberAccess(ast)
                 kind = Data.STATIC()
             if obj != '' and kind == Data.INSTANCE() and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
-            if obj == '': raise Undeclared(Identifier(), name)
-
+            if obj == '' and ast.fieldname.name[0] == '$': raise Undeclared(Class(), name)
+            if obj == '' and ast.fieldname.name[0] != '$':
+                raise Undeclared(Identifier(), name)
         else: obj = self.visit(ast.obj, o)
         if not obj.startswith('<CLASS>') or obj[0] == '[':
             raise TypeMismatchInExpression(ast)
@@ -1514,12 +1510,6 @@ class StaticChecker(BaseVisitor):
             parent = o['global'][parent]['parent']
             if parent == '':
                 raise Undeclared(Attribute(), field_name)
-        # If kind is 'Static', that mean field_name may be a static attribute, so I must check all static attribute in global scope
-        # if kind == Data.STATIC():
-        #     if field_name in o['global'][obj[8:-1]]['attribute']:
-        #         if o['global'][obj[8:-1]]['attribute'][field_name]['kind'] == Data.STATIC():
-        #             return o['global'][obj[8:-1]]['attribute'][field_name]['type']
-        #     raise Undeclared(Attribute(), field_name)
 
     '''LITERALS'''
     def visitInstance(self, ast, o): return Data.INSTANCE()
@@ -1537,9 +1527,8 @@ class StaticChecker(BaseVisitor):
     
     # value: List[Expr]
     def visitArrayLiteral(self, ast, o):
-        list_type = [self.visit(ele, o) for ele in ast.value]
         list_type = list(
-            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_type))
+            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, [self.visit(ele, o) for ele in ast.value]))
         example_type = ''
         if len(list_type) != 0:
             example_type = list_type[0]

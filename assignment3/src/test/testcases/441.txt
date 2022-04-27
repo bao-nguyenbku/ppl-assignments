@@ -1,13 +1,10 @@
 
         Class Program {
-            main(a: Int; b: Float) {
-                Var c: Float;
-                If (c > 4) {
-                    Var a: Float = 2;
-                    Var c: Int;
-                    Foreach (c In 1 .. 100 By a) { }
-                }
-            }
+            Constructor(a: Int; b: Float; c: String; d: Boolean) { }
+        }
+
+        Class A : Program {
+            Var a : Program = New Program(1,2,"Name" ==. "Bao",False && True);
         }
         
         

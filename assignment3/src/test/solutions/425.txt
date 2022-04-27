@@ -1,1 +1,1 @@
-Undeclared Identifier: Meo
+Undeclared Class: Meo

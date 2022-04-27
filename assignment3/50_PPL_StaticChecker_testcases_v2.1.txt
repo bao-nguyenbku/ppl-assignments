@@ -470,7 +470,7 @@ def test25(self):
         Destructor () { }
     }
     """
-    expect = "Undeclared Identifier: Meo"
+    expect = "Undeclared Class: Meo"
     self.assertTrue(TestChecker.test(input,expect,425))
 def test26(self):
     input = """
@@ -777,6 +777,19 @@ def test40(self):
     
     """
     expect = "Type Mismatch In Statement: For(Id(c),IntLit(1),IntLit(100),Id(a),Block([])])"
+    self.assertTrue(TestChecker.test(input,expect,440))
+def test41(self):
+    input = """
+    Class Program {
+        Constructor(a: Int; b: Float; c: String; d: Boolean) { }
+    }
+
+    Class A : Program {
+        Var a : Program = New Program(1,2,"Name" ==. "Bao",False && True);
+    }
+    
+    """
+    expect = "Type Mismatch In Expression: NewExpr(Id(Program),[IntLit(1),IntLit(2),BinaryOp(==.,StringLit(Name),StringLit(Bao)),BinaryOp(&&,BooleanLit(False),BooleanLit(True))])"
     self.assertTrue(TestChecker.test(input,expect,441))
 def test42(self):
     input = """
@@ -794,3 +807,159 @@ def test42(self):
     """
     expect = "Cannot Assign To Constant: AssignStmt(Id(c),IntLit(1))"
     self.assertTrue(TestChecker.test(input,expect,442))
+def test43(self):
+    input = """
+    Class Program {
+        Var name: String;
+        Val age : Int = 18;
+        main(a: Int; b: Float) {
+            Val c: Int = 2;
+            Val d: Float = Self.age + c + a;
+            Self.name = "Hello";
+            Return Self.name;
+        }
+    }
+    
+    """
+    expect = "Illegal Constant Expression: BinaryOp(+,BinaryOp(+,FieldAccess(Self(),Id(age)),Id(c)),Id(a))"
+    self.assertTrue(TestChecker.test(input,expect,443))
+def test44(self):
+    input = """
+    Class Program {
+        Var name: String;
+        Val age : Int = 18;
+        main(a: Int; b: Float) {
+            Val c: Int = 2;
+            Self.name = "Hello";
+            Return Self.name;
+        }
+    }
+    Class Name: Program {
+        Var name: String = "My Name";
+        main() {
+            Self.name = Self.name +. "is Program";
+            Return Self.age + 12 / 5 + (67 % 4);
+        }
+    }
+    
+    """
+    expect = "[]"
+    self.assertTrue(TestChecker.test(input,expect,444))
+def test45(self):
+    input = """
+    Class Program {
+        Var name: String;
+        Val age : Int = 18;
+        main(a: Int; b: Float) {
+            Val c: Int = 2;
+            Self.name = "Hello";
+            Return Self.name;
+        }
+    }
+    Class Name: Program {
+        Var name: String = "My Name";
+        main() {
+            Var a: Array[Array[Float, 3], 2];
+            a[0] = Array(1,2,4);
+        }
+    }
+    
+    """
+    expect = "Type Mismatch In Statement: AssignStmt(ArrayCell(Id(a),[IntLit(0)]),[IntLit(1),IntLit(2),IntLit(4)])"
+    self.assertTrue(TestChecker.test(input,expect,445))
+def test46(self):
+    input = """
+    Class Program {
+        main() { }
+    }
+    Class Queue {
+        Var data: Array[Int, 100000];
+        front() {
+            Return Self.data[0];
+        }
+        push(d: Int) {
+            Var newArr : Array[Int, 100000];
+            newArr[0] = d;
+            Foreach (i In 1 .. 100001) {
+                newArr[i] = Self.data[i-1];
+            }
+            Self.data = newArr;
+        }
+    }
+    
+    """
+    expect = "Undeclared Variable: i"
+    self.assertTrue(TestChecker.test(input,expect,446))
+def test47(self):
+    input = """
+    Class Program {
+        main() { }
+    }
+    Class Queue {
+        Var data: Array[Int, 100000];
+        front() {
+            Return Self.data[0];
+        }
+        push(d: Int) {
+            Var newArr : Array[Int, 100000];
+            newArr[0] = d;
+            Var i: Int;
+            Foreach (i In 1 .. 100001) {
+                newArr[i] = Self.data[i-1];
+            }
+            Self.data = newArr[0];
+        }
+    }
+    
+    """
+    expect = "Type Mismatch In Statement: AssignStmt(FieldAccess(Self(),Id(data)),ArrayCell(Id(newArr),[IntLit(0)]))"
+    self.assertTrue(TestChecker.test(input,expect,447))
+def test48(self):
+    input = """
+    Class Program {
+        main() { }
+    }
+    Class Stack {
+        Var data: Array[Int, 100000];
+        front() {
+            Return Self.data[0];
+        }
+        delete(d: Int) { }
+        pop() {
+            Self.delete(Self.data[last]);
+        }
+    }
+    
+    """
+    expect = "Undeclared Identifier: last"
+    self.assertTrue(TestChecker.test(input,expect,448))
+def test49(self):
+    input = """
+    Class Program {
+        main() { }
+    }
+    Class Stack {
+        Val data: Array[Int, 3] = Array(1);
+        front() {
+            Return Self.data[0];
+        }
+        delete(d: Int) { }
+        assign() {
+            Seld.data[0] = 4;
+        }
+    }
+    
+    """
+    expect = "Type Mismatch In Constant Declaration: ConstDecl(Id(data),ArrayType(3,IntType),[IntLit(1)])"
+    self.assertTrue(TestChecker.test(input,expect,449))
+def test50(self):
+    input = """
+    Class Program {
+        Val data: Array[Int, 3] = Array(1,2,3);
+        main() { 
+            Val newData : Int = Self.data[1][2];
+        }
+    }
+    """
+    expect = "Type Mismatch In Expression: ArrayCell(FieldAccess(Self(),Id(data)),[IntLit(1),IntLit(2)])"
+    self.assertTrue(TestChecker.test(input,expect,450))
