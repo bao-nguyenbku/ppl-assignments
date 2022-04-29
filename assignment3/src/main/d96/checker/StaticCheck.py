@@ -79,7 +79,11 @@ class ForLoopChecker(BaseVisitor):
         for inst in ast.inst:
             self.visit(inst, o)
 # * Visit all initial expression of Attribute Declare * #
-
+# **************************************
+#                                      *
+# *             GET LHS                *
+#                                      *
+# **************************************
 class GetLHS(BaseVisitor):
     def visitId(self, ast, o):
         name = ast.name
@@ -223,16 +227,14 @@ class GetLHS(BaseVisitor):
         arr = self.visit(ast.arr, o)
         if isinstance(arr, dict):
             arr = arr['type']
-        list_idx = [self.visit(idx, o) for idx in ast.idx]
         list_idx = list(
-            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_idx))
+            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, [self.visit(idx, o) for idx in ast.idx]))
 
         if arr[0] != '[':
             raise TypeMismatchInExpression(ast)
         for idx in list_idx:
             if idx != Data.INT():
                 raise TypeMismatchInExpression(ast)
-                # [2][5]<INT>
 
         '''Get type of element in array base on list of index access'''
         for _ in list_idx:
@@ -307,9 +309,8 @@ class GetLHS(BaseVisitor):
     # value: List[Expr]
 
     def visitArrayLiteral(self, ast, o):
-        list_type = [self.visit(ele, o) for ele in ast.value]
         list_type = list(
-            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_type))
+            map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, [self.visit(ele, o) for ele in ast.value]))
         example_type = ''
         if len(list_type) != 0:
             example_type = list_type[0]
@@ -670,8 +671,8 @@ class GetMethodBlockEnv(BaseVisitor):
     # lhs: Expr, exp: Expr
     # !TODO: when lhs is attribute access, its return type is a type of that attribute, check it again
     def visitAssign(self, ast, o):
-        lhs = ast.lhs.accept(GetLHS(), o)
         rhs = self.visit(ast.exp, o)
+        lhs = ast.lhs.accept(GetLHS(), o)
         lhs_type = lhs
         rhs_type = rhs
         if isinstance(lhs, dict):
@@ -708,7 +709,6 @@ class GetMethodBlockEnv(BaseVisitor):
         }
         env['block'] = [{}] + env['block']
         self.visit(ast.thenStmt, env)
-
         if not ast.elseStmt is None:
             env = {
                 'global': o['global'],
@@ -1123,7 +1123,6 @@ class StaticChecker(BaseVisitor):
         o = {'global': {}}
         for element in ast.decl:
             self.visit(element, o)
-        toJSON(o)
         '''Disable Entry point checker temporarily'''
         # if not 'Program' in o or not 'main' in o['Program']['method']:
         #     raise NoEntryPoint()

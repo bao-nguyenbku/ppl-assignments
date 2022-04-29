@@ -1,1 +1,1 @@
-Type Mismatch In Constant Declaration: ConstDecl(Id($a),IntType,FloatLit(3.2))
+Illegal Constant Expression: FieldAccess(Self(),Id(a))

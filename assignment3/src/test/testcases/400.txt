@@ -1,14 +1,10 @@
 
         Class Dog {
-            Val $a : Int = 3.2;
-            $getDog() { }
-            Constructor () { }
-            Destructor () { }
+            Var dogs: Int = 2;
         }
-        Class Meow {
-            $set() { }
-            Constructor () { }
-            Destructor () { }
+        Class Program {
+            Var a: Int = 4;
+            Val arr: Array[Int, 2] = Array(1,Self.a);
         }
-        Class Program {main(){}}
+        
         
