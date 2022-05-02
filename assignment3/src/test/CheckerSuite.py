@@ -3,19 +3,20 @@ from TestUtils import TestChecker
 from AST import *
 
 class CheckerSuite(unittest.TestCase):
-    def test(self):
-        input = """
-        Class Dog {
-            Var dogs: Int = 2;
-        }
-        Class Program {
-            Var a: Int = 4;
-            Val arr: Array[Int, 2] = Array(1,Self.a);
-        }
-        
-        """
-        expect = "[]"
-        self.assertTrue(TestChecker.test(input,expect,400))
+    # def test(self):
+    #     input = """
+    #     Class Program {
+    #         main() {
+    #             Var b: Int = 2;
+                
+    #             Foreach(b In 1 .. 100) {
+    #             }
+    #             Break;
+    #         }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,400))
     # def test0(self):
     #     input = """
     #     Class Dog {
@@ -387,7 +388,7 @@ class CheckerSuite(unittest.TestCase):
     #     }
     #     Class Program {main(){}}
     #     """
-    #     expect = "Redeclared Identifier: a"
+    #     expect = "Redeclared Variable: a"
     #     self.assertTrue(TestChecker.test(input,expect,421))
     # def test22(self):
     #     input = """
@@ -778,7 +779,7 @@ class CheckerSuite(unittest.TestCase):
     #     }
         
     #     """
-    #     expect = "Redeclared Identifier: a"
+    #     expect = "Redeclared Variable: a"
     #     self.assertTrue(TestChecker.test(input,expect,439))
     # def test40(self):
     #     input = """
@@ -998,3 +999,200 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "Illegal Member Access: FieldAccess(Id(Dog),Id(name))"
     #     self.assertTrue(TestChecker.test(input,expect,451))
+    # def test52(self):
+    #     input = """
+    #     Class A { }
+    #     Class E {
+    #         Var a : Int;
+    #         Constructor(a: A; a: Int) { }
+    #     }
+    #     Class Program {
+    #         Var b: A;
+    #         Var a: E = New E(b);
+    #     }
+    #     """
+    #     expect = "Redeclared Parameter: a"
+    #     self.assertTrue(TestChecker.test(input,expect,452))
+    # def test53(self):
+    #     input = """
+    #     Class A { }
+    #     Class E {
+    #         Var a : Int;
+    #         Constructor(a: A) { }
+    #     }
+    #     Class Program {
+    #         Var b: A;
+    #         Var a: E = New E(b);
+    #     }
+    #     """
+    #     expect = "Undeclared Identifier: b"
+    #     self.assertTrue(TestChecker.test(input,expect,453))
+    # def test54(self):
+    #     input = """
+    #     Class A { }
+    #     Class E {
+    #         Var a : Int;
+    #         Constructor(a: A) { }
+    #     }
+    #     Class Program {
+    #         main() {
+    #             Val a: Int = 3;
+    #             Val a: Float = 4.5;
+    #         }
+    #     }
+    #     """
+    #     expect = "Redeclared Constant: a"
+    #     self.assertTrue(TestChecker.test(input,expect,454))
+    # def test55(self):
+    #     input = """
+    #     Class A { }
+    #     Class Program {
+    #         main() {
+    #             Val a: Array[Array[Array[Int,2],2],2]
+    #             = Array(
+    #                 Array(
+    #                     Array(1,2),
+    #                     Array(1,2)
+    #                 ),
+    #                 Array(
+    #                     Array(2,3),
+    #                     Array(5,7)
+    #                 )
+    #             );
+    #         }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,455))
+    # def test56(self):
+    #     input = """
+    #     Class A { }
+    #     Class Program {
+    #         main() {
+    #             Val a: Array[Array[Array[Int,2],2],2]
+    #             = Array(
+    #                 Array(
+    #                     Array(1,2),
+    #                     Array(1,2)
+    #                 ),
+    #                 Array(
+    #                     Array(2,3),
+    #                     Array(5,7)
+    #                 )
+    #             );
+    #             a[0][1] = 9;
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: AssignStmt(ArrayCell(Id(a),[IntLit(0),IntLit(1)]),IntLit(9))"
+    #     self.assertTrue(TestChecker.test(input,expect,456))
+    # def test57(self):
+    #     input = """
+    #     Class A { }
+    #     Class Program {
+    #         main() {
+    #             Val a: Array[Array[Array[Int,2],2],2]
+    #             = Array(
+    #                 Array(
+    #                     Array(1,2),
+    #                     Array(1,2)
+    #                 ),
+    #                 Array(
+    #                     Array(2,3),
+    #                     Array(5,7)
+    #                 )
+    #             );
+    #             a = Array(5,6);
+    #         }
+    #     }
+    #     """
+    #     expect = "Cannot Assign To Constant: AssignStmt(Id(a),[IntLit(5),IntLit(6)])"
+    #     self.assertTrue(TestChecker.test(input,expect,457))
+    # def test58(self):
+    #     input = """
+    #     Class A { }
+    #     Class Program {
+    #         main() {
+    #             Var a: Array[Array[Array[Int,2],2],2]
+    #             = Array(
+    #                 Array(
+    #                     Array(1,2),
+    #                     Array(1,2)
+    #                 ),
+    #                 Array(
+    #                     Array(2,3),
+    #                     Array(5,7)
+    #                 )
+    #             );
+    #             a = Array(5,6);
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: AssignStmt(Id(a),[IntLit(5),IntLit(6)])"
+    #     self.assertTrue(TestChecker.test(input,expect,458))
+    # def test59(self):
+    #     input = """
+    #     Class A { 
+    #         Var b: String = "Name";
+    #         Constructor () {
+    #             Self.b = "New Name";
+    #         }
+    #         Var a: A = New A();
+    #     }
+    #     Class Program {
+    #         main() {
+    #             Var b: A = New A();
+    #             b.a.a.a.b = "Program Name";
+    #         }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,459))
+    # def test60(self):
+    #     input = """
+    #     Class D {
+    #         Constructor() {}
+    #         Destructor() {}
+    #         Var d1 : D = New D();
+    #         Var d2 : D = New D();
+    #         func()
+    #         {
+    #             Return New D();
+    #         }
+    #         Lucy(a : String; position : Int)
+    #         {
+    #             Return "a" +. a;
+    #         }
+    #     }
+    #     Class C {
+    #         Constructor() { }
+    #         Destructor () { }
+    #         Var c1 : C = New C();
+    #         Var c2 : String = "4";
+    #         Var c3 : D = New D();
+    #         func()
+    #         {
+    #             Return Self.c3;
+    #         }
+    #     }
+    #     Class A{
+    #         Constructor () { }
+    #         Destructor () { }
+    #         Var a1 : A = New A();
+    #         Var a2 : C = New C();
+    #         func()
+    #         {
+    #             Return Self.a2;
+    #         }
+    #         test()
+    #         {
+    #             Var d : String = Self.func().c1.func().func().d1.d2.Lucy("Tracy", 21);
+    #             Var a : A = New A();
+    #             Var e : String = a.func().c1.func().func().d1.d2.Lucy("Lucy", 20);
+    #             Var f : String = a.func().c1.func().func().d1.Lucy(e, 5.5);
+    #             Return 2;
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Expression: CallExpr(FieldAccess(CallExpr(CallExpr(FieldAccess(CallExpr(Id(a),Id(func),[]),Id(c1)),Id(func),[]),Id(func),[]),Id(d1)),Id(Lucy),[Id(e),FloatLit(5.5)])"
+    #     self.assertTrue(TestChecker.test(input,expect,460))

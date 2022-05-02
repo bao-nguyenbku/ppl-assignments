@@ -614,7 +614,7 @@ class GetMethodBlockEnv(BaseVisitor):
         '''
         name = ast.variable.name
         if name in o['block'][0]:
-            raise Redeclared(Identifier(), name)
+            raise Redeclared(Variable(), name)
         typ = self.visit(ast.varType, o)
         init = self.visit(ast.varInit, o) if ast.varInit else Data.UNDEFINED()
 
@@ -649,6 +649,8 @@ class GetMethodBlockEnv(BaseVisitor):
         '''
 
         name = ast.constant.name
+        if name in o['block'][0]:
+            raise Redeclared(Constant(), name)
         if ast.value is None:
             raise IllegalConstantExpression(None)
         typ = self.visit(ast.constType, o)
@@ -719,6 +721,13 @@ class GetMethodBlockEnv(BaseVisitor):
             env['block'] = [{}] + env['block']
             self.visit(ast.elseStmt, env)
 
+    def visitBreak(self, ast, o):
+        if not '<FOR>' in o:
+            raise MustInLoop(ast)
+
+    def visitContinue(self, ast, o):
+        if not '<FOR>' in o:
+            raise MustInLoop(ast)
     # id: Id, expr1: Expr, expr2: Expr, loop: Stmt, exp3: Expr = None
     def visitFor(self, ast, o):
         id_name = ast.id.name
@@ -742,16 +751,14 @@ class GetMethodBlockEnv(BaseVisitor):
             'global': o['global'],
             'class': o['class'],
             'method': o['method'],
-            'block': o['block']
+            'block': o['block'],
+            '<FOR>': 1
         }
 
         env['block'] = [{id_name: id_dict}] + env['block']
         self.visit(ast.loop, env)
 
-    def visitBreak(self, ast, o): pass
-    def visitContinue(self, ast, o): pass
     # expr: Expr = None
-
     def visitReturn(self, ast, o):
         return_type = self.visit(ast.expr, o) if ast.expr else Data.VOID()
         if isinstance(return_type, dict):
@@ -953,7 +960,7 @@ class GetMethodBlockEnv(BaseVisitor):
 
         # Check if don't have Constructor in class declare
         if not 'Constructor' in o['global'][class_name]['method']:
-            raise Undeclared(Method(), 'Constructor')
+            raise Undeclared(SpecialMethod(), 'Constructor')
 
         # Check for argument and parameter matching
         # paramEnv is list of dict param declare
@@ -1186,8 +1193,7 @@ class StaticChecker(BaseVisitor):
             'param': {}
         }
         for eachPar in ast.param:
-            o['class']['method'][name]['param'] = self.visitParam(
-                eachPar, o['class']['method'][name]['param'])
+            o['class']['method'][name]['param'] = self.visitParam(eachPar, [o, o['class']['method'][name]['param']])
         env = {
             'global': o['global'],
             'class': o['class'],
@@ -1203,7 +1209,7 @@ class StaticChecker(BaseVisitor):
                 'init': Data.UNDEFINED(),
                 'const': False
             }
-        ForLoopChecker().visitBlock(ast.body, [])
+        # ForLoopChecker().visitBlock(ast.body, [])
         GetMethodBlockEnv().visitBlock(ast.body, env)
     # variable: Id, varType: Type, varInit: Expr = None
     def visitParam(self, ast: VarDecl, o):
@@ -1216,16 +1222,16 @@ class StaticChecker(BaseVisitor):
         }
         '''
         name = ast.variable.name
-        if name in o:
+        if name in o[1]:
             raise Redeclared(Parameter(), name)
-        typ = self.visit(ast.varType, o)
-        o[name] = {
+        typ = self.visit(ast.varType, o[0])
+        o[1][name] = {
             'type': typ,
             'kind': Data.INSTANCE(),
             'init': Data.UNDEFINED(),
             'const': False
         }
-        return o
+        return o[1]
 
     # kind: SIKind, decl: StoreDecl (VarDecl or ConstDecl)
     def visitAttributeDecl(self, ast, o):
@@ -1528,6 +1534,7 @@ class StaticChecker(BaseVisitor):
     def visitArrayLiteral(self, ast, o):
         list_type = list(
             map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, [self.visit(ele, o) for ele in ast.value]))
+        
         example_type = ''
         if len(list_type) != 0:
             example_type = list_type[0]

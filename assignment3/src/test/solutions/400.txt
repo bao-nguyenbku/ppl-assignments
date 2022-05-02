@@ -1,1 +1,1 @@
-Illegal Constant Expression: FieldAccess(Self(),Id(a))
+Type Mismatch In Statement: For(Id(b),FloatLit(1.2),IntLit(100),IntLit(1),Block([])])

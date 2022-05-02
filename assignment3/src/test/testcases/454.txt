@@ -6,10 +6,8 @@
         }
         Class Program {
             main() {
-                Val a: Array[Array[Array[Int,2],2],2]
-                = Array(
-                    1,2
-                )
+                Val a: Int = 3;
+                Val a: Float = 4.5;
             }
         }
         

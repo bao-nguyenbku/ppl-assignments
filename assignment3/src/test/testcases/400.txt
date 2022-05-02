@@ -1,10 +1,11 @@
 
-        Class Dog {
-            Var dogs: Int = 2;
-        }
         Class Program {
-            Var a: Int = 4;
-            Val arr: Array[Int, 2] = Array(1,Self.a);
+            main() {
+                Var b: Int = 2;
+                
+                Foreach(b In 1.2 .. 100) {
+                }
+                Break;
+            }
         }
-        
         

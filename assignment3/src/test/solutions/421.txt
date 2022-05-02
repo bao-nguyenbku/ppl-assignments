@@ -1,1 +1,1 @@
-Redeclared Identifier: a
+Redeclared Variable: a
