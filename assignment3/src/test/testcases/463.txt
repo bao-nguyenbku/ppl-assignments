@@ -1,0 +1,10 @@
+
+        Class A {
+            Destructor () {
+                Return 2;
+            }
+        }
+        Class D {
+            Var a: A = New A();
+        }
+        

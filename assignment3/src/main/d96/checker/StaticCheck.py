@@ -1,7 +1,3 @@
-"""
- * @author nhphung
-"""
-#*********************************
 from AST import *
 from Visitor import *
 # from Utils import Utils
@@ -50,34 +46,6 @@ class Data:
     def INSTANCE(): return '<INSTANCE>'
     def UNDEFINED(): return None
 
-class ForLoopChecker(BaseVisitor):
-    def visitAssign(self, ast, o): pass
-
-    def visitIf(self, ast, o):
-        self.visit(ast.thenStmt, o)
-        if ast.elseStmt is None:
-            return
-        self.visit(ast.elseStmt, o)
-
-    def visitFor(self, ast, o):
-        self.visit(ast.loop, ['For'] + o)
-
-    def visitBreak(self, ast, o):
-        if not 'For' in o:
-            raise MustInLoop(ast)
-
-    def visitContinue(self, ast, o):
-        if not 'For' in o:
-            raise MustInLoop(ast)
-
-    def visitReturn(self, ast, o): pass
-    def visitCallStmt(self, ast, o): pass
-    def visitVarDecl(self, ast, o): pass
-    def visitConstDecl(self, ast, o): pass
-
-    def visitBlock(self, ast, o):
-        for inst in ast.inst:
-            self.visit(inst, o)
 # * Visit all initial expression of Attribute Declare * #
 # **************************************
 #                                      *
@@ -209,17 +177,19 @@ class GetLHS(BaseVisitor):
         if not class_name in o['global']:
             raise Undeclared(Class(), class_name)
 
-        # Check if don't have Constructor in class declare
-        if not 'Constructor' in o['global'][class_name]['method']:
-            raise Undeclared(SpecialMethod(), 'Constructor')
-
         # Check for argument and parameter matching
         # paramEnv is list of dict param declare
-        param_env = o['global'][class_name]['method']['Constructor']['param']
+        param_env = o['global'][class_name]['method']['Constructor']['param'] if 'Constructor' in o['global'][class_name]['method'] else []
         argument_type = [self.visit(arg, o) for arg in ast.param]
-
-        StaticChecker.matchArgumentType(ast, param_env, argument_type)
-        # [<INT>, <FLOAT>,...] for example
+        # Check if don't have Constructor in class declare
+        if not 'Constructor' in o['global'][class_name]['method']:
+            if len(argument_type) != 0:
+                raise TypeMismatchInExpression(ast)
+            else:
+                return Data.CLASS(class_name)
+        else:
+            StaticChecker.matchArgumentType(ast, param_env, argument_type)
+        
         return Data.CLASS(class_name)
 
     # arr: Expr,    idx: List[Expr]
@@ -346,10 +316,8 @@ class GetTypeConstant(BaseVisitor):
                     # 'name': {
                     #   'type', 'kind', 'init', 'const'
                     # }
-
         raise Undeclared(Identifier(), name)
-    # op: str,  left: Expr,     right: Expr
-
+    # op: str,  left: Expr,   right: Expr
     def visitBinaryOp(self, ast, o):
         left = self.visit(ast.left, o)
         right = self.visit(ast.right, o)
@@ -461,17 +429,18 @@ class GetTypeConstant(BaseVisitor):
         if not class_name in o['global']:
             raise Undeclared(Class(), class_name)
 
-        # Check if don't have Constructor in class declare
-        if not 'Constructor' in o['global'][class_name]['method']:
-            raise Undeclared(SpecialMethod(), 'Constructor')
-
         # Check for argument and parameter matching
         # paramEnv is list of dict param declare
-        param_env = o['global'][class_name]['method']['Constructor']['param']
+        param_env = o['global'][class_name]['method']['Constructor']['param'] if 'Constructor' in o['global'][class_name]['method'] else []
         argument_type = [self.visit(arg, o) for arg in ast.param]
-
-        StaticChecker.matchArgumentType(ast, param_env, argument_type)
-        # [<INT>, <FLOAT>,...] for example
+        # Check if don't have Constructor in class declare
+        if not 'Constructor' in o['global'][class_name]['method']:
+            if len(argument_type) != 0:
+                raise TypeMismatchInExpression(ast)
+            else:
+                return Data.CLASS(class_name)
+        else:
+            StaticChecker.matchArgumentType(ast, param_env, argument_type)
         return Data.CLASS(class_name)
 
     # arr: Expr,    idx: List[Expr]
@@ -567,6 +536,7 @@ class GetTypeConstant(BaseVisitor):
 
     def visitArrayLiteral(self, ast, o):
         list_type = [self.visit(ele, o) for ele in ast.value]
+        
         list_type = list(
             map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, list_type))
         example_type = ''
@@ -684,7 +654,6 @@ class GetMethodBlockEnv(BaseVisitor):
         if isinstance(rhs, dict):
             rhs_type = rhs['type']
 
-        
         # If lhs_type is Float, rhs_type can either Float or Int type
         if lhs_type == Data.FLOAT() and rhs_type in [Data.FLOAT(), Data.INT()]:
             lhs['init'] = rhs_type
@@ -710,6 +679,7 @@ class GetMethodBlockEnv(BaseVisitor):
             'block': o['block']
         }
         env['block'] = [{}] + env['block']
+        if '<FOR>' in o: env['<FOR>'] = o['<FOR>']
         self.visit(ast.thenStmt, env)
         if not ast.elseStmt is None:
             env = {
@@ -719,15 +689,14 @@ class GetMethodBlockEnv(BaseVisitor):
                 'block': o['block']
             }
             env['block'] = [{}] + env['block']
+            if '<FOR>' in o: env['<FOR>'] = o['<FOR>']
             self.visit(ast.elseStmt, env)
 
     def visitBreak(self, ast, o):
-        if not '<FOR>' in o:
-            raise MustInLoop(ast)
+        if not '<FOR>' in o: raise MustInLoop(ast)
 
     def visitContinue(self, ast, o):
-        if not '<FOR>' in o:
-            raise MustInLoop(ast)
+        if not '<FOR>' in o: raise MustInLoop(ast)
     # id: Id, expr1: Expr, expr2: Expr, loop: Stmt, exp3: Expr = None
     def visitFor(self, ast, o):
         id_name = ast.id.name
@@ -746,7 +715,6 @@ class GetMethodBlockEnv(BaseVisitor):
         exp3 = self.visit(ast.expr3, o) if not ast.expr3 is None else Data.UNDEFINED()
         if id_dict['type'] != Data.INT() or exp1 != Data.INT() or exp2 != Data.INT() or (exp3 != Data.INT() and exp3 != Data.UNDEFINED()):
             raise TypeMismatchInStatement(ast)
-
         env = {
             'global': o['global'],
             'class': o['class'],
@@ -754,7 +722,6 @@ class GetMethodBlockEnv(BaseVisitor):
             'block': o['block'],
             '<FOR>': 1
         }
-
         env['block'] = [{id_name: id_dict}] + env['block']
         self.visit(ast.loop, env)
 
@@ -766,8 +733,16 @@ class GetMethodBlockEnv(BaseVisitor):
 
         for key in o['class']['method']:
             if o['class']['method'][key] == o['method']:
-                if key != 'Destructor':
-                    o['method']['type'] = return_type
+                if key == 'Destructor':
+                    raise TypeMismatchInStatement(ast)
+                elif key == 'Constructor':
+                    if return_type != Data.VOID():
+                        raise TypeMismatchInStatement(ast)
+                else:
+                    if o['method']['type'] == Data.VOID():
+                        o['method']['type'] = return_type
+                    elif o['method']['type'] != return_type:
+                        raise TypeMismatchInStatement(ast)
 
     def visitBlock(self, ast, o):
         for inst in ast.inst:
@@ -964,11 +939,16 @@ class GetMethodBlockEnv(BaseVisitor):
 
         # Check for argument and parameter matching
         # paramEnv is list of dict param declare
-        param_env = o['global'][class_name]['method']['Constructor']['param']
+        param_env = o['global'][class_name]['method']['Constructor']['param'] if 'Constructor' in o['global'][class_name]['method'] else []
         argument_type = [self.visit(arg, o) for arg in ast.param]
-
-        StaticChecker.matchArgumentType(ast, param_env, argument_type)
-        # [<INT>, <FLOAT>,...] for example
+        # Check if don't have Constructor in class declare
+        if not 'Constructor' in o['global'][class_name]['method']:
+            if len(argument_type) != 0:
+                raise TypeMismatchInExpression(ast)
+            else:
+                return Data.CLASS(class_name)
+        else:
+            StaticChecker.matchArgumentType(ast, param_env, argument_type)
         return Data.CLASS(class_name)
 
     # arr: Expr,    idx: List[Expr]
@@ -1135,6 +1115,7 @@ class StaticChecker(BaseVisitor):
         #     raise NoEntryPoint()
         # if o['Program']['method']['main']['param'] or o['Program']['method']['main']['type'] != Data.VOID():
         #     raise NoEntryPoint()
+        toJSON(o)
         return []
 
     # classname: Id,  memlist: List[MemDecl],  parentname: Id = None
@@ -1434,20 +1415,20 @@ class StaticChecker(BaseVisitor):
         if not class_name in o['global']:
             raise Undeclared(Class(), class_name)
 
-        # Check if don't have Constructor in class declare
-        if not 'Constructor' in o['global'][class_name]['method']:
-            raise Undeclared(SpecialMethod(), 'Constructor')
-
         # Check for argument and parameter matching
         # paramEnv is list of dict param declare
-        param_env = o['global'][class_name]['method']['Constructor']['param']
+        param_env = o['global'][class_name]['method']['Constructor']['param'] if 'Constructor' in o['global'][class_name]['method'] else []
         argument_type = [self.visit(arg, o) for arg in ast.param]
+        # Check if don't have Constructor in class declare
+        if not 'Constructor' in o['global'][class_name]['method']:
+            if len(argument_type) != 0:
+                raise TypeMismatchInExpression(ast)
+            else:
+                return Data.CLASS(class_name)
+        else:
+            StaticChecker.matchArgumentType(ast, param_env, argument_type)
 
-        StaticChecker.matchArgumentType(ast, param_env, argument_type)
-        # [<INT>, <FLOAT>,...] for example
-        return Data.CLASS(class_name)
-
-    # arr: Expr,    idx: List[Expr]
+    # arr: Expr,   idx: List[Expr]
     def visitArrayCell(self, ast, o):
         arr = self.visit(ast.arr, o)
         if isinstance(arr, dict):
@@ -1524,17 +1505,14 @@ class StaticChecker(BaseVisitor):
     def visitStringLiteral(self, ast, o): return Data.STRING()
     def visitBooleanLiteral(self, ast, o): return Data.BOOL()
     def visitNullLiteral(self, ast, o): return Data.NULL()
-
     def visitSelfLiteral(self, ast, o):
         for class_name in o['global'].keys():
             if o['global'][class_name] == o['class']:
                 return Data.CLASS(class_name)
-    
     # value: List[Expr]
     def visitArrayLiteral(self, ast, o):
         list_type = list(
             map(lambda ele: ele['type'] if isinstance(ele, dict) else ele, [self.visit(ele, o) for ele in ast.value]))
-        
         example_type = ''
         if len(list_type) != 0:
             example_type = list_type[0]
@@ -1551,8 +1529,7 @@ class StaticChecker(BaseVisitor):
     def visitArrayType(self, ast, o):
         return Data.ARRAY(ast.size, self.visit(ast.eleType, o))
     def visitClassType(self, ast, o):
-        name = ast.classname.name
-        if name in o['global']:
+        if ast.classname.name in o['global']:
             return Data.CLASS(ast.classname.name)
-        raise Undeclared(Class(), name)
+        raise Undeclared(Class(), ast.classname.name)
     def visitVoidType(self, ast, o): return Data.VOID()

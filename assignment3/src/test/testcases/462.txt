@@ -1,0 +1,6 @@
+
+        Class A { }
+        Class D {
+            Var a: A = New A();
+        }
+        

@@ -506,3 +506,32 @@ class GetClassExprType(BaseVisitor, Utils):
         return Data.CLASS(ast.classname.name)
     def visitVoidType(self, ast, o):
         return Data.VOID()
+
+class ForLoopChecker(BaseVisitor):
+    def visitAssign(self, ast, o): pass
+
+    def visitIf(self, ast, o):
+        self.visit(ast.thenStmt, o)
+        if ast.elseStmt is None:
+            return
+        self.visit(ast.elseStmt, o)
+
+    def visitFor(self, ast, o):
+        self.visit(ast.loop, ['For'] + o)
+
+    def visitBreak(self, ast, o):
+        if not 'For' in o:
+            raise MustInLoop(ast)
+
+    def visitContinue(self, ast, o):
+        if not 'For' in o:
+            raise MustInLoop(ast)
+
+    def visitReturn(self, ast, o): pass
+    def visitCallStmt(self, ast, o): pass
+    def visitVarDecl(self, ast, o): pass
+    def visitConstDecl(self, ast, o): pass
+
+    def visitBlock(self, ast, o):
+        for inst in ast.inst:
+            self.visit(inst, o)

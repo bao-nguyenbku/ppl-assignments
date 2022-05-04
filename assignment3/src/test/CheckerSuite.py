@@ -7,11 +7,7 @@ class CheckerSuite(unittest.TestCase):
     #     input = """
     #     Class Program {
     #         main() {
-    #             Var b: Int = 2;
-                
-    #             Foreach(b In 1 .. 100) {
-    #             }
-    #             Break;
+    #             Var b: Array[Int,2] = Array(); 
     #         }
     #     }
     #     """
@@ -1196,3 +1192,245 @@ class CheckerSuite(unittest.TestCase):
     #     """
     #     expect = "Type Mismatch In Expression: CallExpr(FieldAccess(CallExpr(CallExpr(FieldAccess(CallExpr(Id(a),Id(func),[]),Id(c1)),Id(func),[]),Id(func),[]),Id(d1)),Id(Lucy),[Id(e),FloatLit(5.5)])"
     #     self.assertTrue(TestChecker.test(input,expect,460))
+    # def test61(self):
+    #     input = """
+    #     Class A {
+
+    #     }
+    #     Class D {
+    #         Var a: A = New A(1,2,3);
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Expression: NewExpr(Id(A),[IntLit(1),IntLit(2),IntLit(3)])"
+    #     self.assertTrue(TestChecker.test(input,expect,461))
+    # def test62(self):
+    #     input = """
+    #     Class A { }
+    #     Class D {
+    #         Var a: A = New A();
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,462))
+    # def test63(self):
+    #     input = """
+    #     Class A {
+    #         Destructor () {
+    #             Return 2;
+    #         }
+    #     }
+    #     Class D {
+    #         Var a: A = New A();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return(IntLit(2))"
+    #     self.assertTrue(TestChecker.test(input,expect,463))
+    # def test64(self):
+    #     input = """
+    #     Class A {
+    #         Constructor () {
+    #             Return 45;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         Var a: A = New A();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return(IntLit(45))"
+    #     self.assertTrue(TestChecker.test(input,expect,464))
+    # def test65(self):
+    #     input = """
+    #     Class A {
+    #         Constructor () {
+    #             Return 45;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         Var a: A = New A();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return(IntLit(45))"
+    #     self.assertTrue(TestChecker.test(input,expect,465))
+    # def test65(self):
+    #     input = """
+    #     Class A {
+    #         Constructor (a: Int; b: Float) {
+    #             Return;
+    #         }
+    #         Destructor () { 
+    #             Return;
+    #         }
+    #     }
+    #     Class D {
+    #         Var a: A = New A();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return()"
+    #     self.assertTrue(TestChecker.test(input,expect,465))
+    # def test66(self):
+    #     input = """
+    #     Class E {
+    #         Var e: Int;
+    #         Constructor (a: Int; b: Float) {
+    #             Return;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         Var a: Int = E.e;
+    #     }
+    #     """
+    #     expect = "Illegal Member Access: FieldAccess(Id(E),Id(e))"
+    #     self.assertTrue(TestChecker.test(input,expect,466))
+    # def test66(self):
+    #     input = """
+    #     Class E {
+    #         Var e: Int;
+    #         Constructor (a: Int; b: Float) {
+    #             Return;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         Var a: Int = E.e;
+    #     }
+    #     """
+    #     expect = "Illegal Member Access: FieldAccess(Id(E),Id(e))"
+    #     self.assertTrue(TestChecker.test(input,expect,466))
+    # def test67(self):
+    #     input = """
+    #     Class E {
+    #         Var e: Int;
+    #         Constructor (a: Int; b: Float) {
+    #             Return;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         main() {
+    #             Return 2;
+    #             Return "Hello";
+    #         }
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return(StringLit(Hello))"
+    #     self.assertTrue(TestChecker.test(input,expect,467))
+    # def test68(self):
+    #     input = """
+    #     Class E {
+    #         Var e: Int;
+    #         Constructor (a: Int; b: Float) {
+    #             Return;
+    #         }
+    #         Destructor () { }
+    #     }
+    #     Class D {
+    #         main() {
+    #             Var i: Int = 2;
+    #             Foreach(i In -1 .. 100) {
+    #                 If (i > 3) {
+    #                     Var j: Int = 4;
+    #                     Foreach (j In -5 .. 9) {
+    #                         If ((i > j) && (i + j == 9)) {
+    #                             Break;
+    #                         }
+    #                         Elseif (i < j) {
+    #                             Continue;
+    #                         }
+    #                         Return 12;
+    #                     }
+    #                 }
+    #             }
+    #         }
+    #     }
+    #     Class B {
+    #         Var d: D;
+    #         Var b: Int = Self.d.main();
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,468))
+    # def test69(self):
+    #     input = """
+    #     Class D {
+    #         main() {
+    #             Var i: Int = 2;
+    #             Foreach(i In -1 .. 100) {
+    #                 Var j: Int = 4;
+    #                 Foreach (j In -5 .. 9) {
+    #                     Return 12;
+    #                 }
+    #                 Var k: Int;
+    #                 Foreach (j In 10 .. 20) { 
+    #                     Continue;
+    #                     Foreach (k In 12 .. 234) { Break; }
+    #                 }
+    #             }
+    #         }
+    #     }
+    #     """
+    #     expect = "[]"
+    #     self.assertTrue(TestChecker.test(input,expect,469))
+    # def test70(self):
+    #     input = """
+    #     Class D {
+    #         main() {
+    #             Var i: Int = 2;
+    #             Foreach(i In -1 .. 100) {
+    #                 Var j: Int = 4;
+    #                 Foreach (j In -5 .. 9) {
+    #                     Return 12;
+    #                 }
+    #                 Var k: Int;
+    #                 Foreach (j In 10 .. 20) { 
+    #                     Continue;
+    #                     Foreach (k In 12 .. 234) { 
+    #                         Break; 
+    #                         Foreach (i In 10 .. 100) { 
+    #                             Return "String";
+    #                         }
+    #                     }
+                        
+    #                 }
+    #             }
+    #         }
+    #     }
+    #     Class E {
+    #         Var d: D;
+    #         Var e: Int = Self.d.main();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: Return(StringLit(String))"
+    #     self.assertTrue(TestChecker.test(input,expect,470))
+    # def test71(self):
+    #     input = """
+    #     Class D {
+    #         main() {
+    #             Var i: Int = 2;
+    #             Foreach(i In -1 .. 100) {
+    #                 Var j: Int = 4;
+    #                 Foreach (j In -5 .. 9) {
+    #                     Return;
+    #                 }
+    #                 Var k: Int;
+    #                 Foreach (j In 10 .. 20) { 
+    #                     Continue;
+    #                     Foreach (k In 12 .. 234) { 
+    #                         Break; 
+    #                         Foreach (i In 10 .. 100) { 
+    #                             Return "String";
+    #                         }
+    #                     }
+    #                 }
+    #             }
+    #         }
+    #     }
+    #     Class E {
+    #         Var d: D;
+    #         Var e: Int = Self.d.main();
+    #     }
+    #     """
+    #     expect = "Type Mismatch In Statement: VarDecl(Id(e),IntType,CallExpr(FieldAccess(Self(),Id(d)),Id(main),[]))"
+    #     self.assertTrue(TestChecker.test(input,expect,471))

@@ -20,3 +20,12 @@ Hỏi forum
 
 Note:
 1. Identifiers/Classes/Methods/Attributes,... must be declared before use
+
+Ngôn ngữ có cung cấp 1 hàm khởi tạo mặc định không tham số hay bắt buộc phải có ít nhất 1 hàm khởi tạo? 
+Nếu không có thì sẽ raise lỗi gì? 
+Hàm khởi tạo và hàm hủy có được có lệnh return trả về VoidType hay là nhất thiết không được có câu lệnh return? 
+Nếu có câu lệnh return trong hàm khởi tạo và hàm hủy sẽ raise lỗi gì? 
+
+
+1. Có một Constructor không tham số sẽ được khởi tạo mặc định.
+2. Không được có câu lệnh return trong Destructor và Constructor (trừ trường hợp return không đi kèm biểu thức trong Constructor), nếu không lỗi Type Mismatch In Statement sẽ được trả về.

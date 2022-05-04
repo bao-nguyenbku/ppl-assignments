@@ -1,11 +1,7 @@
 
         Class Program {
             main() {
-                Var b: Int = 2;
-                
-                Foreach(b In 1.2 .. 100) {
-                }
-                Break;
+                Var b: Array[Int,2] = Array(); 
             }
         }
         
