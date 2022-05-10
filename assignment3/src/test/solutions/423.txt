@@ -1,1 +1,1 @@
-Type Mismatch In Statement: AssignStmt(Id(b),CallExpr(Id(c),Id(getD),[IntLit(1),IntLit(2)]))
+Type Mismatch In Statement: AssignStmt(Id(b),CallExpr(Id(D),Id($getD),[IntLit(1),IntLit(2)]))

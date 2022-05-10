@@ -1,1 +1,1 @@
-Type Mismatch In Statement: VarDecl(Id(b),ArrayType(2,IntType),[])
+Type Mismatch In Constant Declaration: ConstDecl(Id($a),IntType,FloatLit(3.2))

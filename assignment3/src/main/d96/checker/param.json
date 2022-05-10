@@ -1,23 +1,121 @@
 {
     "global": {
-        "D": {
+        "Program": {
             "parent": "",
             "attribute": {},
             "method": {
                 "main": {
-                    "type": "<INT>",
+                    "type": "<VOID>",
+                    "kind": "<STATIC>",
+                    "body": [
+                        {}
+                    ],
+                    "param": {}
+                }
+            }
+        },
+        "System": {
+            "parent": "",
+            "attribute": {
+                "out": {
+                    "kind": "<INSTANCE>",
+                    "type": "<CLASS>(System)",
+                    "init": "<NULL>",
+                    "const": false
+                }
+            },
+            "method": {
+                "format": {
+                    "type": "<VOID>",
                     "kind": "<INSTANCE>",
                     "body": [
                         {
-                            "i": {
+                            "str": {
+                                "type": "<STRING>",
+                                "kind": "<INSTANCE>",
+                                "init": null,
+                                "const": false
+                            },
+                            "param": {
+                                "type": "<INT>",
+                                "kind": "<INSTANCE>",
+                                "init": null,
+                                "const": false
+                            }
+                        }
+                    ],
+                    "param": {
+                        "str": {
+                            "type": "<STRING>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "param": {
+                            "type": "<INT>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        }
+                    }
+                }
+            }
+        },
+        "Largest": {
+            "parent": "",
+            "attribute": {},
+            "method": {
+                "$main": {
+                    "type": "<VOID>",
+                    "kind": "<STATIC>",
+                    "body": [
+                        {
+                            "args": {
+                                "type": "[10000]<STRING>",
+                                "kind": "<INSTANCE>",
+                                "init": null,
+                                "const": false
+                            },
+                            "numArray": {
+                                "type": "[8]<FLOAT>",
+                                "kind": "<INSTANCE>",
+                                "const": false,
+                                "init": "[8]<FLOAT>"
+                            },
+                            "largest": {
                                 "type": "<INT>",
                                 "kind": "<INSTANCE>",
                                 "const": false,
                                 "init": "<INT>"
+                            },
+                            "size": {
+                                "type": "[2]<INT>",
+                                "kind": "<INSTANCE>",
+                                "const": false,
+                                "init": "[2]<INT>"
+                            },
+                            "num": {
+                                "type": "<INT>",
+                                "kind": "<INSTANCE>",
+                                "const": false,
+                                "init": null
+                            },
+                            "System": {
+                                "type": "<CLASS>(System)",
+                                "kind": "<INSTANCE>",
+                                "init": "<CLASS>(System)",
+                                "const": true
                             }
                         }
                     ],
-                    "param": {}
+                    "param": {
+                        "args": {
+                            "type": "[10000]<STRING>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        }
+                    }
                 }
             }
         }
@@ -26,20 +124,57 @@
         "parent": "",
         "attribute": {},
         "method": {
-            "main": {
-                "type": "<INT>",
-                "kind": "<INSTANCE>",
+            "$main": {
+                "type": "<VOID>",
+                "kind": "<STATIC>",
                 "body": [
                     {
-                        "i": {
+                        "args": {
+                            "type": "[10000]<STRING>",
+                            "kind": "<INSTANCE>",
+                            "init": null,
+                            "const": false
+                        },
+                        "numArray": {
+                            "type": "[8]<FLOAT>",
+                            "kind": "<INSTANCE>",
+                            "const": false,
+                            "init": "[8]<FLOAT>"
+                        },
+                        "largest": {
                             "type": "<INT>",
                             "kind": "<INSTANCE>",
                             "const": false,
                             "init": "<INT>"
+                        },
+                        "size": {
+                            "type": "[2]<INT>",
+                            "kind": "<INSTANCE>",
+                            "const": false,
+                            "init": "[2]<INT>"
+                        },
+                        "num": {
+                            "type": "<INT>",
+                            "kind": "<INSTANCE>",
+                            "const": false,
+                            "init": null
+                        },
+                        "System": {
+                            "type": "<CLASS>(System)",
+                            "kind": "<INSTANCE>",
+                            "init": "<CLASS>(System)",
+                            "const": true
                         }
                     }
                 ],
-                "param": {}
+                "param": {
+                    "args": {
+                        "type": "[10000]<STRING>",
+                        "kind": "<INSTANCE>",
+                        "init": null,
+                        "const": false
+                    }
+                }
             }
         }
     }

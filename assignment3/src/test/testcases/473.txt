@@ -1,0 +1,13 @@
+
+        Class A {
+            $foo() {
+                Var a: Int;
+                Return a;
+            }
+        }
+        Class B {
+            main() {
+                Var a: A = New A();
+            }
+        }
+        

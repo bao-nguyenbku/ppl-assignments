@@ -1,1 +1,1 @@
-Type Mismatch In Statement: AssignStmt(ArrayCell(Id(a),[IntLit(0)]),[IntLit(1),IntLit(2),IntLit(4)])
+Type Mismatch In Statement: Return(FieldAccess(Self(),Id(name)))

@@ -21,7 +21,7 @@
             method() {
                 Var c: C;
                 Var b: Int;
-                b = c.getD(1,2);
+                b = c.getC(1,2);
             }
             Constructor () { }
             Destructor () { }
