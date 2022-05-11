@@ -12,4 +12,5 @@
                 If (Self.d) { Return Self.c; }
             }
         }
+        Class Program{main(){}}
         

@@ -15,4 +15,5 @@
                 }
             }
         }
+        Class Program{main(){}}
         

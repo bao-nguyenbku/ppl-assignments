@@ -9,4 +9,5 @@
                 Self.a.s = 5.6;
             }
         }
+        Class Program{main(a:Int){}}
         

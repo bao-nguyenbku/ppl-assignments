@@ -1,0 +1,14 @@
+
+        Class Main {
+            $get() { Return Array(1,2); }
+        }
+        Class Program {
+                Var a: Program = New Program();
+                Val b: Main = New Main();
+                main() {
+                    Var b: Int;
+                    b = Main::$get()[1];
+                    a = Main.get()[3][5][67];
+                }
+            }
+        

@@ -24,4 +24,5 @@
             Var d: D;
             Var e: Int = Self.d.main();
         }
+        Class Program{main(){}}
         

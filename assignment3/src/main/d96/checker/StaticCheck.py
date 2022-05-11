@@ -704,6 +704,8 @@ class GetMethodBlockEnv(BaseVisitor):
         exp1 = self.visit(ast.expr1, o)
         exp2 = self.visit(ast.expr2, o)
         exp3 = self.visit(ast.expr3, o) if not ast.expr3 is None else Data.UNDEFINED()
+        if isinstance(exp3, dict):
+            exp3 = exp3['type']
         if id_dict['type'] != Data.INT() or exp1 != Data.INT() or exp2 != Data.INT() or (exp3 != Data.INT() and exp3 != Data.UNDEFINED()):
             raise TypeMismatchInStatement(ast)
         env = {
@@ -725,10 +727,12 @@ class GetMethodBlockEnv(BaseVisitor):
             if o['class']['method'][key] == o['method'] and id(o['class']['method'][key]) == id(o['method']):
                 if key == 'Destructor':
                     raise TypeMismatchInStatement(ast)
-                elif key == 'Constructor' or key == 'main':
+                elif key == 'Constructor':
                     if return_type != Data.VOID():
                         raise TypeMismatchInStatement(ast)
-                
+                elif key == 'main' and 'Program' in o['global'] and o['class'] == o['global']['Program'] and o['class']['method']['main']['param'] == {}:
+                    if return_type != Data.VOID():
+                        raise TypeMismatchInStatement(ast)
                 else:
                     if o['method']['type'] == Data.VOID():
                         o['method']['type'] = return_type

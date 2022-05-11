@@ -2,6 +2,7 @@
         Class B { 
             Constructor() { }
         }
+        Class Program{main(){}}
         Class A : B {
             Var arr: Array[Array[Int, 2], 2];
             getA() {

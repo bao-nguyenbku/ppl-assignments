@@ -1,0 +1,23 @@
+
+        Class Program {main(){}}
+        Class test {
+            Var t, y: Int = 1, 2;
+            method(a,b,c:Int) {
+                If (a + b > 0) {
+                    Var i: Int;
+                    Foreach(i In 1 .. 12 By c) {
+                        Var f: Int = a;
+                        If (2 + 5 != b) {
+                            If (f >= b) {
+                                Continue;
+                            }
+                        }
+                    }
+                }
+                Elseif (Self.t * 7 == 8) {
+                    If (34 <= 9) { }
+                    Else { Return; }
+                }
+            }
+        }
+        
