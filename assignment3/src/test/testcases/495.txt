@@ -1,0 +1,13 @@
+
+        Class D {
+            Var a: Int = 12;
+        }
+        Class E : D {
+            Var e: Float = 2;
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        

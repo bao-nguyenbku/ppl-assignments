@@ -1,0 +1,15 @@
+
+        Class D {
+            Var a: Int = 12;
+            main() {
+                Var a: Program = New Program();
+                a.int = 123;
+            }
+        }
+        Class Program {
+            Var int: Int = 2;
+            main() { 
+                Return;
+            }
+        }
+        

@@ -5,22 +5,6 @@ from TestUtils import TestChecker
 from AST import *
 
 class CheckerSuite(unittest.TestCase):
-    # def test(self):
-    #     input = """
-    #     Class A {
-    #         $foo() {
-    #             Var a: Int;
-    #             Return a;
-    #         }
-    #     }
-    #     Class B {
-    #         main() {
-    #             Var a: A = New A();
-    #         }
-    #     }
-    #     """
-    #     expect = "Type Mismatch In Statement: VarDecl(Id(a),IntType)"
-    #     self.assertTrue(TestChecker.test(input,expect,400))
     def test0(self):
         input = """
         Class Dog {
@@ -1755,3 +1739,152 @@ class CheckerSuite(unittest.TestCase):
         """
         expect = "Type Mismatch In Statement: Return(IntLit(45))"
         self.assertTrue(TestChecker.test(input,expect,490))
+    def test91(self):
+        input = """
+        Class A {
+            Constructor () {
+                Return;
+            }
+            Destructor () { }
+        }
+        Class D {
+            Var a: A = 12;
+        }
+        """
+        expect = "Type Mismatch In Statement: VarDecl(Id(a),ClassType(Id(A)),IntLit(12))"
+        self.assertTrue(TestChecker.test(input,expect,491))
+    def test92(self):
+        input = """
+        Class A {
+            Constructor () {
+                Return;
+            }
+            Destructor () { }
+        }
+        Class D {
+            Var a: B = 12;
+        }
+        """
+        expect = "Undeclared Class: B"
+        self.assertTrue(TestChecker.test(input,expect,492))
+    def test93(self):
+        input = """
+        Class A {
+            Constructor () {
+                Return;
+            }
+            Destructor () { }
+        }
+        Class D {
+            Var a: Int = 12;
+        }
+        Class Program {
+            main(a: Int) { }
+        }
+        """
+        expect = "No Entry Point"
+        self.assertTrue(TestChecker.test(input,expect,493))
+    def test94(self):
+        input = """
+        Class A {
+            Constructor () {
+                Return;
+            }
+            Destructor () { }
+        }
+        Class D {
+            Var a: Int = 12;
+        }
+        Class Program {
+            main() { 
+                Return "string";
+            }
+        }
+        """
+        expect = "Type Mismatch In Statement: Return(StringLit(string))"
+        self.assertTrue(TestChecker.test(input,expect,494))
+    def test95(self):
+        input = """
+        Class D {
+            Var a: Int = 12;
+        }
+        Class E : D {
+            Var e: Float = 2;
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,495))
+    def test96(self):
+        input = """
+        Class D {
+            Var a: Int = 12;
+        }
+        Class E : D {
+            Var e: Float = 2;
+            main() {
+                Var e: Boolean = False;
+            }
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,496))
+    def test97(self):
+        input = """
+        Class D {
+            Var a: Int = 12;
+            main() {
+                Var a: Float = Self.a;
+            }
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,497))
+    def test98(self):
+        input = """
+        Class D {
+            Var a: Int = 12;
+            main() {
+                Var a: Float = Self.a;
+            }
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        """
+        expect = "[]"
+        self.assertTrue(TestChecker.test(input,expect,498))
+    def test99(self):
+        input = """
+        Class D {
+            Var a: Int = 12;
+            main() {
+                Var a: Program = New Program();
+                a.int = 123;
+            }
+        }
+        Class Program {
+            Var int: Int = 2;
+            main() { 
+                Return;
+            }
+        }
+        """
+        expect = "Undeclared Class: Program"
+        self.assertTrue(TestChecker.test(input,expect,499))

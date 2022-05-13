@@ -16,21 +16,6 @@ class Symbol:
         self.name = name
         self.mtype = mtype
         self.value = value
-# (Optional) function to print checking param as json
-def toJSON(data, typ=None):
-    if typ == 't':
-        try:
-            print(json.dumps(data, sort_keys=False, indent=4))
-        except Exception as e:
-            print(e)
-    else:
-        f = open('./main/d96/checker/param.json', 'w', encoding='utf-8')
-        try:
-            f.write(json.dumps(data, sort_keys=False, indent=4))
-        except Exception as e:
-            f.write(e)
-        finally:
-            f.close()
 
 class Data:
     def ID(): return '<ID>'
@@ -1095,7 +1080,6 @@ class StaticChecker(BaseVisitor):
             raise NoEntryPoint()
         if o['global']['Program']['method']['main']['param'] or o['global']['Program']['method']['main']['type'] != Data.VOID():
             raise NoEntryPoint()
-        toJSON(o)
         return []
 
     # classname: Id,  memlist: List[MemDecl],  parentname: Id = None
@@ -1126,12 +1110,6 @@ class StaticChecker(BaseVisitor):
         o['class'] = o['global'][class_name]
         for mem in ast.memlist:
             self.visit(mem, o)
-
-        # if class_name != 'Program':
-        #     if not 'Constructor' in o[class_name]['method']:
-        #         raise Undeclared(SpecialMethod(), 'Constructor')
-        #     if not 'Destructor' in o[class_name]['method']:
-        #         raise Undeclared(SpecialMethod(), 'Destructor')
 
     # kind: SIKind, name: Id, param: List[VarDecl], body: Block
     def visitMethodDecl(self, ast, o):

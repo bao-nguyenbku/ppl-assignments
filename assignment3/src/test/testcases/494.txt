@@ -1,0 +1,16 @@
+
+        Class A {
+            Constructor () {
+                Return;
+            }
+            Destructor () { }
+        }
+        Class D {
+            Var a: Int = 12;
+        }
+        Class Program {
+            main() { 
+                Return "string";
+            }
+        }
+        
