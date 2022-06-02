@@ -5,6 +5,16 @@ from TestUtils import TestChecker
 from AST import *
 
 class CheckerSuite(unittest.TestCase):
+    # def test0(self):
+    #     input = """
+    #     Class Dog {
+            
+    #     }
+        
+    #     Class Program {main(){}}
+    #     """
+    #     expect = "Type Mismatch In Constant Declaration: ConstDecl(Id($a),IntType,FloatLit(3.2))"
+    #     self.assertTrue(TestChecker.test(input,expect,400))
     def test0(self):
         input = """
         Class Dog {
