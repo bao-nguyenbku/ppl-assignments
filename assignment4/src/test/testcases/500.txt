@@ -1,5 +1,7 @@
 
         Class Program {
-            main() { }
+            main() { 
+                io.putFloat(1.1);
+            }
         }
         

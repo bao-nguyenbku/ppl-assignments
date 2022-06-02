@@ -12,7 +12,7 @@ from Emitter import Emitter
 from Frame import Frame
 from abc import ABC, abstractmethod
 from pprint import pprint
-
+from functools import reduce
 class CodeGenerator(Utils):
     def __init__(self):
         self.libName = "io"
@@ -160,14 +160,14 @@ class CodeGenVisitor(BaseVisitor, Utils):
         # Generate code for parameter declarations
         if isMain:
             self.emit.printout(self.emit.emitVAR(frame.getNewIndex(), "args", ArrayPointerType(StringType()), frame.getStartLabel(), frame.getEndLabel(),frame))
-        # else:
+        else:
         #     if isInit:
-        #         self.emit.printout(self.emit.emitVAR(frame.getNewIndex(), "this", ClassType(self.className), frame.getStartLabel(), frame.getEndLabel(),frame))
+            self.emit.printout(self.emit.emitVAR(frame.getNewIndex(), "this", ClassType(self.className), frame.getStartLabel(), frame.getEndLabel(),frame))
             
-        # local = list(map(lambda x: self.visit(x,SubBody(frame,glenv)),consdecl.param))
-        # glenv=local+glenv
+        local = list(map(lambda x: self.visit(x,SubBody(frame,glenv)),consdecl.param))
+        glenv = local + glenv
             
-        # body = consdecl.body
+        body = consdecl.body
         self.emit.printout(self.emit.emitLABEL(frame.getStartLabel(), frame))
 
         # Generate code for statements
@@ -175,9 +175,8 @@ class CodeGenVisitor(BaseVisitor, Utils):
         #     self.emit.printout(self.emit.emitREADVAR("this", ClassType(Id(self.className)), 0, frame))
         #     self.emit.printout(self.emit.emitINVOKESPECIAL(frame))
     
-        # list(map(lambda x: self.visit(x, SubBody(frame, glenv)), body.decl))
-        # local = list(map(lambda x: self.visit(x,SubBody(frame,glenv)),body.inst))
-        # glenv = local + glenv
+        local = list(map(lambda x: self.visit(x,SubBody(frame,glenv)),body.inst))
+        glenv = local + glenv
     
         # list(map(lambda x: self.visit(x, SubBody(frame, glenv)), body.inst))
 
@@ -187,6 +186,51 @@ class CodeGenVisitor(BaseVisitor, Utils):
         self.emit.printout(self.emit.emitENDMETHOD(frame))
         frame.exitScope()
 
+    def visitBlock(self,ast,o):
+        #inst: List[Inst]
+        ctxt = o
+        frame = ctxt.frame
+        nenv = ctxt.sym
+        frame.enterScope(False)
+        # generate code for statements
+        self.emit.printout(self.emit.emitLABEL(frame.getStartLabel(), frame))
+        local = reduce(lambda env,ele: SubBody(frame,[self.visit(ele,env)]+env.sym),ctxt.decl,SubBody(frame,[]))
+        nenv = local.sym+nenv
+        # [map(lambda x: self.visit(x,SubBody(frame,nenv)),ast.decl)]
+        [map(lambda x: self.visit(x,nenv),ast.stmt)]
+        #ast.decl.foreach(x => visit(x, blockContext).asInstanceOf[SimpleSymbol])
+        # ast.stmt.map(x => visit(x, blockContext))
+        self.emit.printout(self.emit.emitLABEL(frame.getEndLabel(), frame))
+        frame.exitScope()    
+        return None
+
+    def visitCallStmt(self, ast, o):
+        ctxt = o
+        frame = ctxt.frame
+        nenv = ctxt.sym
+        sym = next(filter(lambda x: ast.method.name == x.name,nenv),None)
+        cname = sym.value.value    
+        ctype = sym.mtype
+        in_ = ("", list())
+        # val caller = visit(ast.parent, AccessContext(context, isLhs = false, isFirstAccess = true)).asInstanceOf[DataObject]
+        # emitter.printout(caller.code)
+        for x in ast.param:
+            str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
+            in_ = (in_[0] + str1, in_[1].append(typ1))
+        if cname == 'io':
+            # des=None if cname=="io" else ctype
+            
+            # self.emit.printout(self.emit.emitGETSTATIC(cname + "/" + ast.method.name,ctype, frame))
+            self.emit.printout(in_[0])
+        # self.emit.printout(self.emit.emitINVOKEVIRTUAL(cname + "/" + ast.method.name, ctype, frame))
+            self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+        else:
+            # self.emit.printout(self.emit.emitGETFIELD(cname + "/" + ast.method.name ,ctype, frame))
+            self.emit.printout(in_[0])
+            self.emit.printout(self.emit.emitINVOKEVIRTUAL(cname + "/" + ast.method.name, ctype, frame))
+        # self.emit.printout(in_[0])
+        # self.emit.printout(in_[0])
+        # self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
     def visitContinue(self,ast,o):
         ctxt = o
         frame = ctxt.frame
@@ -198,17 +242,15 @@ class CodeGenVisitor(BaseVisitor, Utils):
         self.emit.printout(self.emit.emitGOTO(frame.getBreakLabel(), frame))
     def visitIntLiteral(self,ast,o):
         return self.emit.emitPUSHICONST(ast.value,o.frame),IntType()
-
     def visitFloatLiteral(self,ast,o):
-        return self.emit.emitPUSHFCONST(str(ast.value),o.frame),FloatType()
-
-    def visitStringLiteral(self,ast,o):
-        return self.emit.emitPUSHCONST(ast.value,StringType(),o.frame),StringType()
-
+        return self.emit.emitPUSHFCONST(str(ast.value), o.frame), FloatType()
     def visitBooleanLiteral(self,ast,o):
-        if ast.value: code = self.emit.emitPUSHICONST("true",o.frame)
-        else: code = self.emit.emitPUSHICONST("false",o.frame)
-        return code,BoolType()
+        return self.emit.emitPUSHICONST(str(ast.value).lower(), o.frame), BoolType()
+
+    def visitStringLiteral(self,ast,frame):
+        return self.emit.emitPUSHCONST(ast.value,StringType(),frame),StringType()
+
+    
 
     def visitNullLiteral(self, ast, o):
         return None

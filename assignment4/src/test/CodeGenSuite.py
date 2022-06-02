@@ -7,7 +7,9 @@ class CheckCodeGenSuite(unittest.TestCase):
     def test(self):
         input = """
         Class Program {
-            main() { }
+            main() { 
+                io.putFloat(1.1);
+            }
         }
         """
         expect = ""
