@@ -1,15 +1,15 @@
 
-        Class C {
-            Var $c: Int = 2;
-            get() { }
-            Constructor(a: Float; b: String) { }
+        Class A { }
+        Class E {
+            Var a : Int;
+            Constructor(a: A) { }
         }
-        Class A {
-            Var b: Array[Int, 3];
-            getA(a: Float) {
-                Var b: Int;
-                Var Cobj: C = New C(3.4, "Hello");
-                b = Cobj::$c;
+        Class Program {
+            main() {
+                Val a: Array[Array[Array[Int,2],2],2]
+                = Array(
+                    1,2
+                )
             }
         }
         

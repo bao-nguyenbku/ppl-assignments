@@ -1,0 +1,7 @@
+
+        Class A { }
+        Class Program{main(){}}
+        Class D {
+            Var a: A = New A();
+        }
+        

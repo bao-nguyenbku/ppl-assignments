@@ -22,9 +22,9 @@
         }
         Class Program
         {
-            Var a : Health = New Unit(2, "Hieu");
+            Var a : Unit = New Unit(2, "Hieu");
             Val $b : Character = New Character();
-            Var player : Health = New Player(Array(1, 4, 5, 3, 5, 6, 6), 6.5, "Henry");
+            Var player :Player  = New Health();
             main () { }
             Destructor(){}
         }

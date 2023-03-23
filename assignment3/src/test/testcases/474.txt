@@ -1,0 +1,16 @@
+
+        Class A {
+            $foo() {
+                Var a: Int;
+                Return a;
+            }
+        }
+        Class B {
+            Val c: B = New B();
+            Val d: Boolean = True;
+            getB() {
+                If (Self.d) { Return Self.c; }
+            }
+        }
+        Class Program{main(){}}
+        

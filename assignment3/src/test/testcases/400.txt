@@ -1,16 +1,14 @@
 
-        Class Program {
-            main() { }
-        }
-        Class Animal {
-            Var d: Int = Self.a;
-            Val a: Array[Int, 2] = Array(1,2);
-            Constructor () { }
-            Destructor () { }
-        }
         Class Dog {
+            Val $a : Int = 3.2;
+            $getDog() { }
             Constructor () { }
             Destructor () { }
         }
-        
+        Class Meow {
+            $set() { }
+            Constructor () { }
+            Destructor () { }
+        }
+        Class Program {main(){}}
         

@@ -1,0 +1,13 @@
+
+        Class B { 
+            Constructor() { }
+        }
+        Class Program{main(){}}
+        Class A : B {
+            Var arr: Array[Array[Int, 2], 2];
+            getA() {
+                Self.arr[1][2 + 5] = 4;
+            }
+        }
+        
+        

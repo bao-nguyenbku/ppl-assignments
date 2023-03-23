@@ -1,0 +1,13 @@
+
+        Class D {
+            Var a: Int = 12;
+            main() {
+                Var a: Float = Self.a;
+            }
+        }
+        Class Program {
+            main() { 
+                Return;
+            }
+        }
+        

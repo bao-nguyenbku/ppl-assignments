@@ -1,0 +1,15 @@
+
+        Class A { 
+            Var b: String = "Name";
+            Constructor () {
+                Self.b = "New Name";
+            }
+            Var a: A = New A();
+        }
+        Class Program {
+            main() {
+                Var b: A = New A();
+                b.a.a.a.b = "Program Name";
+            }
+        }
+        

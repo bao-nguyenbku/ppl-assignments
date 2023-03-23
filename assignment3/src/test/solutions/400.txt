@@ -1,1 +1,1 @@
-Type Mismatch In Statement: VarDecl(Id(d),IntType,FieldAccess(Self(),Id(a)))
+Type Mismatch In Constant Declaration: ConstDecl(Id($a),IntType,FloatLit(3.2))
