@@ -8,7 +8,7 @@ class CheckCodeGenSuite(unittest.TestCase):
         input = """
         Class Program {
             main() { 
-                io.putFloat(1.1);
+                io.putBool(True);
             }
         }
         """

@@ -205,52 +205,35 @@ class CodeGenVisitor(BaseVisitor, Utils):
         return None
 
     def visitCallStmt(self, ast, o):
-        ctxt = o
-        frame = ctxt.frame
-        nenv = ctxt.sym
-        sym = next(filter(lambda x: ast.method.name == x.name,nenv),None)
-        cname = sym.value.value    
+        #ast: CallStmt
+        #o: Any
+
+        frame = o.frame
+        nenv = o.sym
+        sym = self.lookup(ast.method.name, nenv, lambda x: x.name)
+        cname = sym.value.value
         ctype = sym.mtype
         in_ = ("", list())
-        # val caller = visit(ast.parent, AccessContext(context, isLhs = false, isFirstAccess = true)).asInstanceOf[DataObject]
-        # emitter.printout(caller.code)
         for x in ast.param:
             str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
             in_ = (in_[0] + str1, in_[1].append(typ1))
-        if cname == 'io':
-            # des=None if cname=="io" else ctype
-            
-            # self.emit.printout(self.emit.emitGETSTATIC(cname + "/" + ast.method.name,ctype, frame))
-            self.emit.printout(in_[0])
-        # self.emit.printout(self.emit.emitINVOKEVIRTUAL(cname + "/" + ast.method.name, ctype, frame))
-            self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
-        else:
-            # self.emit.printout(self.emit.emitGETFIELD(cname + "/" + ast.method.name ,ctype, frame))
-            self.emit.printout(in_[0])
-            self.emit.printout(self.emit.emitINVOKEVIRTUAL(cname + "/" + ast.method.name, ctype, frame))
-        # self.emit.printout(in_[0])
-        # self.emit.printout(in_[0])
-        # self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+        self.emit.printout(in_[0])
+        self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+
     def visitContinue(self,ast,o):
-        ctxt = o
-        frame = ctxt.frame
-        self.emit.printout(self.emit.emitGOTO(frame.getContinueLabel(), frame))
+        self.emit.printout(self.emit.emitGOTO(o.frame.getContinueLabel(), o.frame))
     
     def visitBreak(self,ast,o):
-        ctxt = o
-        frame = ctxt.frame
-        self.emit.printout(self.emit.emitGOTO(frame.getBreakLabel(), frame))
+        self.emit.printout(self.emit.emitGOTO(o.frame.getBreakLabel(), o.frame))
+        
     def visitIntLiteral(self,ast,o):
         return self.emit.emitPUSHICONST(ast.value,o.frame),IntType()
     def visitFloatLiteral(self,ast,o):
         return self.emit.emitPUSHFCONST(str(ast.value), o.frame), FloatType()
     def visitBooleanLiteral(self,ast,o):
         return self.emit.emitPUSHICONST(str(ast.value).lower(), o.frame), BoolType()
-
     def visitStringLiteral(self,ast,frame):
         return self.emit.emitPUSHCONST(ast.value,StringType(),frame),StringType()
-
-    
 
     def visitNullLiteral(self, ast, o):
         return None
